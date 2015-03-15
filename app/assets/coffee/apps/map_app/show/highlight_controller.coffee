@@ -1,5 +1,4 @@
 define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
-	console.log "App", App
 	App.module "MapApp.Highlight", (Highlight, App, Backbone, Marionette, $, _) ->
 	    Highlight.Controller =
 	    	highlightNodesBy: (sourceNode) =>
@@ -12,20 +11,19 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		          		weight: 2
 		          		clickable: false
 					timeout = 0
-					View.markers.eachLayer (layer) =>
-			          	layer.setStyle
-			            	opacity: 0.1
-			            	fillOpacity: 0.1
-			            	clickable: false
-				        setTimeout (=>
-				        	console.log "App", App
-				        	# $(L.DomUtil.get(layer._container)).animate
-				            	# fillOpacity: 0.3
-				            	# opacity: 0.3
-				          	, 10, ->
-				        )
-				console.log "View._links", View._links
-				View._links.forEach (link) -> 
+					# View.markers.eachLayer (layer) =>
+			  #         	layer.setStyle
+			  #           	opacity: 0.1
+			  #           	fillOpacity: 0.1
+			  #           	clickable: false
+				 #        setTimeout (=>
+				 #        	console.log "App", App
+				 #        	# $(L.DomUtil.get(layer._container)).animate
+				 #            	# fillOpacity: 0.3
+				 #            	# opacity: 0.3
+				 #          	, 10, ->
+				 #        )
+				@_links.forEach (link) -> 
 					if link.source.name == Highlight._sourceNode
 		            	View.markers.eachLayer (layer) =>
 		              		layer.setStyle

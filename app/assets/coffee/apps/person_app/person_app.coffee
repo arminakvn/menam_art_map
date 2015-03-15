@@ -10,13 +10,7 @@ define ["js/app"], (App) ->
       showPerson: ->
         require ["js/apps/person_app/show/show_controller"], ->
           App.PersonApp.Show.Controller.showPerson()
-
-    # App.on "header:show", ->
-
-      # console.log("API.showHeader()")
-
     App.addInitializer ->
       new App.Router
           controller: API
-      # API.showPerson()
   App.PersonApp

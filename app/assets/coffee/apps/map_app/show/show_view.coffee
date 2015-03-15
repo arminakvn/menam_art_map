@@ -5,22 +5,23 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
       id:"location-region"
       tagName:"div"
       onShow: ->
-        require ["js/entities/artist"], =>
+        # require ["js/entities/artist"], =>
           textResponse = $.ajax
                         url: "/artists"
                         success: (result) =>
                           result
-          $.when(textResponse).done (artist) =>
+          $.when(textResponse).done (artists) =>
             # artists = artist.responseJSON
-            @collection = App.request "set:artist", artist
+            # @collection = App.ArtistCollection
             # @$el = $('main-region')
             id = 0
             @artistNodes = [] 
             nodes = []
-            for artist in @collection.models
-              nodes.push artist.attributes
+
+            for artist in artists
+              nodes.push artist
               # make a list of artist names when data arrives and keep it
-              @artistNodes.push {'name' :artist.attributes.source, 'id': id, 'group': artist.attributes.group}
+              @artistNodes.push {'name' :artist.source, 'id': id, 'group': artist.group}
               id = id + 1
             # using the data to create links and nodes in format
       
@@ -93,6 +94,7 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
 
             @_nodes = _nodes
             @_links = _links
+            App.MapApp.Highlight.Controller._links = _links
             eachcnt = 0
             nodeGroup = L.layerGroup([])
             @color = d3.scale.category10()
@@ -145,7 +147,7 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
             # h = $(_m.getContainer())[0].clientHeight
             # nodes = @artistNodes
             fx = new L.PosAnimation()
-        return
+        # return
 
     )
   App.MapApp.View

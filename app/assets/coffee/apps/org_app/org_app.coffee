@@ -7,12 +7,9 @@ define ["js/app"], (App) ->
     )
     API =
       showOrganization: ->
-        console.log "inside API"
         require ["js/apps/org_app/show/show_controller"], ->
           App.OrgApp.Show.Controller.showOrganization()
-
     App.addInitializer ->
       new App.Router
           controller: API
-      # API.showOrganization()
   App.OrgApp

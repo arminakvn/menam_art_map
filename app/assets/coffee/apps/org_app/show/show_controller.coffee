@@ -3,8 +3,8 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 		Show.Controller =
 			showOrganization: ->
 				console.log "controller show showOrganization"
-				showView = new View.ShowView()
-				App.mainRegion.show showView
+				@showView = new View.ShowView() if @showView is undefined
+				App.mainRegion.show @showView
 			
 			highlightNodesBy: (sourceNode) ->
 		        @_links.forEach (link) => 

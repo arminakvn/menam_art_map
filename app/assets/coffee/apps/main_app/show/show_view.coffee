@@ -5,16 +5,21 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
     	id: 'bios'
     	$el: $('#bios')
     	ui: 'name': '#bio-list'
+    	initialize: ->
+    		@data = _.map App.ArtistSourceCollection.models, (key, value) =>
+    			_.map key.attributes, (key, value) =>
+    				value
 
     	onShow: ->
     		$(document).ready =>
-    			require ["js/entities/artist"], =>
-    				$.ajax '/artistssource',
-    					type: 'GET'
-    					dataType: 'json'
-    					error: (jqXHR, textStatus, errorThrown) ->
+    			# require ["js/entities/artist_source"], =>
+    				# $.ajax '/artistssource',
+    					# type: 'GET'
+    					# dataType: 'json'
+    					# error: (jqXHR, textStatus, errorThrown) ->
     						# $('body').append "AJAX Error: #{textStatus}"
-    					success: (data, textStatus, jqXHR) ->
+    					# success: (data, textStatus, jqXHR) ->
+    						# App.request "set:source:artist", data
 			    			biosRegion = $("#bios-region")
 			    			$el = biosRegion
 			    			_textDomEl = L.DomUtil.create('div', 'container paratext-info')
@@ -39,7 +44,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 					        .attr("height", $el[0].clientHeight)
 					        @_d3li = _d3text
 					        .selectAll("li")
-					        .data(data)
+					        .data(@data)
 					        .enter()
 					        .append("li")
 					        @_d3li.style("font-family", "Gill Sans").style("font-size", "16px")

@@ -83,7 +83,7 @@ Schema = mongoose.Schema;
   ArtistSchema.methods.findLimited = function(cb) {
     var query;
     query = this.model('Artist').find({});
-    query.limit(250);
+    query.limit(500);
     return query.exec(cb);
   };
 
@@ -114,6 +114,14 @@ Schema = mongoose.Schema;
     query = this.model('Artist').find({});
     console.log(query);
     query.where('source', this.source);
+    query.limit();
+    return query.exec(cb);
+  };
+
+  ArtistSchema.methods.findByGroup = function(cb) {
+    var query;
+    query = this.model('Artist').find({});
+    query.where('group', this.group);
     query.limit();
     return query.exec(cb);
   };
