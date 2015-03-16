@@ -7,7 +7,7 @@ var async = require('async');
 var mongoose = require('mongoose');
 
 
-var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://127.0.0.1:27017/artistdb';
+var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://admin:abbas@dbh56.mongolab.com:27567/artistsdb';
 var theport = process.env.PORT || 9000;
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
@@ -18,9 +18,7 @@ mongoOptions = {
   };
 mongoose.connect(uristring, function(err, res) {
     if (err) {
-        console.log('ERROR connecting to: ' + uristring + '. ' + err);
     } else {
-        console.log('Succeeded connected to: ' + uristring);
     }
 });
 var db = mongoose.connection;
@@ -29,7 +27,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
     var appDir = process.argv[2] || '../app';
     exports.mongoose = mongoose;
-    // console.log("db", db)
 Schema = mongoose.Schema;
 
   BiosSchema = new Schema({
@@ -83,7 +80,7 @@ Schema = mongoose.Schema;
   ArtistSchema.methods.findLimited = function(cb) {
     var query;
     query = this.model('Artist').find({});
-    query.limit(500);
+    query.limit();
     return query.exec(cb);
   };
 
@@ -112,7 +109,6 @@ Schema = mongoose.Schema;
   ArtistSchema.methods.findBySource = function(cb) {
     var query;
     query = this.model('Artist').find({});
-    console.log(query);
     query.where('source', this.source);
     query.limit();
     return query.exec(cb);

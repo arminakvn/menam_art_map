@@ -7,7 +7,7 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
       onShow: ->
         # require ["js/entities/artist"], =>
           textResponse = $.ajax
-                        url: "/artists"
+                        url: "/artistsbygroup/1"
                         success: (result) =>
                           result
           $.when(textResponse).done (artists) =>
@@ -86,6 +86,11 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
             @_m.boxZoom.enable()
             @_m.scrollWheelZoom.disable()
             @_m.on "click", =>
+              @nodeGroup.eachLayer (layer) =>
+                layer.setStyle
+                  opacity: 0.1
+                  fillOpacity: 0.1
+                  clickable: false
               @_m.setView([
                       42.34
                       0.12
@@ -94,7 +99,7 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
 
             @_nodes = _nodes
             @_links = _links
-            App.MapApp.Highlight.Controller._links = _links
+            App.MapApp.Show.Controller._links = _links
             eachcnt = 0
             nodeGroup = L.layerGroup([])
             @color = d3.scale.category10()
@@ -138,11 +143,11 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                         @markers.addLayer(marker)
 
               return
-              if each.group == 1 and each.lat
-                @_nodesGeojsjon.features.push {"type": "Feature","id": "#{eachcnt}", "geometry":{"type": "point", "coordinates": [+each.lat, +each.long]}, "properties": each.name} if each.lat isnt "0"
-                eachcnt = 1 + eachcnt
-            @nodeGroup = nodeGroup
             nodeGroup.addTo(@_m)
+            @nodeGroup = nodeGroup
+            App.MapApp.Show.Controller.nodeGroup = nodeGroup
+            App.MapApp.Show.Controller.markers = @markers
+            App.MapApp.Show.Controller.popupGroup = @popupGroup
             # w = $(_m.getContainer())[0].clientWidth#/1.2
             # h = $(_m.getContainer())[0].clientHeight
             # nodes = @artistNodes

@@ -15,8 +15,8 @@ define ["js/app"], (App) ->
           console.log "inside API"
 
       highlightNode: (sourceNode)->
-        require ["js/apps/map_app/show/highlight_controller"], ->
-          App.MapApp.Highlight.Controller.highlightNodesBy(sourceNode)
+        require ["js/apps/map_app/show/show_controller"], ->
+          App.MapApp.Show.Controller.highlightNodesBy(sourceNode)
 
       # resetHighlightNode: ()->
       #   App.MapApp.Highlight.Controller.resetHighlightNodesBy()

@@ -63,15 +63,12 @@ define ["marionette"], (Marionette) ->
         # console.log "@collection", App.collection
 
   App.vent.on "personFired", ->
-    console.log "personFired in app"
     App.navigate "/person", trgigger: true
   
   App.vent.on "locationFired", ->
-    console.log "locationFired"
     App.navigate "/location", trgigger: true
   
   App.vent.on "organizationFired", ->
-    console.log "app triggered organization fired"
     App.navigate "/organization", trgigger: true
 
   App

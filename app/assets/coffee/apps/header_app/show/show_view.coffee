@@ -2,28 +2,7 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
   App.module "HeaderApp.View", (View, App, Backbone, Marionette, $, _) ->
     View.HeaderView = Marionette.ItemView.extend(
       template: headerTpl
-      tagName: "li" 
-      # ui:
-      #   location: "#location"
-      #   person: "#person"
-      #   organization: "#organization"
-      #   biotraj: "#biotraj"
-      # triggers:
-      #   "click @ui.location":"location"
-      #   "click @ui.person":"person"
-      #   "click @ui.organization":"organization"
-      #   "click @ui.biotraj":"biotraj"
-      
-      # onLocation: (e) =>
-      #   console.log "event gets the fire"
-      #   App.vent.trigger "locationFired"
-      # # onPerson: (e) =>
-      #   App.vent.trigger "personFired"
-      # onOrganization: (e) =>
-      #   App.vent.trigger "organizationFired"
-      # onBiotraj: (e) =>
-      # onShow: ->
-      #   console.log "itemvire on show", @
+      tagName: "li"
     )
     View.HeadersView = Marionette.CompositeView.extend(
       template: headersTpl
@@ -37,7 +16,6 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
       locationFired: (e) =>
         App.vent.trigger "locationFired"
       personFired: (e) =>
-        console.log "personFired in header"
         App.vent.trigger "personFired"
       organizationFired: (e) =>
         App.vent.trigger "organizationFired"

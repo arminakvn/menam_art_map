@@ -5,7 +5,6 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
       id:"organization-region"
       tagName:"div"
       onDomRefresh:->
-        console.log "onDomRefresh @", @
         @width = @el.clientWidth
         @height = @el.clientHeight
       initialize: ->
@@ -54,7 +53,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         svg = vis = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @width)
         force = @force = d3.layout.force(
         ).gravity(.7
-        ).linkDistance(50
+        ).linkDistance(20
         ).charge(-150
         ).linkStrength(1
         ).friction(0.9
