@@ -291,7 +291,7 @@ Schema = mongoose.Schema;
     app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
 
     app.get('/', function(req, res) {
-        res.sendfile(path.join(__dirname + '/dist/index.html'));
+        res.sendfile(path.join(__dirname, appDir + '/index.html'));
     });
 
     http.createServer(app).listen(app.get('port'), function() {

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "homepage": "",
   "scripts": {
-    "start": "grunt build && node index.js"
+    "start": "grunt build"
   },
   "dependencies": {
     "async": "~0.2.8",
