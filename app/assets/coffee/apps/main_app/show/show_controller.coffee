@@ -3,8 +3,11 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
     Show.Controller =
       ShowModel =
       showView: ->
-       	showView = new View.ShowView()
-       	App.mainRegion.show showView
+      	require ["js/entities/artist_source"], =>
+      		getCollection = App.request "set:collection", 'artistssource'
+      		$.when(getCollection).done (artists) ->
+	      		showView = new View.ShowView()
+	      		App.mainRegion.show showView
 
   App.MainApp.Show.Controller
 

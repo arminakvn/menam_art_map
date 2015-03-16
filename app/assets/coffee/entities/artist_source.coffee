@@ -16,6 +16,10 @@ define ["js/app"], (App) ->
       setArtistSource: (artists) ->
         App.ArtistSourceCollection = new Entities.ArtistSourceCollection artists
 
+      setArtistSourceCollection: (url) ->
+        App.ArtistSourceCollection = new Entities.ArtistSourceCollection
+        App.ArtistSourceCollection.fetch url: url
+
 
 
     App.reqres.setHandler "artistsource", ->
@@ -23,5 +27,8 @@ define ["js/app"], (App) ->
 
     App.reqres.setHandler "set:artistsource", (artists) ->
       API.setArtistSource artists
+
+    App.reqres.setHandler "set:collection", (url) ->
+      API.setArtistSourceCollection url
 
   return

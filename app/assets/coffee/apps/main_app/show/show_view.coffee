@@ -6,12 +6,13 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
     	$el: $('#bios')
     	ui: 'name': '#bio-list'
     	initialize: ->
-    		@data = _.map App.ArtistSourceCollection.models, (key, value) =>
-    			_.map key.attributes, (key, value) =>
-    				value
+    		
 
     	onShow: ->
     		$(document).ready =>
+			    			@data = _.map App.ArtistSourceCollection.models, (key, value) =>
+			      			_.map key.attributes, (key, value) =>
+			      				value
     			# require ["js/entities/artist_source"], =>
     				# $.ajax '/artistssource',
     					# type: 'GET'

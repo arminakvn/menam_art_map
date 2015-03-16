@@ -26,14 +26,14 @@ define ["marionette"], (Marionette) ->
                 # $('body').append "AJAX Error: #{textStatus}"
               success: (data, textStatus, jqXHR) ->
                 App.request "set:artist", data
-    require ["js/entities/artist_source"], =>                
-            $.ajax '/artistssource',
-              type: 'GET'
-              dataType: 'json'
-              error: (jqXHR, textStatus, errorThrown) ->
-                # $('body').append "AJAX Error: #{textStatus}"
-              success: (data, textStatus, jqXHR) ->
-                App.request "set:artistsource", data
+    # require ["js/entities/artist_source"], =>                
+    #         $.ajax '/artistssource',
+    #           type: 'GET'
+    #           dataType: 'json'
+    #           error: (jqXHR, textStatus, errorThrown) ->
+    #             # $('body').append "AJAX Error: #{textStatus}"
+    #           success: (data, textStatus, jqXHR) ->
+    #             App.request "set:artistsource", data
     require ["js/entities/person_link"], => 
             $.ajax '/links',
               type: 'GET'
