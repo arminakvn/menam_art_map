@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "homepage": "",
   "scripts": {
-    "start": "bower install && grunt build",
+    "start": "grunt build",
     "test": "grunt test"
   },
   "dependencies": {
