@@ -284,7 +284,7 @@ Schema = mongoose.Schema;
     // mount static
     // app.use(express.static(path.join(__dirname, appDir)));
     // app.use(express.static(path.join(__dirname, '../.tmp')));
-    app.use(express.static(__dirname + '../../dist'))
+    app.use(express.static(__dirname + '/../../dist'))
     app.use(express.cookieParser());
     app.use(express.bodyParser());
     app.use( app.router );
