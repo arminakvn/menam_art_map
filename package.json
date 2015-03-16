@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "homepage": "",
   "scripts": {
-    "start": "grunt build"
+    "start": "bower install && grunt build",
+    "test": "grunt test"
   },
   "dependencies": {
     "async": "~0.2.8",
