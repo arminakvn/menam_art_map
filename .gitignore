@@ -7,4 +7,3 @@ app/assets/css/
 test/
 test/spec/
 test/SpecRunner.js
-dist/
