@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "homepage": "",
   "scripts": {
-    "start": "grunt build",
-    "test": "grunt test"
+    "start": "node server/app.js",
+    "test": "grunt test",
+    "postinstall": "grunt build"
   },
   "dependencies": {
     "async": "~0.2.8",

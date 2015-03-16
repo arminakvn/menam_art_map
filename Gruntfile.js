@@ -169,7 +169,7 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true,
                     execOptions: {
-                        cwd: ''
+                        cwd: './app'
                     }
                 }
             }
@@ -214,6 +214,6 @@ module.exports = function (grunt) {
         grunt.task.run(['coffee:testcoffee', 'connect:test', 'shell:mocha-phantomjs', 'watch:tests']);
     });
     grunt.task.registerTask('build', 'creates optimized distribution', function () {
-        grunt.task.run(['dev', 'targethtml:dist', 'shell:buildRequire', 'cssmin:minify', 'express:dist']);
+        grunt.task.run(['dev', 'targethtml:dist', 'shell:buildRequire', 'cssmin:minify', 'express:dist', 'open:build', 'watch:indextemplate']);
     });
 };
