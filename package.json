@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "homepage": "",
   "scripts": {
-    "postinstall": "npm run build",
+    "postinstall": "grunt build",
     "build": "grunt build",
     "rejoice": "echo yay!",
     "start": "node server/app.js"
