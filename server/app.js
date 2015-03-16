@@ -25,7 +25,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-    var appDir = process.argv[2] || '/../../dist';
+    var appDir = process.argv[2] || '../app';
     exports.mongoose = mongoose;
 Schema = mongoose.Schema;
 
@@ -291,7 +291,7 @@ Schema = mongoose.Schema;
     app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
 
     app.get('/', function(req, res) {
-        res.sendfile(path.join(__dirname, appDir + '/index.html'));
+        res.sendfile(path.join(__dirname + '/dist/index.html'));
     });
 
     http.createServer(app).listen(app.get('port'), function() {
