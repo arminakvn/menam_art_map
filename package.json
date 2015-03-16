@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "homepage": "",
   "scripts": {
-    "postinstall": "grunt build",
     "start": "node server/app.js"
   },
   "dependencies": {
