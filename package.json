@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "homepage": "",
   "scripts": {
+    "postinstall": "echo postinstall time; ./node_modules/grunt-cli/bin/grunt build",
     "start": "node server/app.js"
   },
   "dependencies": {
