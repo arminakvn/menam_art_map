@@ -1,14 +1,17 @@
-'use strict';
 var Artist, LinksSchema,NodesSchema, ArtistNodes, ArtistNodesSchema, ArtistSchema, Bios, BiosSchema, DateEdgesSchema, DateNodesSchema, LocEdgesSchema, LocNodesSchema, OrgEdgesSchema, OrgNodesSchema, Schema, app, config, express, http, login, mongoOptions, mongoose, options, path, port, uristring;
 var express = require('express');
 var http = require('http');
 var path = require('path');
 var async = require('async');
 var mongoose = require('mongoose');
+var morgan = require('morgan');       // log requests to the console (express4)
+var bodyParser = require('body-parser');  // pull information from HTML POST (express4)
+var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
+var argv = require('optimist').argv;
 
 
 var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://admin:abbas@dbh56.mongolab.com:27567/artistsdb';
-var theport = process.env.PORT || 9000;
+var theport = process.env.PORT || 8080;
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
 mongoOptions = {
