@@ -1,9 +1,7 @@
 node_modules/
 app/assets/bower_components/
 app/assets/js
-app/assets/css
 app/index.html
-app/assets/css/
 test/
 test/spec/
 test/SpecRunner.js

@@ -1,2 +1,5 @@
-#first
-#second
+## setup
+```
+npm install
+bower install
+```
