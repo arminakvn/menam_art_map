@@ -4,13 +4,14 @@ var http = require('http');
 var path = require('path');
 var async = require('async');
 var mongoose = require('mongoose');
+var argv = require('optimist').argv;
 // var morgan = require('morgan');       // log requests to the console (express4)
 // var bodyParser = require('body-parser');  // pull information from HTML POST (express4)
 // var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
 // var argv = require('optimist').argv;
 
 
-var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://admin:abbas@dbh56.mongolab.com:27567/artistsdb';
+var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://' + argv.be_ip + ':80/artistsdb';
 var theport = process.env.PORT || 8080;
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
@@ -296,10 +297,10 @@ Schema = mongoose.Schema;
     app.get('/', function(req, res) {
         res.sendfile(path.join(__dirname, appDir + '/index.html'));
     });
-
-    http.createServer(app).listen(app.get('port'), function() {
-        console.log('Express App started!');
-    });
+    app.listen(8080, argv.fe_ip);
+    // http.createServer(app).listen(app.get('port'), function() {
+    //     console.log('Express App started!');
+    // });
 });
 
 
