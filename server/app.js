@@ -297,7 +297,7 @@ Schema = mongoose.Schema;
     app.get('/', function(req, res) {
         res.sendfile(path.join(__dirname, appDir + '/index.html'));
     });
-    app.listen(8080, argv.fe_ip);
+    app.listen(80, argv.fe_ip);
     // http.createServer(app).listen(app.get('port'), function() {
     //     console.log('Express App started!');
     // });
