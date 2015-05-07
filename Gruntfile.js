@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         express: {
             options: {
                 // Override defaults here
-                port: '9000'
+                port: '8000'
             },
             dev: {
                 options: {
@@ -57,7 +57,7 @@ module.exports = function (grunt) {
                 options: {
                     args: ['../dist'],
                     cmd: process.argv[0],
-                    port: '9000',
+                    port: '8000',
                     script: 'server/app.js'
                 }
             }
@@ -180,7 +180,7 @@ module.exports = function (grunt) {
                 app: 'Google Chrome'
             },
             build: {
-                path: 'http://localhost:9000',
+                path: 'http://0.0.0.0:80',
                 app: 'Google Chrome'
             },
             testrunner: {
