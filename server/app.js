@@ -11,8 +11,8 @@ var argv = require('optimist').argv;
 // var argv = require('optimist').argv;
 
 
-var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://' + argv.be_ip + ':80/artistsdb';
-var theport = process.env.PORT || 8080;
+var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://admin:abbas@dbh56.mongolab.com:27567/artistsdb';
+var theport = process.env.PORT || 80;
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
 mongoOptions = {
@@ -297,10 +297,10 @@ Schema = mongoose.Schema;
     app.get('/', function(req, res) {
         res.sendfile(path.join(__dirname, appDir + '/index.html'));
     });
-    app.listen(80, argv.fe_ip);
-    // http.createServer(app).listen(app.get('port'), function() {
-    //     console.log('Express App started!');
-    // });
+    //app.listen(80, argv.fe_ip);
+     http.createServer(app).listen(app.get('port'), function() {
+         console.log('Express App started!');
+     });
 });
 
 
