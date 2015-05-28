@@ -1,9 +1,9 @@
 {
   "name": "artistsnetwork",
   "version": "0.0.1",
-  "homepage": "",
+  "main": "app.js",
   "scripts": {
-    "start": "nodejs server/app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "async": "~0.2.8",
