@@ -12,7 +12,7 @@ var argv = require('optimist').argv;
 
 
 var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://admin:abbas@dbh56.mongolab.com:27567/artistsdb';
-var theport = process.env.PORT || 8000;
+var theport = process.env.PORT || 80;
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
 mongoOptions = {
@@ -304,3 +304,10 @@ Schema = mongoose.Schema;
 });
 
 
+process.on('SIGTERM', function () {
+  if (server === undefined) return;
+  server.close(function () {
+    // Disconnect from cluster master
+    process.disconnect && process.disconnect();
+  });
+});
