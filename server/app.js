@@ -29,7 +29,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-    var appDir = process.argv[2] || '../app';
+    var appDir = process.argv[2] || '../menam_art_map/app';
     exports.mongoose = mongoose;
 Schema = mongoose.Schema;
 
