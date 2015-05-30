@@ -83,7 +83,9 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 					                if timeout isnt 0 
 					                  timeout = 0
 					                  App.execute("highlightNode", d)
-					                  # GraphModule.Controller.showBio(d)
+					                  console.log "executing showBio"
+					                  # App.MapApp.Show.Controller.showBio(d)
+					                  App.execute("showBio", d)
 					              , 600)
 					              return 
 					            , ->

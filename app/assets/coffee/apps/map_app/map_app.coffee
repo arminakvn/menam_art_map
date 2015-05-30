@@ -4,6 +4,9 @@ define ["js/app"], (App) ->
     App.commands.setHandler 'highlightNode', (sourceNode) ->
       API.highlightNode(sourceNode)
       return
+    App.commands.setHandler 'showBio', (sourceNode) ->
+      API.showBio(sourceNode)
+      return
     App.Router = Marionette.AppRouter.extend(
       appRoutes:
         "location/":"showLocation"
@@ -18,6 +21,9 @@ define ["js/app"], (App) ->
         require ["js/apps/map_app/show/show_controller"], ->
           App.MapApp.Show.Controller.highlightNodesBy(sourceNode)
 
+      showBio: (sourceNode)->
+        require ["js/apps/map_app/show/show_controller"], ->
+          App.MapApp.Show.Controller.showBio(sourceNode)
       # resetHighlightNode: ()->
       #   App.MapApp.Highlight.Controller.resetHighlightNodesBy()
 

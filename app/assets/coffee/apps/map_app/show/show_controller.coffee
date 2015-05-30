@@ -6,6 +6,26 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 					@showView = new View.ShowView()
 				App.mainRegion.show(@showView)
 
+			showBio: (d) =>
+		    	console.log "going for the shoqw bio", d
+		    	L.DomUtil.setOpacity(L.DomUtil.get(@Controller.showView._bios_domEl), 0.75)
+		    	@Controller.showView.fx.run(L.DomUtil.get(@Controller.showView._bios_domEl), L.point(-$(@Controller.showView._m.getContainer())[0].clientWidth/3, 40), 0.5)
+		    	L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = "" 
+		    	if @biosFetched is undefined
+		    		$.ajax "/biosby/#{d[0]}",
+		    			type: 'GET'
+		    			dataType: 'json'
+		    			error: (jqXHR, textStatus, errorThrown) ->
+		    			success: (data, textStatus, jqXHR) =>
+		    				$el = $('#bios')
+		    				@biosTextResults = data
+		    				console.log "data", data, "@biosTextResults", @biosTextResults
+		    				L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = "" 
+		    				L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML += "#{@biosTextResults[0].__text}"
+		    	else
+		    		console.log "else notheing"
+		    	return
+
 			highlightNodesBy: (sourceNode) =>
 				@_sourceNode = sourceNode
 				@Controller.showView.nodeGroup.eachLayer (layer) =>
@@ -51,6 +71,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		                        			weight: 2
 		                        			clickable: true
 		                		)
+		        return 
 
 	App.MapApp.Show.Controller
 

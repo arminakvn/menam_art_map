@@ -96,6 +96,35 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                       0.12
                     ], 3)
               return
+            ###
+            making the bios controller
+            ###
+            divControl = L.Control.extend(  
+              initialize: =>
+                position = "left"
+                _domEl = L.DomUtil.create('div', "container " + "bioController" + "-info")
+                L.DomUtil.enableTextSelection(_domEl)  
+                @_m.getContainer().getElementsByClassName("leaflet-control-container")[0].appendChild(_domEl)
+                _domObj = $(L.DomUtil.get(_domEl))
+                _domObj.css('width', $(@_m.getContainer())[0].clientWidth/4)
+                _domObj.css('height', $(@_m.getContainer())[0].clientHeight/1.3)
+                _domObj.css('background-color', 'white')
+                _domObj.css("font-family", "Gill Sans")
+                _domObj.css("font-size", "24")
+                _domObj.css('overflow', 'auto')
+                _domObj.css('line-height', '28px')
+                L.DomUtil.setOpacity(L.DomUtil.get(_domEl), 0.0)
+                L.DomUtil.setPosition(L.DomUtil.get(_domEl), L.point(-$(@_m.getContainer())[0].clientWidth/1.2, 0), disable3D=0)
+                @position = L.point(-$(@_m.getContainer())[0].clientWidth/1.05, 0)
+                @fx = new L.PosAnimation()
+                @fx.run(L.DomUtil.get(_domEl), position, 0.9)
+                @_bios_domEl = _domEl
+                @_m.on "click", =>
+                  @fx.run(L.DomUtil.get(_domEl), @position, 0.9)
+                  console.log "click on map"
+                @_d3BiosEl = d3.select(_domEl)
+            )
+            new divControl()
 
             @_nodes = _nodes
             @_links = _links
