@@ -9,7 +9,6 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 
 			onShow: ->
 				$(document).ready =>
-					console.log topojson
 					@data = _.map App.ArtistSourceCollection.models, (key, value) =>
 						_.map key.attributes, (key, value) =>
 							value
@@ -33,7 +32,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 					).append("ul"
 					).style("list-style-type", "none"
 					).style("padding-left", "0px"
-					).style('overflow', 'auto'
+					).style('overflow', 'visible'
 					).attr("id", "bios-list"
 					).attr("width", $el[0].clientWidth).attr("height", $el[0].clientHeight)
 					@_d3li = _d3text
@@ -97,6 +96,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 						color.domain domain
 						land.filter('.land').style 'fill', (d) ->
 							color clicks[d.id]
+						App.navigate "#/location/", trgigger: true
 						return
 					defs.append('path').datum(type: 'Sphere').attr('id', 'sphere').attr 'd', pathG
 					defs.append('clipPath').attr('id', 'clip').append('use').attr 'xlink:href', '#sphere'
@@ -104,7 +104,6 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 					svg.append('use').attr('class', 'fill').attr 'xlink:href', '#sphere'
 					svg.append('path').datum(graticule).attr('class', 'graticule').attr('clip-path', 'url(#clip)').attr 'd', pathG
 					d3.json 'world-50m.json', (error, world) ->
-						console.log world
 						polys = topojson.feature(world, world.objects.countries).features
 						polys.forEach (d) ->
 							clicks[d.id] = 0

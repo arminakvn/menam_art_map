@@ -71,4 +71,6 @@ define ["marionette"], (Marionette) ->
   App.vent.on "organizationFired", ->
     App.navigate "/organization", trgigger: true
 
+  App.vent.on "mainFired", ->
+    App.navigate "/", trigger: true
   App

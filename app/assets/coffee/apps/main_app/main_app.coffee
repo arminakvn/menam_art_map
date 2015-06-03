@@ -3,7 +3,7 @@ define ["js/app"], (App) ->
     @startWithParent = false
     App.Router = Marionette.AppRouter.extend(
       appRoutes:
-        main:"showView"
+        "/":"showView"
 
     )
     API =

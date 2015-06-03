@@ -18,7 +18,7 @@
 					</ul> -->
 					<ul class="nav navbar-nav navbar-left">
 						
-						<li><a id="" href="#" data-toggle="portfilter" data-target="">MENAM Art Map</a></li>
+						<li><a id="main" href="/#/" data-toggle="portfilter">MENAM Art Map</a></li>
 						<!-- <li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
 							<ul class="dropdown-menu">
