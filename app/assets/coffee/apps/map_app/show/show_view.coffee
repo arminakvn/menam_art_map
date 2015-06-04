@@ -121,7 +121,6 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                 @_bios_domEl = _domEl
                 @_m.on "click", =>
                   @fx.run(L.DomUtil.get(_domEl), @position, 0.9)
-                  console.log "click on map"
                 @_d3BiosEl = d3.select(_domEl)
             )
             new divControl()

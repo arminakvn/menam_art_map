@@ -72,7 +72,8 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 									timeout = 0
 									App.execute("highlightNode", d)
 									App.execute("showBio", d)
-							, 600)
+							, 1600)
+							App.navigate "#/location/", trgigger: true
 							return 
 						, ->
 							return
@@ -96,8 +97,16 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 						color.domain domain
 						land.filter('.land').style 'fill', (d) ->
 							color clicks[d.id]
+						timeout = 0
+						timeout = setTimeout(->
+							if timeout isnt 0 
+								timeout = 0
+								console.log "d", d
+								App.execute("showBio", [d.source])
+								App.execute("highlightNode", [d.source])
+						, 1600)
 						App.navigate "#/location/", trgigger: true
-						return
+						return 
 					defs.append('path').datum(type: 'Sphere').attr('id', 'sphere').attr 'd', pathG
 					defs.append('clipPath').attr('id', 'clip').append('use').attr 'xlink:href', '#sphere'
 					svg.append('use').attr('class', 'stroke').attr 'xlink:href', '#sphere'
@@ -112,7 +121,20 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 						land.enter().insert('path', '.graticule').attr('class', 'land').attr('clip-path', 'url(#clip)').style('fill', (d) ->
 							color clicks[d.id]
 						).attr('d', pathG).on 'click', clicked
-						return
+						textResponse = $.ajax
+							url: "/artistsbygroup/1"
+							success: (result) =>
+								result
+						$.when(textResponse).done (artists) =>
+          					console.log "ar]", artists
+          					svg.selectAll('path').data(artists).enter().append('circle', '.pin').attr('r', 4).attr('fill', 'white').attr('transform', (d) ->
+          						if d.long != "NA"
+	          						'translate(' + projection([
+	          							d.long
+	          							d.lat
+	          						]) + ')'
+          						).on 'click', clicked
+							return
 					d3.select(self.frameElement).style 'height', btterflyRegion[0].clientHeight + 'px'
 		)
 
