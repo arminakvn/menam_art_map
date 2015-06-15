@@ -1,70 +1,36 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'owner', 'ls', 'artistsnetwork' ]
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
 2 info using npm@2.10.1
 3 info using node@v0.12.4
 4 verbose node symlink /usr/local/bin/node
-5 silly mapToRegistry name artistsnetwork
-6 silly mapToRegistry using default registry
-7 silly mapToRegistry registry https://registry.npmjs.org/
-8 silly mapToRegistry uri https://registry.npmjs.org/artistsnetwork
-9 verbose request uri https://registry.npmjs.org/artistsnetwork
-10 verbose request no auth needed
-11 info attempt registry request try #1 at 16:40:18
-12 verbose request id 8abbce421d4b59b8
-13 http request GET https://registry.npmjs.org/artistsnetwork
-14 http 404 https://registry.npmjs.org/artistsnetwork
-15 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-15 verbose headers   'content-type': 'application/json',
-15 verbose headers   'cache-control': 'max-age=0',
-15 verbose headers   'content-length': '51',
-15 verbose headers   'accept-ranges': 'bytes',
-15 verbose headers   date: 'Wed, 03 Jun 2015 20:40:18 GMT',
-15 verbose headers   via: '1.1 varnish',
-15 verbose headers   age: '0',
-15 verbose headers   connection: 'keep-alive',
-15 verbose headers   'x-served-by': 'cache-iad2145-IAD',
-15 verbose headers   'x-cache': 'MISS',
-15 verbose headers   'x-cache-hits': '0',
-15 verbose headers   'x-timer': 'S1433364018.512155,VS0,VE93' }
-16 silly get cb [ 404,
-16 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-16 silly get     'content-type': 'application/json',
-16 silly get     'cache-control': 'max-age=0',
-16 silly get     'content-length': '51',
-16 silly get     'accept-ranges': 'bytes',
-16 silly get     date: 'Wed, 03 Jun 2015 20:40:18 GMT',
-16 silly get     via: '1.1 varnish',
-16 silly get     age: '0',
-16 silly get     connection: 'keep-alive',
-16 silly get     'x-served-by': 'cache-iad2145-IAD',
-16 silly get     'x-cache': 'MISS',
-16 silly get     'x-cache-hits': '0',
-16 silly get     'x-timer': 'S1433364018.512155,VS0,VE93' } ]
-17 error owner ls Couldn't get owner data artistsnetwork
-18 verbose stack Error: 404 Not Found: artistsnetwork
-18 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:245:14)
-18 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:170:14)
-18 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:368:22)
-18 verbose stack     at Request.emit (events.js:110:17)
-18 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1219:14)
-18 verbose stack     at Request.emit (events.js:129:20)
-18 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1167:12)
-18 verbose stack     at IncomingMessage.emit (events.js:129:20)
-18 verbose stack     at _stream_readable.js:908:16
-18 verbose stack     at process._tickCallback (node.js:355:11)
-19 verbose statusCode 404
-20 verbose pkgid artistsnetwork
-21 verbose cwd /Users/arminakhavan/menam_art_map
-22 error Darwin 14.3.0
-23 error argv "node" "/usr/local/bin/npm" "owner" "ls" "artistsnetwork"
-24 error node v0.12.4
-25 error npm  v2.10.1
-26 error code E404
-27 error 404 Not Found: artistsnetwork
-27 error 404
-27 error 404 'artistsnetwork' is not in the npm registry.
-27 error 404 You should bug the author to publish it (or use the name yourself!)
-27 error 404
-27 error 404 Note that you can also install from a
-27 error 404 tarball, folder, http url, or git url.
-28 verbose exit [ 1, true ]
+5 verbose run-script [ 'prestart', 'start', 'poststart' ]
+6 info prestart artistsnetwork@0.0.1
+7 info start artistsnetwork@0.0.1
+8 verbose unsafe-perm in lifecycle true
+9 info artistsnetwork@0.0.1 Failed to exec start script
+10 verbose stack Error: artistsnetwork@0.0.1 start: `node app.js`
+10 verbose stack Exit status 1
+10 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+10 verbose stack     at EventEmitter.emit (events.js:110:17)
+10 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+10 verbose stack     at ChildProcess.emit (events.js:110:17)
+10 verbose stack     at maybeClose (child_process.js:1015:16)
+10 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+11 verbose pkgid artistsnetwork@0.0.1
+12 verbose cwd /Users/arminakhavan/menam_art_map
+13 error Darwin 14.3.0
+14 error argv "node" "/usr/local/bin/npm" "start"
+15 error node v0.12.4
+16 error npm  v2.10.1
+17 error code ELIFECYCLE
+18 error artistsnetwork@0.0.1 start: `node app.js`
+18 error Exit status 1
+19 error Failed at the artistsnetwork@0.0.1 start script 'node app.js'.
+19 error This is most likely a problem with the artistsnetwork package,
+19 error not with npm itself.
+19 error Tell the author that this fails on your system:
+19 error     node app.js
+19 error You can get their info via:
+19 error     npm owner ls artistsnetwork
+19 error There is likely additional logging output above.
+20 verbose exit [ 1, true ]

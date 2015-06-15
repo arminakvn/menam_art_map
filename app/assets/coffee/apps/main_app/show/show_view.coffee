@@ -89,7 +89,8 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 					svg = d3.select('#main-region').append('svg').attr('width', btterflyRegion[0].clientWidth).attr('height', 800)
 					defs = svg.append('defs')
 					land = undefined
-
+					mouseovered = (d) ->
+						console.log "mouseovered"
 					clicked = (d) ->
 						p = d3.select(this)
 						clicks[d.id]++
@@ -120,7 +121,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 						land = svg.selectAll('path').data(polys)
 						land.enter().insert('path', '.graticule').attr('class', 'land').attr('clip-path', 'url(#clip)').style('fill', (d) ->
 							color clicks[d.id]
-						).attr('d', pathG).on 'click', clicked
+						).attr('d', pathG).on('click', clicked).on('mouseover', mouseovered)
 						textResponse = $.ajax
 							url: "/artistsbygroup/1"
 							success: (result) =>
@@ -133,7 +134,22 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 	          							d.long
 	          							d.lat
 	          						]) + ')'
-          						).on 'click', clicked
+          						# ).on('mouseover', mouseovered
+          						).on('click', clicked).on('mouseover', (d) ->
+          							xPosition = d3.select(this).attr('x')
+          							yPosition = d3.select(this).attr('y')
+          							#Update the tooltip position and value
+          							d3.select('#tooltip').style('left', d3.event.pageX + 'px').style('top', d3.event.pageY - 90 + 'px').select('#-label'
+          							).html('<strong>' + 'Location: ' + d.target + '</strong>' + '<br/>' + 'View Artist: ' + d.source
+
+          							#Show the tooltip
+          							)
+          							d3.select('#tooltip').classed 'hidden', false
+          							return
+          						).on 'mouseout', ->
+          							#Hide the tooltip
+          							d3.select('#tooltip').classed 'hidden', true
+          							return
 							return
 					d3.select(self.frameElement).style 'height', btterflyRegion[0].clientHeight + 'px'
 		)

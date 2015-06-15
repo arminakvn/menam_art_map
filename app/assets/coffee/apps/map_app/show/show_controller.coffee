@@ -5,9 +5,10 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 				if @showView is undefined
 					@showView = new View.ShowView()
 				App.mainRegion.show(@showView)
-
+			showLocationByGroup: (locationGroup) =>
+		    	console.log "showing location by group", locationGroup
+		    	return
 			showBio: (d) =>
-		    	console.log "going for the shoqw bio", d
 		    	L.DomUtil.setOpacity(L.DomUtil.get(@Controller.showView._bios_domEl), 0.75)
 		    	@Controller.showView.fx.run(L.DomUtil.get(@Controller.showView._bios_domEl), L.point(-$(@Controller.showView._m.getContainer())[0].clientWidth/3, 40), 0.5)
 		    	L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = "" 
@@ -72,6 +73,5 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		                        			clickable: true
 		                		)
 		        return 
-
 	App.MapApp.Show.Controller
 

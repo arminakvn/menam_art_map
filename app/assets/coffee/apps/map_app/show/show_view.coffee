@@ -140,17 +140,20 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                 if each.group == 1 and each.lat
                   ltlong = new L.LatLng(+each.lat, +each.long)
                   circle = new L.CircleMarker(ltlong,
-                      color: "blue"
+                      color: "gray"
                       opacity: 0.5
                       fillOpacity: 0.5
                       weight: 1
                       className: "#{eachcnt-1}"
                       id: "#{each.name}"
-                      clickable: true).setRadius(Math.sqrt(each.value) * 5).bindPopup("<p style='font-size:12px; line-height:10px; font-style:bold;'><a>#{each.name}</p><p style='font-size:12px; font-style:italic; line-height:10px;'>#{each.value - 1} artists connected to this location</p>")
+                      clickable: true).setRadius(Math.sqrt(each.value) * 1).bindPopup("<p style='font-size:12px; line-height:10px; font-style:bold;'><a href='#location/#{each.name}'>#{each.name}</p><p style='font-size:12px; font-style:italic; line-height:10px;'>#{each.value - 1} artists connected to this location</p>")
                   nodeGroup.addLayer(circle)
             nodeGroup.eachLayer (layer) =>
               @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
               @markers.addTo(@_m)
+              layer.on "mouseover", (e) =>
+                # console.log "mouseover"
+                e.target.openPopup()
               layer.on "click", (e) =>
                 @markers.clearLayers()
                 textResponse = $.ajax
@@ -162,7 +165,7 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                       nodes.forEach (artist) =>
                         artistNode = new L.LatLng(+artist.lat, +artist.long)
                         marker = new L.CircleMarker(artistNode,
-                          color: d3.lab("blue").darker(-2)
+                          color: d3.lab("gray").darker(-2)
                           opacity: 0.5
                           fillOpacity: 0.5
                           weight: 1
