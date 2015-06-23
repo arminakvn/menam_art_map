@@ -63,7 +63,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 					).append("text").text((d,i) =>
 						@_leafletli = L.DomUtil.get("line-#{i}")
 						timeout = undefined
-						L.DomEvent.addListener @_leafletli, 'click', (e) =>
+						L.DomEvent.addListener @_leafletli, 'mouseover', (e) =>
 							d3.selectAll(@_d3li[0]).style("color", "black").style("background-color", "white"
 							).style "opacity", 1
 							timeout = 0
@@ -72,6 +72,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 									timeout = 0
 									App.execute("highlightNode", d)
 									App.execute("showBio", d)
+									
 							, 1600)
 							App.navigate "#/location/", trgigger: true
 							return 
