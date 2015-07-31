@@ -153,7 +153,7 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
               @markers.addTo(@_m)
               layer.on "mouseover", (e) =>
                 # console.log "mouseover"
-                e.target.openPopup()
+                # e.target.openPopup()
               layer.on "click", (e) =>
                 @markers.clearLayers()
                 textResponse = $.ajax

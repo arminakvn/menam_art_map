@@ -38,19 +38,19 @@ text.shadow {
 }
 #map {
   width: 100%;
-  height: 800px;
+  height: 700px;
 }
 row {
   margin-right: -15px;
   margin-left: -15px;
 }
 cantainer.paratext-info {
-  height: 700px;
+  height: 600px;
 }
 #header {
   border-color: #fff;
   font-family: "Gill Sans", sans-serif;
-  font-size: 38px;
+  font-size: 28px;
   font-weight: bold;
   line-height: 9px;
   -webkit-text-stroke-width: 1px;
@@ -73,7 +73,7 @@ cantainer.paratext-info {
 }
 #person-region {
   width: 100%;
-  height: 700px;
+  height: 600px;
 }
 .stroke {
         fill: none;
@@ -141,3 +141,16 @@ cantainer.paratext-info {
 .scale {
   margin-left: 20px;
 } 
+.leaflet-popup-content-wrapper {
+  box-shadow: none;
+  background: none;
+}
+.leaflet-popup-content {
+  padding: 0px 0px 0px;
+}
+.leaflet-popup-tip {
+  border-top: none;
+}
+.leaflet-popup-close-button {
+  opacity: 0.0;
+}

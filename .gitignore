@@ -5,3 +5,5 @@ app/index.html
 test/
 test/spec/
 test/SpecRunner.js
+data/
+data/db
