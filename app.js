@@ -120,6 +120,14 @@ db.once('open', function callback () {
     return query.exec(cb);
   };
 
+  ArtistSchema.methods.findSourceByTarget = function(cb) {
+    var query;
+    query = this.model('Artist').find({});
+    query.where('target', this.target);
+    query.distinct('source');
+    return query.exec(cb);
+  };
+
 
   BiosSchema.methods.findByName = function(cb) {
     var query;
@@ -243,6 +251,28 @@ db.once('open', function callback () {
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     artist = Artist({});
     artist.findSource(function(err, artist) {
+      return res.json(artist);
+    });
+  });
+    options = {
+        dotfiles: 'ignore',
+        etag: false,
+        extensions: ['htm', 'html'],
+        index: false,
+        maxAge: '1d',
+        redirect: false,
+        setHeaders: function(res, path, stat) {
+          res.set('x-timestamp', Date.now());
+        }
+      };
+    app.get('/sourceByTarget/:t', function(req, res) {
+    var artist;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    artist = new Artist({
+      target: req.params.t
+    });
+    artist.findSourceByTarget(function(err, artist) {
       return res.json(artist);
     });
   });

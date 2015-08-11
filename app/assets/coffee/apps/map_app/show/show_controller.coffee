@@ -6,18 +6,22 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 					@showView = new View.ShowView()
 				App.mainRegion.show(@showView)
 			showLocationByGroup: (locationGroup) =>
-				filteredModel = App.request "update:artistsource", "/artstsby/#{locationGroup}"
-				# console.log "App.request updateartistsource", App.request "update:artistsource", "/artstsby/#{locationGroup}"
-				$.when(filteredModel).done (Model) =>
-					console.log "filtered model?", Model
-
-				# filteredModel = App.request "artistsourceCollectionBy", locationGroup
-				# filteredModel = $.ajax "/artstsby/#{locationGroup}",
+				console.log "locationGroup",locationGroup
+				# filteredModel = $.ajax "/sourceByTarget/#{locationGroup}",
 		  #   			type: 'GET'
 		  #   			dataType: 'json'
 		  #   			error: (jqXHR, textStatus, errorThrown) ->
 		  #   			success: (data, textStatus, jqXHR) =>
+		  #   				console.log "showLocationByGroup", data
 		  #   				return data
+				# filteredModel = App.request "update:artistsource", "/artstsby/#{locationGroup}"
+				# console.log "App.request updateartistsource", App.request "update:artistsource", "/artstsby/#{locationGroup}"
+				# $.when(filteredModel).done (Model) =>
+					# console.log "filtered model?", Model
+				# $.when(filteredModel).done (locationGroup) =>
+				App.MainApp.Show.Controller.updateView(locationGroup)
+
+				# filteredModel = App.request "artistsourceCollectionBy", locationGroup
 				# $.when(filteredModel).done (Model) =>
 				# 	console.log "filtered model?", Model
 				# 	App.MainApp.Show.Controller.showView.model = App.request "artistsource", Model
