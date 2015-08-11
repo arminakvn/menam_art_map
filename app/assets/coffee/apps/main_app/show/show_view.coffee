@@ -48,6 +48,19 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			ui: 'list':'ul'
 			onBeforeRender: ->
 				@$el.css('height', "800").css("list-style-type", "none").css('overflow', 'scroll')
+				@biosRegion = $("#bios-region")
+				$(@biosRegion).animate({
+					 "left": "-=250px" 
+					 "opacity"
+				}, "slow" , =>
+					console.log "@biosRegion", @biosRegion
+				)
+				$(@biosRegion.next()).animate({
+					 "left": "-=100px" 
+					 "opacity"
+				}, "slow" , =>
+					console.log "@biosRegion", @biosRegion
+				)
 				console.log "onBeforeRender"
 			onShow: ->
 				$(document).ready =>
@@ -56,7 +69,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 						# _.map key.attributes, (key, value) =>
 							# value
 					# console.log "main view @model", @model, @data
-					biosRegion = $("#bios-region")
+					biosRegion = @biosRegion
 					b_el = $("#main-region")
 					btterflyRegion = b_el
 					$el = biosRegion
@@ -114,6 +127,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 							timeout = setTimeout(->
 								if timeout isnt 0 
 									timeout = 0
+
 									App.execute("highlightNode", d)
 									App.execute("showBio", d)
 									
@@ -136,7 +150,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 					land = undefined
 					mouseovered = (d) ->
 						console.log "mouseovered"
-					clicked = (d) ->
+					clicked = (d) =>
 						p = d3.select(this)
 						clicks[d.id]++
 						domain = [d3.min(clicks), d3.max(clicks)]
@@ -144,10 +158,22 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 						land.filter('.land').style 'fill', (d) ->
 							color clicks[d.id]
 						timeout = 0
-						timeout = setTimeout(->
+						timeout = setTimeout(=>
 							if timeout isnt 0 
 								timeout = 0
 								console.log "d", d
+								$(@biosRegion).animate({
+									 "left": "+=250px" 
+									 "opacity"
+								}, "slow" , =>
+									console.log "@biosRegion", @biosRegion
+								)
+								$(@biosRegion.next()).animate({
+									 "left": "+=100px" 
+									 "opacity"
+								}, "slow" , =>
+									console.log "@biosRegion", @biosRegion
+								)
 								App.execute("showBio", [d.source])
 								App.execute("highlightNode", [d.source])
 						, 1600)

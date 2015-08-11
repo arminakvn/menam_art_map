@@ -42,6 +42,8 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		    	return
 
 			highlightNodesBy: (sourceNode) =>
+				# console.log "@ inside highlightNodesBy", @
+				# @Controller.showBio(sourceNode)
 				@_sourceNode = sourceNode
 				@Controller.showView.nodeGroup.eachLayer (layer) =>
 					@Controller.showView.popupGroup.clearLayers()
