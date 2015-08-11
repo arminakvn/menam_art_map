@@ -65,13 +65,6 @@ db.once('open', function callback () {
     collection: 'links'
   });
 
-  NodesSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    name: String,
-    group: Number
-  }, {
-    collection: 'nodes'
-  });
 
 
   BiosSchema.methods.findLimited = function(cb) {
@@ -95,12 +88,6 @@ db.once('open', function callback () {
     return query.exec(cb);
   };
 
-  NodesSchema.methods.findLimited = function(cb) {
-    var query;
-    query = this.model('Nodes').find({});
-    query.limit();
-    return query.exec(cb);
-  };
 
   ArtistSchema.methods.findByTarget = function(cb) {
     var query;
@@ -146,7 +133,6 @@ db.once('open', function callback () {
   var Bios = mongoose.model( 'Bios', BiosSchema );
   var Artist = mongoose.model( 'Artist', ArtistSchema );
   var Links = mongoose.model( 'Links', LinksSchema );
-  var Nodes = mongoose.model( 'Nodes', NodesSchema );
   // mongoose.model('Artist', ArtistSchema);
   // mongoose.model('ArtistNodes', ArtistNodesSchema);
 
@@ -214,15 +200,6 @@ db.once('open', function callback () {
     });
   });
 
-  app.get('/nodes', function(req, res) {
-    var nodes;
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    nodes = Nodes({});
-    nodes.findLimited(function(err, nodes) {
-      return res.json(nodes);
-    });
-  });
 
   app.get('/artstsby/:t', function(req, res) {
     var artist;

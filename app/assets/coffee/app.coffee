@@ -42,14 +42,7 @@ define ["marionette"], (Marionette) ->
                 # $('body').append "AJAX Error: #{textStatus}"
               success: (data, textStatus, jqXHR) ->
                 App.request "set:personLink", data
-    require ["js/entities/person_node"], => 
-            $.ajax '/nodes',
-              type: 'GET'
-              dataType: 'json'
-              error: (jqXHR, textStatus, errorThrown) ->
-                # $('body').append "AJAX Error: #{textStatus}"
-              success: (data, textStatus, jqXHR) ->
-                App.request "set:personNode", data
+                
   App.on "initialize:after", ->
     require ["js/apps/header_app/header_app", "js/apps/main_app/main_app", "js/apps/map_app/map_app", "js/apps/footer_app/footer_app", "js/apps/person_app/person_app", "js/apps/org_app/org_app"], ->
       console.log "Marionette Application Started"

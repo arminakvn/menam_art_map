@@ -6,14 +6,28 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 					@showView = new View.ShowView()
 				App.mainRegion.show(@showView)
 			showLocationByGroup: (locationGroup) =>
-		    	console.log "showing location by group", locationGroup
-		    	return
+				filteredModel = App.request "update:artistsource", "/artstsby/#{locationGroup}"
+				# console.log "App.request updateartistsource", App.request "update:artistsource", "/artstsby/#{locationGroup}"
+				$.when(filteredModel).done (Model) =>
+					console.log "filtered model?", Model
+
+				# filteredModel = App.request "artistsourceCollectionBy", locationGroup
+				# filteredModel = $.ajax "/artstsby/#{locationGroup}",
+		  #   			type: 'GET'
+		  #   			dataType: 'json'
+		  #   			error: (jqXHR, textStatus, errorThrown) ->
+		  #   			success: (data, textStatus, jqXHR) =>
+		  #   				return data
+				# $.when(filteredModel).done (Model) =>
+				# 	console.log "filtered model?", Model
+				# 	App.MainApp.Show.Controller.showView.model = App.request "artistsource", Model
+
 			showBio: (d) =>
 		    	L.DomUtil.setOpacity(L.DomUtil.get(@Controller.showView._bios_domEl), 0.75)
 		    	@Controller.showView.fx.run(L.DomUtil.get(@Controller.showView._bios_domEl), L.point(-$(@Controller.showView._m.getContainer())[0].clientWidth/3, 40), 0.5)
 		    	L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = "" 
 		    	if @biosFetched is undefined
-		    		$.ajax "/biosby/#{d[0]}",
+		    		$.ajax "/biosby/#{d}",
 		    			type: 'GET'
 		    			dataType: 'json'
 		    			error: (jqXHR, textStatus, errorThrown) ->
@@ -45,7 +59,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 						# setTimeout (=>
 						# 	, 10, ->
 						# )
-				$.ajax "/artistsbysource/#{sourceNode[0]}",
+				$.ajax "/artistsbysource/#{sourceNode}",
 					type: 'GET'
 					dataType: 'json'
 					error: (jqXHR, textStatus, errorThrown) ->

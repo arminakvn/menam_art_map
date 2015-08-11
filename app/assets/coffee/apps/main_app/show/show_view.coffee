@@ -1,17 +1,61 @@
-define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, showTpl) ->
+define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/apps/main_app/show/templates/show_views.tpl"], (App, showTpl, showTpls) ->
 	App.module "MainApp.View", (View, App, Backbone, Marionette, $, _) ->
 		View.ShowView = Marionette.ItemView.extend(
 			template: showTpl
-			id: 'bios'
-			$el: $('#bios')
-			ui: 'name': '#bio-list'
-			initialize: ->
+			# tagName: "li"            
+			# id: 'bios'
+			# $el: $('#bios')
+			ui: 'name': 'li'
+			$el: $('li')
+			events:
+				'mouseover @ui.name':'mouseoverNames'
+				'mouseout @ui.name':'mouseoutNames'
+			mouseoverNames: (e)->
+				console.log "e", e
+				$(e.target).animate({
+					opacity: 0.5
+				}, 1500, =>
+					console.log "e.target.id", e.target.id
+					App.execute("highlightNode", e.target.id)
+					App.execute("showBio", e.target.id)
+				)
+				$(e.target).css('cursor','pointer').css("color", "black").css("background-color", "gray")
+				# console.log "mouseoverNames"
+				# console.log @, this
+			mouseoutNames: (e)->
+				$(e.target).animate({
+					opacity: 1
+				}, 500)
+				$(e.target).css('cursor','default').css("color", "black").css("background-color", "white")
+			onBeforeRender: ->
+				@$el
+					.css("font-family", "Gill Sans"
+					).css("line-height", "1.5"
+					).css("border", "0px solid black"
+					).css("font-size", "16px"
+					).css("margin-top", "20px"
+					).css("padding-right", "20px"
+					).css("padding-left", "40px")
+			onShow: ->
 
+		)
+		View.ShowViews = Marionette.CollectionView.extend(
+			itemView: View.ShowView
+			itemViewContainer: "ul"
+			template: showTpls
+			id: 'bios-list'
+			$el: $('#bios-list')
+			ui: 'list':'ul'
+			onBeforeRender: ->
+				@$el.css('height', "800").css("list-style-type", "none").css('overflow', 'scroll')
+				console.log "onBeforeRender"
 			onShow: ->
 				$(document).ready =>
-					@data = _.map App.ArtistSourceCollection.models, (key, value) =>
-						_.map key.attributes, (key, value) =>
-							value
+					console.log "onShow", @collection
+					# @data = _.map @collection.models, (key, value) =>
+						# _.map key.attributes, (key, value) =>
+							# value
+					# console.log "main view @model", @model, @data
 					biosRegion = $("#bios-region")
 					b_el = $("#main-region")
 					btterflyRegion = b_el
@@ -37,8 +81,8 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 					).attr("width", $el[0].clientWidth).attr("height", $el[0].clientHeight)
 					@_d3li = _d3text
 					.selectAll("li")
-					.data(@data)
-					.enter()
+					# .data(@data)
+					# .enter()
 					.append("li")
 					@_d3li.style("font-family", "Gill Sans").style("font-size", "16px")
 					.style("line-height", "1")
@@ -154,5 +198,11 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, sh
 							return
 					d3.select(self.frameElement).style 'height', btterflyRegion[0].clientHeight + 'px'
 		)
+		# View.ShowView = Marionette.CollectionView.extend(
+		# 	template: showTpls
+		# 	itemView: View.ShowView
+  #       	itemViewContainer: "tbody"
+		# 	)
+		
 
 	App.MainApp.View

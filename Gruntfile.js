@@ -207,7 +207,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-open');
     grunt.registerTask('default', ['dev', 'express:dev', 'connect:test', 'shell:mocha-phantomjs', 'open:dev', 'open:testrunner', 'watch']);
     grunt.task.registerTask('dev', 'subset of common development tasks used in other tasks', function () {
-        grunt.task.run(['copy:templates', 'cssmin:combine', 'targethtml:app'
+        grunt.task.run(['copy:templates', 'cssmin:combine', 'coffee', 'targethtml:app'
         ]);
     });
     grunt.task.registerTask('test', 'for writing tests, only watches test folder and runs on change', function () {
