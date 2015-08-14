@@ -269,12 +269,22 @@ db.once('open', function callback () {
     var artist;
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    artist = new Artist({
-      target: req.params.t
-    });
-    artist.findSourceByTarget(function(err, artist) {
+    console.log("inside server app", req.params)
+    if (req.params.t == "all"){
+      artist = Artist({});
+    artist.findSource(function(err, artist) {
       return res.json(artist);
     });
+
+    } else {
+      artist = new Artist({
+        target: req.params.t
+        });
+        artist.findSourceByTarget(function(err, artist) {
+          return res.json(artist);
+        });
+    }
+    
   });
     options = {
         dotfiles: 'ignore',

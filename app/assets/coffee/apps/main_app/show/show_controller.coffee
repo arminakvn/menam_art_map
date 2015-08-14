@@ -18,18 +18,19 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
         console.log "loaded"
         return
       return
-    url: (q)-> 
-      console.log "queryString inside url", q
-      full_url = '/artistssource'
-      if @queryString != undefined
-         # full_url = full_url + '&' + @queryString
-         new_url = 'sourceByTarget/#{q}'
+    url:-> 
+      # console.log "queryString inside url", @showView.names
+      if @showView != undefined
+         new_url = 'sourceByTarget/' + @showView.names
          full_url = new_url
-      console.log "@",@, full_url
-      full_url
-
+         full_url
+      else 
+        full_url = 'sourceByTarget/all'
+        full_url
+        
+      
     parse: (response) ->
-      # console.log "response", response
+      console.log "response", response
       data = _.map response, (key, value) =>
         # _.map key, (key, value) =>
           # key
@@ -39,21 +40,76 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
       # response.data
 
   )
+  App.Entities.ArtistSourceSelectedCollection = Backbone.Collection.extend(
+    # model: App.Entity.ArtistSource
+    # initialize:  ->
+    #   # @queryString = options.queryString or null
+    #   @on 'request', ->
+    #     # MfiaClient.app.trigger 'loading'
+    #     console.log "loading"
+    #     return
+    #   @on 'sync', ->
+    #     # MfiaClient.app.trigger 'loaded'
+    #     console.log "loaded"
+    #     return
+    #   return
+
+    # url: ->
+
+
+    # parse: (response) ->
+    #   console.log "response", response
+    #   data = _.map response, (key, value) =>
+    #     # _.map key, (key, value) =>
+    #       # key
+    #     "name": key
+    #   data
+  )
   App.module "MainApp.Show", (Show, App, Backbone, Marionette, $, _) ->
     Show.Controller =
       ShowModel: ['Abbas Akhavan']
       updateView: (names) ->
-        artistssourceC = new App.Entities.ArtistSourceCollection url: names
+        console.log "names", names
+        # @showView.names = names
+        # ShowModel = names
+        # @showView.collection.queryStr(names)
+        # @showView.children.each (childview) =>
+            # @showView.remove(childview)
 
-        artistssourceC.fetch 'success': (response) =>
+        updateCollection = $.ajax '/sourceByTarget/'+names,
+              type: 'GET'
+              dataType: 'json'
+              error: (jqXHR, textStatus, errorThrown) ->
+                # $('body').append "AJAX Error: #{textStatus}"
+              success: (data, textStatus, jqXHR) =>
+                ret = _.map data, (key, value) =>
+                  # _.map key, (key, value) =>
+                    # key
+                  "name": key
+                console.log "ret", ret
+                # return ret
+                # App.request "set:artistsource", data
+        # $.when(updateCollection).done (Collection) =>
+          # console.log "newCollection", newCollection, "ret", ret
+                newCollection = new App.Entities.ArtistSourceSelectedCollection ret
+                  # newCollection.fetch 'success': (response) =>
+          # App.biosRegion.close()
+                @updatedView = new View.ShowViews(collection: newCollection)
+                console.log "@updatedView",@updatedView
+          # @updatedView.render()
+                console.log @updatedView
+                App.biosRegion.show @updatedView
+                console.log "@showView.collection", @updatedView.collection
+        # @showView
+        # @showView.render()
         # console.log "@ inside Show.Controller", @
-          @showView.children.each (childview) =>
+          # @showView.children.each (childview) =>
             # console.log "childview", childview
             # console.log "@", @
-            @showView.remove(childview)
+            # @showView.remove(childview)
           
-          @showView = new View.ShowViews(collection: artistssourceC)
-          App.biosRegion.show @showView
+          # @showView = new View.ShowViews(collection: @showView.collection)
+          # App.biosRegion.show @showView
 
         # @showView.children.each (view) =>
         #   console.log view
