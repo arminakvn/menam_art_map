@@ -69,12 +69,19 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
     Show.Controller =
       ShowModel: ['Abbas Akhavan']
       updateView: (names) ->
-        console.log "names", names
         # @showView.names = names
         # ShowModel = names
         # @showView.collection.queryStr(names)
-        # @showView.children.each (childview) =>
-            # @showView.remove(childview)
+        @showView.children.each (childview) =>
+          @showView.remove(childview)
+        # try
+          # @updatedView.collection.each (childModel) =>
+            # childModel.destroy()
+        # catch e
+
+        # @updatedView.children.each (updatedItemView) =>
+        #   updatedItemView.destroy()
+        
 
         updateCollection = $.ajax '/sourceByTarget/'+names,
               type: 'GET'
@@ -86,20 +93,21 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                   # _.map key, (key, value) =>
                     # key
                   "name": key
-                console.log "ret", ret
                 # return ret
-                # App.request "set:artistsource", data
-        # $.when(updateCollection).done (Collection) =>
-          # console.log "newCollection", newCollection, "ret", ret
                 newCollection = new App.Entities.ArtistSourceSelectedCollection ret
-                  # newCollection.fetch 'success': (response) =>
-          # App.biosRegion.close()
-                @updatedView = new View.ShowViews(collection: newCollection)
-                console.log "@updatedView",@updatedView
-          # @updatedView.render()
-                console.log @updatedView
-                App.biosRegion.show @updatedView
-                console.log "@showView.collection", @updatedView.collection
+                newCollection.each (newModel) =>
+                  console.log newModel
+                  # showItemView = new View.ShowView(model: newModel)
+                  # @showView.collection.add(showItemView)
+                  @showView.buildChildView(newModel, View.ShowView)
+                @showView.render()
+                # @showView.collection = newCollection
+                # @showView.children.each (updatedItemView) =>
+                #   updatedItemView.render()
+                # @showView.render()
+                # @updatedView = new View.ShowViews(collection: newCollection)
+                # App.biosRegion.show @updatedView
+
         # @showView
         # @showView.render()
         # console.log "@ inside Show.Controller", @

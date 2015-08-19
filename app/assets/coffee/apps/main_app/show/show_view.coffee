@@ -1,5 +1,11 @@
-define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/apps/main_app/show/templates/show_views.tpl"], (App, showTpl, showTpls) ->
+define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/apps/main_app/show/templates/show_views.tpl", "tpl!js/apps/main_app/show/templates/spider_view.tpl"], (App, showTpl, showTpls, spiderTpl) ->
 	App.module "MainApp.View", (View, App, Backbone, Marionette, $, _) ->
+
+		View.SpiderView = Marionette.CollectionView.extend(
+			template: spiderTpl
+			id: 'bios-list'
+			$el: $('#bios-list')
+		)
 
 		View.ShowView = Marionette.ItemView.extend(
 			template: showTpl
@@ -14,7 +20,6 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			mouseoverNames: (e)->
 				console.log "e", e
 				@timeout = setTimeout(=>
-					# @timeout = 0
 					if @timeout > 75
 						App.execute("highlightNode", e.target.id)
 						App.execute("showBio", e.target.id)
@@ -49,6 +54,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			$el: $('#bios-list')
 			ui: 'list':'ul'
 			initialize: ->
+				@listenTo @collection, 'reset', @render, this
 				@on 'update', (view, model)->
 					console.log "indide the view initialize update", @
 			onBeforeRender: ->
@@ -74,6 +80,13 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				"add": "itemAdded"
 			itemAdded: ->
 				console.log "itemAdded"
+			buildChildView: (child, ChildViewClass, childViewOptions) ->
+			  # build the final list of options for the childView class
+			  options = _.extend({ model: child }, childViewOptions)
+			  # create the child view instance
+			  view = new ChildViewClass(options)
+			  # return it
+			  view
 			onShow: ->
 				# $(document).ready =>
 				# 	biosRegion = @biosRegion
