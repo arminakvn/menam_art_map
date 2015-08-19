@@ -89,8 +89,12 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                 # return ret
         $.when(updateCollection).done (respnd) =>
           output = []
+          App.MainApp.Show.Controller.showView.collection.each (initmodels) =>
+              output.push initmodels.get('name')
+              console.log "this is the out put which is a list of the list in the left", output
           console.log "respnd when done", respnd
           console.log "updateCollection when done", updateCollection
+              
           App.MainApp.Show.Controller.showView.children.each (childView) =>
             console.log "updateCollection", respnd
             childModel = childView.model
@@ -103,6 +107,13 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
               # @showView.children.remove(App.MainApp.Show.Controller.showView.children.findByModel(App.MainApp.Show.Controller.showView.collection.get(childModel)))
               # model_rem = App.MainApp.Show.Controller.showView.collection.get(childModel)
               App.MainApp.Show.Controller.showView.collection.remove(App.MainApp.Show.Controller.showView.collection.get(childModel))
+          respnd.forEach (name_res) =>
+            if name_res not in output
+              console.log "this one is not on the list but it comes in resp", name_res
+              App.MainApp.Show.Controller.showView.collection.add(new App.Entity.ArtistSource({'name': name_res}))
+                # App.MainApp.Show.Controller.showView.collection.addChild(newEnt)
+              # console.log "newEnt", App.MainApp.Show.Controller.showView.collection
+          # index = respnd.indexOf childModel.get('name')
               # console.log App.MainApp.Show.Controller.showView.collection
               # childModel.destroy()
           # App.MainApp.Show.Controller.showView.render()

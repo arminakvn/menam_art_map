@@ -148,32 +148,32 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                       id: "#{each.name}"
                       clickable: true).setRadius(Math.sqrt(each.value) * 1).bindPopup("<p style='font-size:12px; line-height:10px; font-style:bold;'><a href='#location/#{each.name}'>#{each.name}</p><p style='font-size:12px; font-style:italic; line-height:10px;'>#{each.value - 1} artists connected to this location</p>")
                   nodeGroup.addLayer(circle)
-            nodeGroup.eachLayer (layer) =>
-              @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
-              @markers.addTo(@_m)
-              layer.on "mouseover", (e) =>
-                # console.log "mouseover"
-                # e.target.openPopup()
-              layer.on "click", (e) =>
-                @markers.clearLayers()
-                textResponse = $.ajax
-                    url: "/artstsby/#{layer.options.id}"
-                    success: (nodes) =>
-                      currentzoom = @_m.getZoom()
-                      # @_m.remove(markers)
-                      marker = new L.CircleMarker([])
-                      nodes.forEach (artist) =>
-                        artistNode = new L.LatLng(+artist.lat, +artist.long)
-                        marker = new L.CircleMarker(artistNode,
-                          color: d3.lab("gray").darker(-2)
-                          opacity: 0.5
-                          fillOpacity: 0.5
-                          weight: 1
-                          # id: "#{artist.name}"
-                          clickable: true).setRadius(7).bindPopup("<p>#{artist.source}</p>")
-                        @markers.addLayer(marker)
+            # nodeGroup.eachLayer (layer) =>
+            #   @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
+            #   @markers.addTo(@_m)
+            #   layer.on "mouseover", (e) =>
+            #     # console.log "mouseover"
+            #     # e.target.openPopup()
+            #   layer.on "click", (e) =>
+            #     @markers.clearLayers()
+            #     textResponse = $.ajax
+            #         url: "/artstsby/#{layer.options.id}"
+            #         success: (nodes) =>
+            #           currentzoom = @_m.getZoom()
+            #           # @_m.remove(markers)
+            #           marker = new L.CircleMarker([])
+            #           nodes.forEach (artist) =>
+            #             artistNode = new L.LatLng(+artist.lat, +artist.long)
+            #             marker = new L.CircleMarker(artistNode,
+            #               color: d3.lab("gray").darker(-2)
+            #               opacity: 0.5
+            #               fillOpacity: 0.5
+            #               weight: 1
+            #               # id: "#{artist.name}"
+            #               clickable: true).setRadius(7).bindPopup("<p>#{artist.source}</p>")
+            #             @markers.addLayer(marker)
 
-              return
+            #   return
             nodeGroup.addTo(@_m)
             @nodeGroup = nodeGroup
             App.MapApp.Show.Controller.nodeGroup = nodeGroup
