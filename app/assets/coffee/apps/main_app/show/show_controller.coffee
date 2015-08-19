@@ -69,19 +69,12 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
     Show.Controller =
       ShowModel: ['Abbas Akhavan']
       updateView: (names) ->
-        # @showView.names = names
-        # ShowModel = names
-        # @showView.collection.queryStr(names)
-        @showView.children.each (childview) =>
-          @showView.remove(childview)
-        # try
-          # @updatedView.collection.each (childModel) =>
-            # childModel.destroy()
-        # catch e
-
-        # @updatedView.children.each (updatedItemView) =>
-        #   updatedItemView.destroy()
-        
+        # @showView.destroy()
+        # @showView.children.each (childview) =>
+          # @showView.remove(childview)
+        # @showView.collection.each (childModel) =>
+        #   console.log childModel.get('name')
+        #   childModel.destroy()
 
         updateCollection = $.ajax '/sourceByTarget/'+names,
               type: 'GET'
@@ -94,13 +87,56 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                     # key
                   "name": key
                 # return ret
-                newCollection = new App.Entities.ArtistSourceSelectedCollection ret
-                newCollection.each (newModel) =>
-                  console.log newModel
+        $.when(updateCollection).done (respnd) =>
+          output = []
+          console.log "respnd when done", respnd
+          console.log "updateCollection when done", updateCollection
+          App.MainApp.Show.Controller.showView.children.each (childView) =>
+            console.log "updateCollection", respnd
+            childModel = childView.model
+            if childModel.get('name') not in respnd
+              # thrn = childModel.get('name')
+              # App.MainApp.Show.Controller.showView.filter(App.MainApp.Show.Controller.showView.collection.get(childModel), App.MainApp.Show.Controller.showView.collection)
+              # console.log "get collection? for this name:", childModel.get('name'), "is: ", @showView.collection.get(childModel)
+              # console.log "childModel to be remove", childModel
+              # console.log "findByModel", @showView.children.findByModel(childModel)
+              # @showView.children.remove(App.MainApp.Show.Controller.showView.children.findByModel(App.MainApp.Show.Controller.showView.collection.get(childModel)))
+              # model_rem = App.MainApp.Show.Controller.showView.collection.get(childModel)
+              App.MainApp.Show.Controller.showView.collection.remove(App.MainApp.Show.Controller.showView.collection.get(childModel))
+              # console.log App.MainApp.Show.Controller.showView.collection
+              # childModel.destroy()
+          # App.MainApp.Show.Controller.showView.render()
+
+
+
+
+            # else if childModel.get('name') in respnd
+            #   index = respnd.indexOf childModel.get('name')
+            #   output.push respnd.splice(index, 1) if index isnt -1
+            #   respnd = output
+            # respnd.forEach (eachres) =>
+            #   newSmodel = new App.Entity.ArtistSource eachres 
+            # # else
+            #   respnd.forEach (eachres) =>
+            #     newSmodel = new App.Entity.ArtistSource eachres
+                # index = respnd.indexOf childModel.get('name')
+              # output.push respnd.splice(index, 1) if index isnt -1
+              # respnd = output[0] if respnd.length is 1
+              # respnd = output
+              # console.log "respnd", respnd
+              # @showView.collection.remove(childModel)
+                  # newSmodel = new App.Entity.ArtistSource mod
+                # newCollection = new App.Entities.ArtistSourceSelectedCollection ret
+                # newCollection.each (newModel) =>
+                  # console.log "newModel", newModel
+                  # console.log "newModel",newModel
                   # showItemView = new View.ShowView(model: newModel)
                   # @showView.collection.add(showItemView)
-                  @showView.buildChildView(newModel, View.ShowView)
-                @showView.render()
+                  # console.log "!showView", @showView
+                  # newViewBuilt = @showView.buildChildView(newModel, View.ShowView)
+                  # @showView.children.add(newViewBuilt)
+                # App.biosRegion.show(@showView)
+                # @showView.render()
                 # @showView.collection = newCollection
                 # @showView.children.each (updatedItemView) =>
                 #   updatedItemView.render()
@@ -137,7 +173,8 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
           artistssourceC = new App.Entities.ArtistSourceCollection
           artistssourceC.fetch 'success': (response) =>
             # console.log response
-            distinctedSources = artistssourceC.where()
+            # distinctedSources = artistssourceC.where()
+            console.log "artistssourceC",artistssourceC
             @showView = new View.ShowViews(collection: artistssourceC)
             App.biosRegion.show @showView
             # console.log "artistssourceC", artistssourceC

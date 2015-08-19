@@ -17,6 +17,8 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			events:
 				'mouseover @ui.name':'mouseoverNames'
 				'mouseout @ui.name':'mouseoutNames'
+			modelEvents:
+				'change' : 'render'
 			mouseoverNames: (e)->
 				console.log "e", e
 				@timeout = setTimeout(=>
@@ -43,8 +45,8 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 					).css("margin-top", "20px"
 					).css("padding-right", "20px"
 					).css("padding-left", "40px")
-			onShow: ->
-
+			onBeforeDestroy: ->
+				console.log "onBeforeDestroy"
 		)
 		View.ShowViews = Marionette.CollectionView.extend(
 			itemView: View.ShowView
@@ -54,9 +56,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			$el: $('#bios-list')
 			ui: 'list':'ul'
 			initialize: ->
-				@listenTo @collection, 'reset', @render, this
-				@on 'update', (view, model)->
-					console.log "indide the view initialize update", @
+
 			onBeforeRender: ->
 				@$el.css('height', "700").css("list-style-type", "none").css('overflow', 'scroll')
 				@biosRegion = $("#bios-region")
@@ -76,10 +76,10 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				# newCollction = @collection.where("name": 'Abbas Akhavan')
 				# @collection = new App.Entities.ArtistSourceCollection(newCollction)
 				console.log "onBeforeRender"
-			collectionEvents: ->
-				"add": "itemAdded"
-			itemAdded: ->
-				console.log "itemAdded"
+			onBeforeDestroy: ->
+				console.log "onBeforeDestroy"
+			onBeforeRemoveChild: ->
+				console.log "onBeforeRemoveChild"
 			buildChildView: (child, ChildViewClass, childViewOptions) ->
 			  # build the final list of options for the childView class
 			  options = _.extend({ model: child }, childViewOptions)
@@ -87,7 +87,13 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			  view = new ChildViewClass(options)
 			  # return it
 			  view
-			onShow: ->
+			onDestroyCollection: ->
+				console.log "onDestroyCollection"
+			filter: (child, index, collection) ->
+				return true
+     			 # return child.get('value') % 2 === 0;
+
+			# onShow: ->
 				# $(document).ready =>
 				# 	biosRegion = @biosRegion
 				# 	b_el = $("#main-region")
