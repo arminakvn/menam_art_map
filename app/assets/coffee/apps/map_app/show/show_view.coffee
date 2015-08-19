@@ -148,12 +148,12 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                       id: "#{each.name}"
                       clickable: true).setRadius(Math.sqrt(each.value) * 1).bindPopup("<p style='font-size:12px; line-height:10px; font-style:bold;'><a href='#location/#{each.name}'>#{each.name}</p><p style='font-size:12px; font-style:italic; line-height:10px;'>#{each.value - 1} artists connected to this location</p>")
                   nodeGroup.addLayer(circle)
-            # nodeGroup.eachLayer (layer) =>
-            #   @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
-            #   @markers.addTo(@_m)
-            #   layer.on "mouseover", (e) =>
-            #     # console.log "mouseover"
-            #     # e.target.openPopup()
+            nodeGroup.eachLayer (layer) =>
+              @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
+              @markers.addTo(@_m)
+              layer.on "mouseover", (e) =>
+                console.log "mouseover"
+                e.target.openPopup()
             #   layer.on "click", (e) =>
             #     @markers.clearLayers()
             #     textResponse = $.ajax

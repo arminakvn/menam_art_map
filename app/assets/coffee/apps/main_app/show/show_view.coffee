@@ -26,7 +26,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 						App.execute("highlightNode", e.target.id)
 						App.execute("showBio", e.target.id)
 					return
-				, 1600, (e) =>
+				, 300, (e) =>
 					return
 				)
 				$(e.target).css('cursor','pointer').css("color", "black").css("background-color", "gray")
