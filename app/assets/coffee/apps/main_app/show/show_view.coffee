@@ -45,8 +45,6 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 					).css("margin-top", "20px"
 					).css("padding-right", "20px"
 					).css("padding-left", "40px")
-			onBeforeDestroy: ->
-				console.log "onBeforeDestroy"
 		)
 		View.ShowViews = Marionette.CollectionView.extend(
 			itemView: View.ShowView
@@ -87,11 +85,8 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			  view = new ChildViewClass(options)
 			  # return it
 			  view
-			onDestroyCollection: ->
-				console.log "onDestroyCollection"
-			filter: (child, index, collection) ->
-				return true
-     			 # return child.get('value') % 2 === 0;
+			onBeforeAddChild: ->
+				console.log "onBeforeAddChild"
 
 			onShow: ->
 				$(document).ready =>
