@@ -13,5 +13,5 @@ define ["js/app", "js/apps/footer_app/show/show_view"], (App, View) ->
 
         #     App.headerRegion.show showView
 
-  App.HeaderApp.Show.Controller
+  App.FooterApp.Show.Controller
 

@@ -17,6 +17,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			events:
 				'mouseover @ui.name':'mouseoverNames'
 				'mouseout @ui.name':'mouseoutNames'
+				'click @ui.name' : 'clickNames'
 			modelEvents:
 				'change' : 'render'
 			mouseoverNames: (e)->
@@ -36,7 +37,10 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 					opacity: 1
 				}, 500)
 				$(e.target).css('cursor','default').css("color", "black").css("background-color", "white")
+			clickNames: (e) ->
+				App.navigate "#/organization/#{e.target.id}", trgigger: true
 			onBeforeRender: ->
+				@$el.css("opacity", 0)
 				@$el
 					.css("font-family", "Gill Sans"
 					).css("line-height", "1.5"
@@ -45,6 +49,18 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 					).css("margin-top", "20px"
 					).css("padding-right", "20px"
 					).css("padding-left", "40px")
+			
+			onBeforeDestroy: ->
+				@$el.animate({
+					 "opacity": 0
+				}, 2000 , =>
+				)
+			onShow: ->
+				@$el.animate({
+					 "opacity": 1
+				}, 1000 , =>
+				)
+
 		)
 		View.ShowViews = Marionette.CollectionView.extend(
 			itemView: View.ShowView
@@ -58,23 +74,17 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			onBeforeRender: ->
 				@$el.css('height', "700").css("list-style-type", "none").css('overflow', 'scroll')
 				@biosRegion = $("#bios-region")
-				# $(@biosRegion).animate({
-				# 	 "left": "-=250px" 
-				# 	 "opacity"
-				# }, "slow" , =>
-				# 	console.log "@biosRegion", @biosRegion
-				# )
-				# $(@biosRegion.next()).animate({
-				# 	 "left": "-=100px" 
-				# 	 "opacity"
-				# }, "slow" , =>
-				# 	console.log "@biosRegion", @biosRegion
-				# )
-				# console.log "collection", @collection
-				# newCollction = @collection.where("name": 'Abbas Akhavan')
-				# @collection = new App.Entities.ArtistSourceCollection(newCollction)
-				console.log "onBeforeRender"
-			onBeforeDestroy: ->
+			# 	$(@biosRegion).animate({
+			# 		 "left": "-=250px" 
+			# 		 "opacity"
+			# 	}, "slow" , =>
+			# 	)
+			# 	$(@biosRegion.next()).animate({
+			# 		 "left": "-=150px" 
+			# 		 "opacity"
+			# 	}, "slow" , =>
+			# 	)
+			# onBeforeDestroy: ->
 				console.log "onBeforeDestroy"
 			onBeforeRemoveChild: ->
 				console.log "onBeforeRemoveChild"
@@ -122,7 +132,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 								# }, "slow" , =>
 								# )
 								# $(@biosRegion.next()).animate({
-								# 	 "left": "+=100px" 
+								# 	 "left": "+=150px" 
 								# 	 "opacity"
 								# }, "slow" , =>
 								# )

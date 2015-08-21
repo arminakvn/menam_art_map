@@ -4,6 +4,15 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
       template: showTpl
       id:"location-region"
       tagName:"div"
+      $el: $("#map")
+      onBeforeRender: ->
+        @$el.animate({
+          opacity: 1
+        }, 500)
+      onBeforeClose: ->
+        @$el.animate({
+          opacity: 0
+        }, 750)
       onShow: ->
         # require ["js/entities/artist"], =>
           textResponse = $.ajax
@@ -146,15 +155,19 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                       weight: 1
                       className: "#{eachcnt-1}"
                       id: "#{each.name}"
-                      clickable: true).setRadius(Math.sqrt(each.value) * 1).bindPopup("<p style='font-size:12px; line-height:10px; font-style:bold;'><a href='#location/#{each.name}'>#{each.name}</p><p style='font-size:12px; font-style:italic; line-height:10px;'>#{each.value - 1} artists connected to this location</p>")
+                      clickable: true).setRadius(Math.sqrt(each.value) * 1).bindPopup("<span href='#location/#{each.name}'>#{each.name}</span>")
                   nodeGroup.addLayer(circle)
             nodeGroup.eachLayer (layer) =>
               @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
               @markers.addTo(@_m)
               layer.on "mouseover", (e) =>
-                console.log "mouseover"
+                # console.log "mouseover"
                 e.target.openPopup()
-            #   layer.on "click", (e) =>
+              layer.on "mouseout", (e) =>
+                # console.log "mouseover"
+                e.target.closePopup()
+              layer.on "click", (e) =>
+                App.MainApp.Show.Controller.updateView layer.options.id
             #     @markers.clearLayers()
             #     textResponse = $.ajax
             #         url: "/artstsby/#{layer.options.id}"

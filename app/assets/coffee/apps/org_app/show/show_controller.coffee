@@ -1,10 +1,43 @@
 define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 	App.module "OrgApp.Show", (Show, App, Backbone, Marionette, $, _) ->
+		App.Entities.Artist = Backbone.Model.extend()
+		App.Entities.ArtistCollection = Backbone.Collection.extend(
+	      initialize: (url) ->
+	      	console.log "url"
+	      	@param = url
+	      	@on 'request', ->
+	          # MfiaClient.app.trigger 'loading'
+	          console.log "loading"
+	          return
+	        @on 'sync', ->
+	          # MfiaClient.app.trigger 'loaded'
+	          console.log "loaded"
+	          return
+	        return
+	      
+	      url: -> 
+	      	console.log "@param", @param
+	      	return "/orgbysourceartist/"+@param.param
+	      
+	      parse: (response) ->
+	        # console.log "response", response
+	        # data = _.map response, (key, value) =>
+	        #   # _.map key, (key, value) =>
+	        #     # key
+	        #   "name": key
+	        # data
+	        response
+	    )
 		Show.Controller =
-			showOrganization: ->
+			showOrganization: (ssource) ->
+				artistss = new App.Entities.ArtistCollection(param:ssource)
+				artistss.fetch 'success': (response) =>
+		            @showView = new View.ShowView(collection: artistss)
+		            App.mainRegion.show @showView
+				console.log "oApp.ArtistCollection", App.ArtistCollection
+				console.log "App.MainApp.Show.Controller.showView.collection", App.MainApp.Show.Controller.showView.collection
 				console.log "controller show showOrganization"
-				@showView = new View.ShowView() if @showView is undefined
-				App.mainRegion.show @showView
+				
 			
 			highlightNodesBy: (sourceNode) ->
 		        @_links.forEach (link) => 

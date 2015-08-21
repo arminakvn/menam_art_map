@@ -18,14 +18,14 @@ define ["marionette"], (Marionette) ->
     Backbone.history.fragment
 
   App.on "initialize:before", ->
-    require ["js/entities/artist"], =>
-            $.ajax '/artistsbygroup/2',
-              type: 'GET'
-              dataType: 'json'
-              error: (jqXHR, textStatus, errorThrown) ->
-                # $('body').append "AJAX Error: #{textStatus}"
-              success: (data, textStatus, jqXHR) ->
-                App.request "set:artist", data
+    # require ["js/entities/artist"], =>
+    #         $.ajax '/artistsbygroup/2',
+    #           type: 'GET'
+    #           dataType: 'json'
+    #           error: (jqXHR, textStatus, errorThrown) ->
+    #             # $('body').append "AJAX Error: #{textStatus}"
+    #           success: (data, textStatus, jqXHR) ->
+    #             App.request "set:artist", data
     # require ["js/entities/artist_source"], =>                
     #         $.ajax '/artistssource',
     #           type: 'GET'
@@ -48,6 +48,8 @@ define ["marionette"], (Marionette) ->
       console.log "Marionette Application Started"
       if Backbone.history
         Backbone.history.start()
+        App.Entities = Backbone.Collections || {}
+        App.Entity = Backbone.Models || {}
         App.navigate("/", trigger: true) if App.getCurrentRoute() is ""
         # App.trigger "landing:home"
         # if App.getCurrentRoute() is ""
@@ -61,8 +63,8 @@ define ["marionette"], (Marionette) ->
   App.vent.on "locationFired", ->
     App.navigate "/location", trgigger: true
   
-  App.vent.on "organizationFired", ->
-    App.navigate "/organization", trgigger: true
+  App.vent.on "organizationFired", (s)->
+    App.navigate "/organization/#{s}", trgigger: true
 
   App.vent.on "mainFired", ->
     App.navigate "/", trigger: true

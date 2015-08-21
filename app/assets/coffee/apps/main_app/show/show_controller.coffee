@@ -1,6 +1,4 @@
 define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
-  App.Entities = Backbone.Collections || {}
-  App.Entity = Backbone.Models || {}
   App.Entity.ArtistSource = Backbone.Model.extend(
 
 
@@ -67,7 +65,6 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
   )
   App.module "MainApp.Show", (Show, App, Backbone, Marionette, $, _) ->
     Show.Controller =
-      ShowModel: ['Abbas Akhavan']
       updateView: (names) ->
         # @showView.destroy()
         # @showView.children.each (childview) =>
@@ -178,7 +175,6 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
           artistssourceC.fetch 'success': (response) =>
             # console.log response
             # distinctedSources = artistssourceC.where()
-            console.log "artistssourceC",artistssourceC
             @showView = new View.ShowViews(collection: artistssourceC)
             App.biosRegion.show @showView
             # console.log "artistssourceC", artistssourceC

@@ -4,10 +4,11 @@ define ["js/app", "tpl!js/apps/person_app/show/templates/show_view.tpl"], (App, 
 			template: showTpl
 			id: "person-region"
 			tagName: "div"
-			initialize: ->
+			initialize: ->	
+			onShow: ->
 				@nodes = []
-				for artist in App.PersonNodeCollection.models
-		          @nodes.push artist.attributes
+				@collection.each (artist) =>
+		          @nodes.push artist.attribultes
 		        @links = []
 		        for artist in App.PersonLinkCollection.models
 		          @links.push artist.attributes
@@ -17,8 +18,7 @@ define ["js/app", "tpl!js/apps/person_app/show/templates/show_view.tpl"], (App, 
 				  @optArray.push @nodes[i].name
 				  i++
 				@optArray = @optArray.sort()
-				App.PersonApp.Show.Controller.toggle = 0		
-			onShow: ->
+				App.PersonApp.Show.Controller.toggle = 0	
 				@width = @el.clientWidth
 				@height = @el.clientHeight		
 				@height = 1100 if @height < 800

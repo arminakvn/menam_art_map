@@ -65,6 +65,14 @@ db.once('open', function callback () {
     collection: 'links'
   });
 
+  NodesSchema = new Schema({
+    _id: Schema.Types.ObjectId,
+    name: String,
+    group: Number
+  }, {
+    collection: 'nodes'
+  });
+
 
 
   BiosSchema.methods.findLimited = function(cb) {
@@ -88,11 +96,27 @@ db.once('open', function callback () {
     return query.exec(cb);
   };
 
+  NodesSchema.methods.findLimited = function(cb) {
+    var query;
+    query = this.model('Nodes').find({});
+    query.limit();
+    return query.exec(cb);
+  };
+
 
   ArtistSchema.methods.findByTarget = function(cb) {
     var query;
     query = this.model('Artist').find({});
     query.where('target', this.target);
+    query.limit();
+    return query.exec(cb);
+  };
+
+  ArtistSchema.methods.findOrgBySource = function(cb) {
+    var query;
+    query = this.model('Artist').find({});
+    query.where('source', this.source);
+    query.where('group', this.group);
     query.limit();
     return query.exec(cb);
   };
@@ -141,6 +165,7 @@ db.once('open', function callback () {
   var Bios = mongoose.model( 'Bios', BiosSchema );
   var Artist = mongoose.model( 'Artist', ArtistSchema );
   var Links = mongoose.model( 'Links', LinksSchema );
+  var Nodes = mongoose.model( 'Nodes', NodesSchema );
   // mongoose.model('Artist', ArtistSchema);
   // mongoose.model('ArtistNodes', ArtistNodesSchema);
 
@@ -185,6 +210,16 @@ db.once('open', function callback () {
     });
     bios.findByName(function(err, bios) {
       return res.json(bios);
+    });
+  });
+
+  app.get('/nodes', function(req, res) {
+    var nodes;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    nodes = Nodes({});
+    nodes.findLimited(function(err, nodes) {
+      return res.json(nodes);
     });
   });
 
@@ -244,6 +279,18 @@ db.once('open', function callback () {
       return res.json(artist);
     });
   });
+  app.get('/orgbysourceartist/:source', function(req, res) {
+    var artist;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    artist = new Artist({
+      group: 2,
+      source: req.params.source
+    });
+    artist.findOrgBySource(function(err, artist) {
+      res.json(artist);
+    });
+  });
 
   app.get('/artistssource', function(req, res) {
     var artist;
@@ -269,7 +316,6 @@ db.once('open', function callback () {
     var artist;
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    console.log("inside server app", req.params)
     if (req.params.t == "all"){
       artist = Artist({});
     artist.findSource(function(err, artist) {

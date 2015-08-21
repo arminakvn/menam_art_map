@@ -3,12 +3,12 @@ define ["js/app"], (App) ->
     @startWithParent = true
     App.Router = Marionette.AppRouter.extend(
       appRoutes:
-        "organization/":"showOrganization"
+        "organization/:s":"showOrganization"
     )
     API =
-      showOrganization: ->
+      showOrganization: (s)->
         require ["js/apps/org_app/show/show_controller"], ->
-          App.OrgApp.Show.Controller.showOrganization()
+          App.OrgApp.Show.Controller.showOrganization(s)
     App.addInitializer ->
       new App.Router
           controller: API
