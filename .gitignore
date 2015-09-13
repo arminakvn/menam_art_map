@@ -7,3 +7,10 @@ test/spec/
 test/SpecRunner.js
 data/
 data/db
+design/
+app_for_depl.js
+Grunfile_back.js
+Gruntfile_for_depl.js
+backup_of_package.json
+package_for_depl.json
+app_backup.js

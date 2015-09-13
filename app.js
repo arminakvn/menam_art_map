@@ -29,7 +29,8 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-    var appDir = process.argv[2] || '../menam_art_map/app';
+  process.argv[0] = 'node'; // comment this when not using docker
+    var appDir = process.argv[2] || '../app/dist';
     exports.mongoose = mongoose;
     Schema = mongoose.Schema;
 
@@ -190,6 +191,9 @@ db.once('open', function callback () {
     app.configure(function() {
         app.set('port', theport);
         app.set('views', __dirname + appDir);
+        console.log("__dirname",__dirname)
+        console.log("appDir",appDir)
+
     });
     app.get('/bios', function(req, res) {
     var bios;
@@ -356,7 +360,6 @@ db.once('open', function callback () {
     app.use( app.router );
     app.use( express.methodOverride() );
     app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
-
     app.get('/', function(req, res) {
         res.sendfile(path.join(__dirname, appDir + '/index.html'));
     });

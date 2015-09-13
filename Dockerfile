@@ -16,11 +16,12 @@
 FROM google/nodejs-runtime
 WORKDIR /app
 ADD package.json /usr/app/package.json
-RUN cd /usr/app && npm install
-RUN npm install -g bower
 ADD bower.json /usr/app/bower.json  
-RUN bower install --config.interactive=false --allow-root  
-ADD . /usr/app
+ADD dist /usr/app/dist
+ADD Dockerfile /usr/app/Dockerfile
+ADD app.js /usr/app/app.js
+ADD README.md /usr/app/README.md
+ADD app.yaml /usr/app/app.yaml
 # EXPOSE 8080
 # [END docker]
 

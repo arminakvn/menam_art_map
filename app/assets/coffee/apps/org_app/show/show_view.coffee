@@ -161,7 +161,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
           neighboring = (a, b) ->
             linkedByIndex[a.index + ',' + b.index]
           if toggle == 0
-            App.OrgApp.Show.Controller.highlightNodesBy(d)
+            # App.OrgApp.Show.Controller.highlightNodesBy(d)
             d = d3.select(this).node().__data__
             node.selectAll("circle").transition(100).style 'opacity', (o) ->
               if neighboring(d, o) | neighboring(o, d) then 1 else 0.1
