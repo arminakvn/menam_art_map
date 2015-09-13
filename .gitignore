@@ -14,3 +14,4 @@ Gruntfile_for_depl.js
 backup_of_package.json
 package_for_depl.json
 app_backup.js
+.DS_Store
