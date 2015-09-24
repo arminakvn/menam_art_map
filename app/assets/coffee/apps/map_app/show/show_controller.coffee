@@ -128,6 +128,7 @@ define ["js/app", "js/apps/map_app/show/show_view", "tpl!js/apps/map_app/show/te
 		    	L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = "" 
 		    	bioView = Marionette.ItemView.extend(
 		    		template: BioViewTpl
+		    		tagName: 'span'
 		    	)
 		    	bioView
 		    	biosView = Marionette.CompositeView.extend(
@@ -151,6 +152,7 @@ define ["js/app", "js/apps/map_app/show/show_view", "tpl!js/apps/map_app/show/te
 		    				L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = "" 
 		    				aBioView = new biosView(collection: bioCollection)
 		    				aBioView.render()
+		    				console.log "aBioView.el.innerHTML", aBioView.el.innerHTML
 		    				# L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML += "#{@biosTextResults[0].__text}"
 		    				console.log "aBioView", aBioView
 		    				L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = aBioView.el.innerHTML

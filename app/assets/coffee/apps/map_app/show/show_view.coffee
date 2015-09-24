@@ -8,7 +8,7 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
       template: showTpl
       # itemViewContainer: 'g'
       id:"map"
-      tagName:"div"
+      # tagName:"div"
       onBeforeRender: ->
         @$el.animate({
           opacity: 1
