@@ -1,4 +1,14 @@
 /* CSS */
+/*@font-face {
+font-family: CartoGothicStd;
+src: url("../fonts/CartoGothicStd-Book.otf") format("opentype");
+}*/
+@font-face {
+font-family: CartoGothicStd;
+font-weight: bold;
+src: url("../fonts/CartoGothicStd-Bold.otf") format("opentype");
+}
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -49,7 +59,7 @@ cantainer.paratext-info {
 }
 #header {
   border-color: #fff;
-  font-family: "Gill Sans", sans-serif;
+  font-family: "CartoGothicStd", sans-serif;
   font-size: 28px;
   font-weight: bold;
   line-height: 9px;
@@ -65,7 +75,7 @@ cantainer.paratext-info {
 #footer {
   color: #484848;
   border-color: #fff;
-  font-family: "Gill Sans", sans-serif;
+  font-family: "CartoGothicStd", sans-serif;
   font-size: 11px;
   font-weight: light;
   margin-left: 40px;
@@ -153,4 +163,62 @@ cantainer.paratext-info {
 }
 .leaflet-popup-close-button {
   opacity: 0.0;
+}
+.leaflet-clickable {
+  stroke: #777;
+  fill: #777;
+}
+.leaflet-clickable .artistshighleted{
+  stroke: #7CB3C0;
+}
+.lacations-nodes {
+ stroke: #777; 
+}
+.lacations-nodes .highlighted {
+ stroke: #6A9BC4; 
+}
+.artistsList {
+  font-family: "CartoGothicStd";
+  font-size: 12px;
+  line-height: 1.5;
+  border: 0px solid black;
+  margin-top: 20px;
+  padding-right: 0;
+  padding-left: 20px;
+  background-color: white;
+}
+.hoverdots {
+  float: right;
+  opacity: 0.0;
+}
+.highlighted {
+  color: black;
+  background-color:  #6A9BC4;
+  opacity: 0.5;
+}
+.bioTriggerd {
+  color: #7CB3C0;
+  font-style: bold;
+  /*font-style: italic;*/
+}
+.bioController-info {
+  background-color:  #7CB3C0; /*#7CB3C0*/
+  font-family: "CartoGothicStd";
+  color: white;
+  font-size: 12px;
+  border: solid 1.5px #7CB3C0;
+  overflow: auto;
+  background-image: url('tab-2.png');
+  background-size: 50px 25px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 720px 54px;; 
+}
+.artistsList:nth-child(2){
+  padding: 20px 0 0 20px;
+}
+.artistsList.list-navigator {
+  position: fixed;
+  margin: 0 0 0 0;
+
 }

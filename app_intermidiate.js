@@ -11,7 +11,7 @@ var argv = require('optimist').argv;
 // var argv = require('optimist').argv;
 
 
-var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://admin:abbas@dbh56.mongolab.com:27567/artistsdb';
+var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://admin:abbascalabbas@ds053312.mongolab.com:53312/textnetwork';
 var theport = process.env.PORT || 80;
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
@@ -33,30 +33,19 @@ db.once('open', function callback () {
     exports.mongoose = mongoose;
     Schema = mongoose.Schema;
 
-  BiosSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    name: String,
-    Address: String,
-    Location: [String],
-    Date: [String],
-    Organization: String,
-    __text: String
-  }, {
-    collection: 'bios'
-  });
-
   ArtistSchema = new Schema({
     _id: Schema.Types.ObjectId,
-    source: String,
-    group: Number,
-    target: String,
-    lat: String,
-    long: String
+    name: String,
+    location: String,
+    organization: String,
+    time: String,
+    predicates: String,
+    objects: String
   }, {
     collection: 'artists'
   });
 
-  LinksSchema = new Schema({
+LinksSchema = new Schema({
     _id: Schema.Types.ObjectId,
     source: Number,
     target: Number,
@@ -65,40 +54,9 @@ db.once('open', function callback () {
     collection: 'links'
   });
 
-  NodesSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    name: String,
-    group: Number
-  }, {
-    collection: 'nodes'
-  });
-
-
-
-  BiosSchema.methods.findLimited = function(cb) {
-    var query;
-    query = this.model('Bios').find({});
-    query.limit();
-    return query.exec(cb);
-  };
-
   ArtistSchema.methods.findLimited = function(cb) {
     var query;
     query = this.model('Artist').find({});
-    query.limit();
-    return query.exec(cb);
-  };
-
-  LinksSchema.methods.findLimited = function(cb) {
-    var query;
-    query = this.model('Links').find({});
-    query.limit();
-    return query.exec(cb);
-  };
-
-  NodesSchema.methods.findLimited = function(cb) {
-    var query;
-    query = this.model('Nodes').find({});
     query.limit();
     return query.exec(cb);
   };
@@ -151,23 +109,15 @@ db.once('open', function callback () {
     query.distinct('source');
     return query.exec(cb);
   };
-
-
-  BiosSchema.methods.findByName = function(cb) {
+LinksSchema.methods.findLimited = function(cb) {
     var query;
-    query = this.model('Bios').find({});
-    query.where('name', this.name);
+    query = this.model('Links').find({});
     query.limit();
     return query.exec(cb);
   };
-
-  // mongoose.model('Bios', BiosSchema);
-  var Bios = mongoose.model( 'Bios', BiosSchema );
   var Artist = mongoose.model( 'Artist', ArtistSchema );
-  var Links = mongoose.model( 'Links', LinksSchema );
-  var Nodes = mongoose.model( 'Nodes', NodesSchema );
-  // mongoose.model('Artist', ArtistSchema);
-  // mongoose.model('ArtistNodes', ArtistNodesSchema);
+    var Links = mongoose.model( 'Links', LinksSchema );
+
 
   exports.findAll = function(req, res) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -191,38 +141,17 @@ db.once('open', function callback () {
         app.set('port', theport);
         app.set('views', __dirname + appDir);
     });
-    app.get('/bios', function(req, res) {
-    var bios;
+    
+
+app.get('/links', function(req, res) {
+    var links;
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    bios = Bios({});
-    bios.findLimited(function(err, bios) {
-      return res.json(bios);
+    links = Links({});
+    links.findLimited(function(err, links) {
+      return res.json(links);
     });
   });
-
-  app.get('/biosby/:n', function(req, res) {
-    var bios;
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    bios = Bios({
-      name: req.params.n
-    });
-    bios.findByName(function(err, bios) {
-      return res.json(bios);
-    });
-  });
-
-  app.get('/nodes', function(req, res) {
-    var nodes;
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    nodes = Nodes({});
-    nodes.findLimited(function(err, nodes) {
-      return res.json(nodes);
-    });
-  });
-
   app.get('/artists', function(req, res) {
     var artist;
     res.header('Access-Control-Allow-Origin', '*');
@@ -230,16 +159,6 @@ db.once('open', function callback () {
     artist = Artist({});
     artist.findLimited(function(err, artist) {
       return res.json(artist);
-    });
-  });
-
-  app.get('/links', function(req, res) {
-    var links;
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    links = Links({});
-    links.findLimited(function(err, links) {
-      return res.json(links);
     });
   });
 
@@ -272,34 +191,14 @@ db.once('open', function callback () {
     var artist;
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    if (req.params.t == "all"){
-      artist = Artist({});
-    artist.findSource(function(err, artist) {
-      return res.json(artist);
-    });
-
-    } else {
-      artist = new Artist({
-        source: req.params.source
-      });
-      artist.findBySource(function(err, artist) {
-        return res.json(artist);
-      });
-    }
-    
-  });
-  app.get('/orgbysourceartist/:source', function(req, res) {
-    var artist;
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     artist = new Artist({
-      group: 2,
       source: req.params.source
     });
-    artist.findOrgBySource(function(err, artist) {
-      res.json(artist);
+    artist.findBySource(function(err, artist) {
+      return res.json(artist);
     });
   });
+ 
 
   app.get('/artistssource', function(req, res) {
     var artist;

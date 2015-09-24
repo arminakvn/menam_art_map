@@ -9,46 +9,50 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 
 		View.ShowView = Marionette.ItemView.extend(
 			template: showTpl
-			# tagName: "li"            
-			# id: 'bios'
+			tagName: "div"            
 			# $el: $('#bios')
-			ui: 'name': 'li'
+			ui: 
+				'name': 'li'
 			$el: $('li')
+			className: 'artistsList'
 			events:
+				# 'mouseenter @ui.name':'mouseEnterNames'
+				# 'hover @ui.name':'mouseoverNames'
 				'mouseover @ui.name':'mouseoverNames'
 				'mouseout @ui.name':'mouseoutNames'
 				'click @ui.name' : 'clickNames'
 			modelEvents:
 				'change' : 'render'
+			# mouseoverDots: (e) ->
 			mouseoverNames: (e)->
 				console.log "e", e
 				@timeout = setTimeout(=>
 					if @timeout > 75
 						App.execute("highlightNode", e.target.id)
 						App.execute("showBio", e.target.id)
+						$(e.target).addClass('highlighted bioTriggerd')
+
+
 					return
 				, 300, (e) =>
 					return
 				)
-				$(e.target).css('cursor','pointer').css("color", "black").css("background-color", "gray")
+				$(e.target).css('cursor','pointer')
+				$(e.target).addClass('highlighted')
+				
 			mouseoutNames: (e)->
 				@timeout = 0
 				$(e.target).animate({
 					opacity: 1
 				}, 500)
-				$(e.target).css('cursor','default').css("color", "black").css("background-color", "white")
+				$(e.target).css('cursor','default')
+				$(e.target).removeClass('highlighted')
+				$(e.target).removeClass('bioTriggerd')
+				App.execute("hideBio")
 			clickNames: (e) ->
 				App.navigate "#/organization/#{e.target.id}", trgigger: true
 			onBeforeRender: ->
 				@$el.css("opacity", 0)
-				@$el
-					.css("font-family", "Gill Sans"
-					).css("line-height", "1.5"
-					).css("border", "0px solid black"
-					).css("font-size", "16px"
-					).css("margin-top", "20px"
-					).css("padding-right", "20px"
-					).css("padding-left", "40px")
 			
 			onBeforeDestroy: ->
 				@$el.animate({
@@ -56,21 +60,61 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				}, 2000 , =>
 				)
 			onShow: ->
+				$(".hoverdots").hide()
 				@$el.animate({
 					 "opacity": 1
 				}, 1000 , =>
 				)
 
 		)
-		View.ShowViews = Marionette.CollectionView.extend(
+		View.ShowViews = Marionette.CompositeView.extend(
 			itemView: View.ShowView
-			itemViewContainer: "ul"
 			template: showTpls
 			id: 'bios-list'
 			$el: $('#bios-list')
-			ui: 'list':'ul'
-			initialize: ->
+			ui: 
+				'list':'ul'
+				'divs': 'div'
+				'navigator': 'span'
+			events:
+				'mouseover @ui.divs':'mouseEnterDivs'
+				'mouseover @ui.navigator' : 'mouseoverNavigator'
+				'click @ui.navigator' : 'clickNavigator'
+				# 'mouseout @ui.divs':'mouseoutDivs'
+				# 'mouseover @ui.dots':'mouseoverNavigator'
+			
+			modelEvents:
+				"model:change": "doSomething"
+			  
+			doSomething: ->
+				console.log "doSomething"
+			# mouseEnterDivs: (e) ->
+			# 	$(".hoverdots").show().fadeIn()
+			# 	console.log "divs", e.target, e
+				# console.log "$(e.target)..children('span')", $(e.target).children('span')
+				# if $(e.target).children('span').css('visibility') == 'hidden'
+				# 	$(e.target).children('span').css('visibility','visible')
+				# else
+				# 	$(e.target).children('span').css('visibility','hidden')
+				# $(e.target).next().toggleClass("visible")
 
+			# modelEvents:
+			# 	'change' : 'fieldsChanged'
+			mouseoverNavigator: (e) ->
+				$(e.target).css('cursor','pointer')
+				
+				console.log "mouse over navigator"
+			clickNavigator: (e) ->
+				App.MainApp.Show.Controller.updateView('all')
+				App.MapApp.Show.Controller.resetMapHighlights()
+			mouseoutDivs: (e)->
+				$(".hoverdots").show().fadeOut()
+				console.log "mouseoutDivs"
+				console.log "divs", e.target
+				# $(e.target).next().removeClass("visible")
+				# $(e.target).next().toggleClass("artisthover")
+			initialize: ->
+				Marionette.bindEntityEvents(this, this.model, this.modelEvents)
 			onBeforeRender: ->
 				@$el.css('height', "700").css("list-style-type", "none").css('overflow', 'scroll')
 				@biosRegion = $("#bios-region")
@@ -100,6 +144,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 
 			onShow: ->
 				$(document).ready =>
+					console.log "@model", @model
 					biosRegion = @biosRegion
 					b_el = $("#main-region")
 					btterflyRegion = b_el

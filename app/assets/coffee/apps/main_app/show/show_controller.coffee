@@ -1,7 +1,7 @@
 define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
+  App.Entity.ArtistListState = Backbone.Model.extend(
+  )
   App.Entity.ArtistSource = Backbone.Model.extend(
-
-
   )
   App.Entities.ArtistSourceCollection = Backbone.Collection.extend(
     model: App.Entity.ArtistSource
@@ -84,6 +84,10 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                     # key
                   "name": key
                 # return ret
+        if App.MainApp.Show.Controller.showView.model.get('state') != names
+          App.MainApp.Show.Controller.showView.model.destroy()
+          App.MainApp.Show.Controller.showView.model = new App.Entity.ArtistListState({'state': 'All Artists > ' + names})
+          App.MainApp.Show.Controller.showView.render()
         $.when(updateCollection).done (respnd) =>
           output = []
           App.MainApp.Show.Controller.showView.collection.each (initmodels) =>
@@ -171,11 +175,15 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
             # console.log "App.ArtistSourceCollection", App.ArtistSourceCollection
           # console.log "ArtistModel", ArtistModel
             # console.log "before returning response", response
+          stateModel =  new App.Entity.ArtistListState({'state': 'All Artists'})
           artistssourceC = new App.Entities.ArtistSourceCollection
           artistssourceC.fetch 'success': (response) =>
             # console.log response
             # distinctedSources = artistssourceC.where()
-            @showView = new View.ShowViews(collection: artistssourceC)
+            @showView = new View.ShowViews(
+              collection: artistssourceC
+              model: stateModel
+            )
             App.biosRegion.show @showView
             # console.log "artistssourceC", artistssourceC
           # $.when(artistssourceC).done (res) =>

@@ -10,6 +10,9 @@ define ["js/app"], (App) ->
     App.commands.setHandler 'showBio', (sourceNode) ->
       API.showBio(sourceNode)
       return
+    App.commands.setHandler 'hideBio', () ->
+      API.hideBio()
+      return
     App.commands.setHandler 'showLocationGroup', (locationGroup) ->
       API.showLocationByGroup(locationGroup)
       return
@@ -33,6 +36,11 @@ define ["js/app"], (App) ->
       showBio: (sourceNode)->
         require ["js/apps/map_app/show/show_controller"], ->
           App.MapApp.Show.Controller.showBio(sourceNode)
+
+      hideBio: ()->
+        require ["js/apps/map_app/show/show_controller"], ->
+          App.MapApp.Show.Controller.hideBio()
+
       showLocationByGroup: (locationGroup) ->
         require ["js/apps/map_app/show/show_controller"], ->
           App.MapApp.Show.Controller.showLocationByGroup(locationGroup)
