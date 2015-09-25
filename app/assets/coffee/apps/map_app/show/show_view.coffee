@@ -120,12 +120,13 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
               initialize: =>
                 position = "left"
                 _domEl = L.DomUtil.create('div', "container " + "bioController" + "-info")
-                L.DomUtil.enableTextSelection(_domEl)  
+                # _domEl.innerHTML = "<div></div>"
+                # L.DomUtil.enableTextSelection(_domEl)  
                 @_m.getContainer().getElementsByClassName("leaflet-control-container")[0].appendChild(_domEl)
                 _domObj = $(L.DomUtil.get(_domEl))
                 _domObj.css('width', $(@_m.getContainer())[0].clientWidth/4)
-                _domObj.css('height', $(@_m.getContainer())[0].clientHeight/1.3)
-                _domObj.css('line-height', '28px')
+                _domObj.css('height', $(@_m.getContainer())[0].clientHeight/1.1)
+                _domObj.css('line-height', '22px')
                 L.DomUtil.setOpacity(L.DomUtil.get(_domEl), 0.0)
                 L.DomUtil.setPosition(L.DomUtil.get(_domEl), L.point(-$(@_m.getContainer())[0].clientWidth/1.2, 0), disable3D=0)
                 @position = L.point(-$(@_m.getContainer())[0].clientWidth/1.05, 0)
@@ -158,7 +159,7 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
                       weight: 1
                       className: 'locations-nodes'
                       id: "#{each.name}"
-                      clickable: true).setRadius(Math.sqrt(each.value) * 1).bindPopup("<span href='#location/#{each.name}'>#{each.name}</span>")
+                      clickable: true).setRadius(Math.sqrt(each.value) * 3).bindPopup("<span href='#location/#{each.name}'>#{each.name}</span>")
                   nodeGroup.addLayer(circle)
             nodeGroup.eachLayer (layer) =>
               # @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)

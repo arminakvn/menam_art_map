@@ -28,9 +28,12 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				console.log "e", e
 				@timeout = setTimeout(=>
 					if @timeout > 75
-						App.execute("highlightNode", e.target.id)
 						App.execute("showBio", e.target.id)
+						console.log "$('bioTriggerd')", $('.bioTriggerd')
+						$('.bioTriggerd').removeClass('bioTriggerd') 
 						$(e.target).addClass('highlighted bioTriggerd')
+						# App.execute("highlightNode", e.target.id)
+						@timeout=0
 
 
 					return
@@ -39,7 +42,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				)
 				$(e.target).css('cursor','pointer')
 				$(e.target).addClass('highlighted')
-				
+
 			mouseoutNames: (e)->
 				@timeout = 0
 				$(e.target).animate({
@@ -48,7 +51,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				$(e.target).css('cursor','default')
 				$(e.target).removeClass('highlighted')
 				$(e.target).removeClass('bioTriggerd')
-				App.execute("hideBio")
+				# App.execute("hideBio")
 			clickNames: (e) ->
 				App.navigate "#/organization/#{e.target.id}", trgigger: true
 			onBeforeRender: ->

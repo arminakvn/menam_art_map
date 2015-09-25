@@ -1,1 +1,1 @@
-<span> <%= name %></span>
+<span href="#location/<%= name %>"> <%= name %></span>

@@ -124,19 +124,32 @@ define ["js/app", "js/apps/map_app/show/show_view", "tpl!js/apps/map_app/show/te
 		    	bioCollection = new App.Entities.BioElementTextCollection
 		    	bioCollection.fetch 'success': (response) =>
 		    		console.log "bios response", response
-		    	@Controller.showView.fx.run(L.DomUtil.get(@Controller.showView._bios_domEl), L.point(-$(@Controller.showView._m.getContainer())[0].clientWidth/3, 40), 0.5)
+		    	@Controller.showView.fx.run(L.DomUtil.get(@Controller.showView._bios_domEl), L.point(-$(@Controller.showView._m.getContainer())[0].clientWidth/2.6, 0.5), 0.5)
 		    	L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = "" 
 		    	bioView = Marionette.ItemView.extend(
 		    		template: BioViewTpl
+		    		className: ->
+		    			# if @mode.attribute.group
+		    			console.log "className", @
+		    			console.log "App.MapApp.Show.Controller.showView.list",App.MapApp.Show.Controller.showView.list
+		    		tagName: 'span'
+		    		ui: 
+		    			'elems': 'span'
+		    		events:
+		    			'mouseover @ui.elems': 'mouseoverElems'
+
+		    		mouseoverElems: (e) ->
+		    			console.log "mouseoverElems", e
+		    		onShow: ->
 		    	)
 		    	bioView
 		    	biosView = Marionette.CompositeView.extend(
 		    		itemView: bioView
 		    		# itemViewContainer: 'div'
 		    		template: BiosViewTpl
+		    		className: 'bioView'
 		    		id:"bioview"
 		    		onShow: ->
-		    			console.log "bioView"
 		    	)
 		    	biosView
 		    	if @biosFetched is undefined
@@ -152,8 +165,13 @@ define ["js/app", "js/apps/map_app/show/show_view", "tpl!js/apps/map_app/show/te
 		    				aBioView = new biosView(collection: bioCollection)
 		    				aBioView.render()
 		    				# L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML += "#{@biosTextResults[0].__text}"
-		    				console.log "aBioView", aBioView
-		    				L.DomUtil.get(@Controller.showView._bios_domEl).innerHTML = aBioView.el.innerHTML
+		    				console.log "aBioView", aBioView.el
+		    				_domEl = L.DomUtil.get(@Controller.showView._bios_domEl)
+		    				_domEl.innerHTML += aBioView.el.innerHTML
+		    				console.log "_domEl", $(_domEl).children()
+		    				for each in $('.bioelement').children()
+		    					console.log "each", each
+		    					each.onmouseover = each.onmousedown = each.ondblclick = L.DomEvent.stopPropagation
 		    	else
 		    		console.log "else notheing"
 		    	return
@@ -173,85 +191,100 @@ define ["js/app", "js/apps/map_app/show/show_view", "tpl!js/apps/map_app/show/te
 		        $.when(updateCollection).done (respnd) =>
 		          output = []
 		          console.log "App.MapApp.Show.Controller.showView.model", App.MapApp.Show.Controller.showView
-		          App.MapApp.Show.Controller.showView.model.destroy()
+		          try
+		          	App.MapApp.Show.Controller.showView.model.destroy()
+		          catch e
+		          	# ...
+		          
 		          App.MapApp.Show.Controller.showView.model = new App.Entity.ArtistListState({'state': 'World > ' + sourceNode})
 		          App.MapApp.Show.Controller.showView.render()
 		          App.MapApp.Show.Controller.showView.collection.each (initmodels) =>
-		              output.push initmodels.get('target')
+		              output.push initmodels.get('target').name
 		              # console.log "this is the out put which is a list of the list in the left", output
 		          # console.log "respnd when done", respnd
 		          # console.log "updateCollection when done", updateCollection
-		              
+		          console.log "output", output    
 		          App.MapApp.Show.Controller.showView.children.each (childView) =>
 		            # console.log "childModel.get('target')", childModel.get('target')
 		            childModel = childView.model
-		            if childModel.get('target') not in respnd
+		            if childModel.get('target') not in output
 		              # thrn = childModel.get('name')
 		              # App.MainApp.Show.Controller.showView.filter(App.MainApp.Show.Controller.showView.collection.get(childModel), App.MainApp.Show.Controller.showView.collection)
 		              # @showView.children.remove(App.MainApp.Show.Controller.showView.children.findByModel(App.MainApp.Show.Controller.showView.collection.get(childModel)))
 		              # model_rem = App.MainApp.Show.Controller.showView.collection.get(childModel)
 		              App.MainApp.Show.Controller.showView.collection.remove(App.MapApp.Show.Controller.showView.collection.get(childModel))
 		          respnd.forEach (name_res) =>
-		            if sourceNode not in output
-		              App.MapApp.Show.Controller.showView.collection.add(new App.Entity.LocationNode({'target': key.target}))
+		            console.log "name_res", name_res
+		            console.log "sourceNode", sourceNode
+		            if name_res.target not in output
+		            	if name_res == 1
+			              App.MapApp.Show.Controller.showView.collection.add(new App.Entity.LocationNode(
+			              	'name' :name_res.source
+			              	'group': name_res.group
+			              	'id':name_res._id
+			              	'lat': name_res.lat
+			              	'long': name_res.long
+			              	'source': name_res.source
+			              	'target': name_res.target
+			              ))
+			        App.MapApp.Show.Controller.showView.render()
 
-
-				@_sourceNode = sourceNode
-				@Controller.showView.nodeGroup.eachLayer (layer) =>
-					@Controller.showView.popupGroup.clearLayers()
-					layer.setStyle
-						opacity: 0.0
-						fillOpacity: 0.0
-						weight: 2
-						clickable: false
-					timeout = 0
-				$.ajax "/artistsbysource/#{sourceNode}",
-					type: 'GET'
-					dataType: 'json'
-					error: (jqXHR, textStatus, errorThrown) ->
-					# $('body').append "AJAX Error: #{textStatus}"
-					success: (data, textStatus, jqXHR) =>
-						@Controller.showView.list = _.pluck data, 'target'
-						@Controller.showView.nodeGroup.eachLayer (layer) =>
-							if layer.options.id in @Controller.showView.list
-								$(L.DomUtil.get(layer._container)).addClass('highlighted')
-								# console.log "$(L.DomUtil.get(layer._path))[0]",layer._path
-								# console.log "layer", layer
-								# console.log "layer._leaflet_id", layer._leaflet_id
-								# console.log "layer.$(layer)", $(layer)
+				# @_sourceNode = sourceNode
+				# @Controller.showView.nodeGroup.eachLayer (layer) =>
+				# 	@Controller.showView.popupGroup.clearLayers()
+				# 	layer.setStyle
+				# 		opacity: 0.0
+				# 		fillOpacity: 0.0
+				# 		weight: 2
+				# 		clickable: false
+				# 	timeout = 0
+				# $.ajax "/artistsbysource/#{sourceNode}",
+				# 	type: 'GET'
+				# 	dataType: 'json'
+				# 	error: (jqXHR, textStatus, errorThrown) ->
+				# 	# $('body').append "AJAX Error: #{textStatus}"
+				# 	success: (data, textStatus, jqXHR) =>
+				# 		@Controller.showView.list = _.pluck data, 'target'
+				# 		@Controller.showView.nodeGroup.eachLayer (layer) =>
+				# 			if layer.options.id in @Controller.showView.list
+				# 				$(L.DomUtil.get(layer._container)).addClass('highlighted')
+				# 				# console.log "$(L.DomUtil.get(layer._path))[0]",layer._path
+				# 				# console.log "layer", layer
+				# 				# console.log "layer._leaflet_id", layer._leaflet_id
+				# 				# console.log "layer.$(layer)", $(layer)
 								
-								# popup = new L.Popup()
-								# ltlng = new L.LatLng(layer._latlng.lat, layer._latlng.lng)
-								# popup.setLatLng(ltlng)
-								# popup.setContent("")
-								# popup.setContent(layer.options.id)
-								# console.log "@Controller.showView._m._layers", @Controller.showView._m._layers[layer._leaflet_id]
-								# @Controller.showView.popupGroup.addLayer(popup)
-								layer.bringToFront()
-								# nodes = @Controller.showView._m._layers
-								# for node in nodes
-								# 	console.log "node.iid", node._leaflet_id
-								# 	console.log "node", node
-								# 	node.options.className = 'locations-nodes highlighted'
-								# 	return
-								# $(L.DomUtil.get(layer._path)).addClass('artistshighleted')
-								# maplayers = @Controller.showView._m.getLayers()
-								# console.log "maplayers", maplayers
-								$(@Controller.showView._m._layers[layer._leaflet_id]._container.lastChild).addClass('highlighted')
-								# console.log "@Controller.showView._m._layers 2", @Controller.showView._m._layers[layer._leaflet_id]
-								timeout = 0
-								setTimeout (->
-									$(L.DomUtil.get(layer._container)).animate
-										fillOpacity: 0.8
-										opacity: 0.9
-									, 1, ->
-										layer.setStyle
-											# className: 'locations-nodes highlighted'
-											fillOpacity: 0.8
-											weight: 2
-											opacity: 1
-											clickable: true
-								)
+				# 				# popup = new L.Popup()
+				# 				# ltlng = new L.LatLng(layer._latlng.lat, layer._latlng.lng)
+				# 				# popup.setLatLng(ltlng)
+				# 				# popup.setContent("")
+				# 				# popup.setContent(layer.options.id)
+				# 				# console.log "@Controller.showView._m._layers", @Controller.showView._m._layers[layer._leaflet_id]
+				# 				# @Controller.showView.popupGroup.addLayer(popup)
+				# 				layer.bringToFront()
+				# 				# nodes = @Controller.showView._m._layers
+				# 				# for node in nodes
+				# 				# 	console.log "node.iid", node._leaflet_id
+				# 				# 	console.log "node", node
+				# 				# 	node.options.className = 'locations-nodes highlighted'
+				# 				# 	return
+				# 				# $(L.DomUtil.get(layer._path)).addClass('artistshighleted')
+				# 				# maplayers = @Controller.showView._m.getLayers()
+				# 				# console.log "maplayers", maplayers
+				# 				$(@Controller.showView._m._layers[layer._leaflet_id]._container.lastChild).addClass('highlighted')
+				# 				# console.log "@Controller.showView._m._layers 2", @Controller.showView._m._layers[layer._leaflet_id]
+				# 				timeout = 0
+				# 				setTimeout (->
+				# 					$(L.DomUtil.get(layer._container)).animate
+				# 						fillOpacity: 0.8
+				# 						opacity: 0.9
+				# 					, 1, ->
+				# 						layer.setStyle
+				# 							# className: 'locations-nodes highlighted'
+				# 							fillOpacity: 0.8
+				# 							weight: 2
+				# 							opacity: 1
+				# 							clickable: true
+				# 				)
 				return 
 	App.MapApp.Show.Controller
 
