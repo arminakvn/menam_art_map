@@ -20,7 +20,10 @@
     "json2": "*",
     "bootstrap": "~3.0.3",
     "d3": "~3.5.5",
-    "mapbox.js": "~2.1.5"
+    "mapbox.js": "~2.1.5",
+    "d3-geo-projection": "~0.2.15",
+    "d3-plugins": "*",
+    "topojson": "~1.6.19"
   },
   "devDependencies": {},
   "directory": "bower_components",

@@ -1,1 +1,1 @@
-<div id="map"></div>
+<span class="location-navigator"><%= state %></span>

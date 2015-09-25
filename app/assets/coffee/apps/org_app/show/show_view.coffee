@@ -8,7 +8,8 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         @width = @el.clientWidth
         @height = @el.clientHeight
       initialize: ->
-        @nodes = _.map App.ArtistCollection.models, (key, value) =>
+        # orgbysourceartist
+        @nodes = _.map @collection.models, (key, value) =>
           key.attributes
         
         _links = @nodes
@@ -46,7 +47,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         console.log "_nodes", _nodes
         @_links = _links
       onShow: ->
-        @height = 1100 if @height == 0
+        @height = 700 if @height == 0
         padding = 1.5
         color = @color = d3.scale.category10()
         # width = $("#organization-region")[0].clientWidth
@@ -73,7 +74,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         ).data(d3.values(@_nodes), (d) ->
           d.name
         )
-        nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "5.35em").call(@force.drag)
+        nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "1.35em").call(@force.drag)
         nodeEnter.append('circle').property("id", (d, i) => "node-#{i}").attr('r', (d) ->
           if d.group == 2
             return Math.sqrt(d.value) * 2
@@ -160,7 +161,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
           neighboring = (a, b) ->
             linkedByIndex[a.index + ',' + b.index]
           if toggle == 0
-            App.OrgApp.Show.Controller.highlightNodesBy(d)
+            # App.OrgApp.Show.Controller.highlightNodesBy(d)
             d = d3.select(this).node().__data__
             node.selectAll("circle").transition(100).style 'opacity', (o) ->
               if neighboring(d, o) | neighboring(o, d) then 1 else 0.1

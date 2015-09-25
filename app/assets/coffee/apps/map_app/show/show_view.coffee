@@ -1,48 +1,64 @@
-define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, showTpl) ->
+define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App,showItemTpl, showTpl) ->
   App.module "MapApp.View", (View, App, Backbone, Marionette, $, _) ->
-    View.ShowView = Marionette.ItemView.extend(
+    View.ShowItemView = Marionette.ItemView.extend(
+      template: showItemTpl
+    )
+    View.ShowView = Marionette.CompositeView.extend(
+      itemView: View.ShowItemView
       template: showTpl
-      id:"location-region"
+      # itemViewContainer: 'g'
+      id:"map"
       tagName:"div"
+      onBeforeRender: ->
+        @$el.animate({
+          opacity: 1
+        }, 500)
+      onBeforeClose: ->
+        @$el.animate({
+          opacity: 0
+        }, 750)
       onShow: ->
         # require ["js/entities/artist"], =>
-          textResponse = $.ajax
-                        url: "/artistsbygroup/1"
-                        success: (result) =>
-                          result
-          $.when(textResponse).done (artists) =>
-            # artists = artist.responseJSON
-            # @collection = App.ArtistCollection
+          # console.log "@collection", @collection
+          # textResponse = $.ajax
+          #               url: "/artistsbygroup/1"
+          #               success: (result) =>
+          #                 result
+          # $.when(textResponse).done (artists) =>
+            # console.log artists
+          #   # artists = artist.responseJSON
+          #   # @collection = App.ArtistCollection
             # @$el = $('main-region')
             id = 0
             @artistNodes = [] 
             nodes = []
-
-            for artist in artists
+            console.log "@model", @model
+            for artist in @collection.models
               nodes.push artist
               # make a list of artist names when data arrives and keep it
-              @artistNodes.push {'name' :artist.source, 'id': id, 'group': artist.group}
+              @artistNodes.push {'name' :artist.attributes.source, 'id': id, 'group': artist.attributes.group}
               id = id + 1
             # using the data to create links and nodes in format
       
-            _links = nodes
+            _links = @collection.models
+            console.log "@collection.models", @collection.models
             # sort links by source, then target
             _links.sort (a, b) ->
-                if a.source > b.source
+                if a.attributes.source > b.attributes.source
                   1
-                else if a.source < b.source
+                else if a.attributes.source < b.attributes.source
                   -1
                 else
-                  if a.target > b.target
+                  if a.attributes.target > b.attributes.target
                     return 1
-                  if a.target < b.target
+                  if a.attributes.target < b.attributes.target
                     -1
                   else
                     0
             i = 0
             # any links with duplicate source and target get an incremented 'linknum'
             while i < _links.length
-              if i != 0 and _links[i].source == _links[i - 1].source and _links[i].target == _links[i - 1].target
+              if i != 0 and _links[i].attributes.source == _links[i - 1].attributes.source and _links[i].attributes.target == _links[i - 1].attributes.target
                 _links[i].linknum = _links[i - 1].linknum + 1
               else
                 _links[i].linknum = 1
@@ -50,18 +66,19 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
             
             _nodes = {}
             # Compute the distinct nodes from the links.
-            _links.forEach (link) ->
-              link.source = _nodes[link.source] or (_nodes[link.source] = name: link.source, value: 1)
-              link.target = _nodes[link.target] or (_nodes[link.target] = {name: link.target, group: link.group, lat: link.lat, long: link.long, value: 1})
+            @collection.models.forEach (link) ->
+              link.attributes.source = _nodes[link.attributes.source] or (_nodes[link.attributes.source] = name: link.attributes.source, value: 1)
+              link.attributes.target = _nodes[link.attributes.target] or (_nodes[link.attributes.target] = {name: link.attributes.target, group: link.attributes.group, lat: link.attributes.lat, long: link.attributes.long, value: 1})
 
               return
-            d3.values((_nodes)).forEach (sourceNode) =>
-              _links.forEach (link) => 
-                if link.source.name == sourceNode.name and link.target.name != sourceNode.name
-                  link.target.value += 1
-                return
-              return
-
+            # d3.values((_nodes)).forEach (sourceNode) =>
+            #   _links.forEach (link) => 
+            #     if link.source.name == sourceNode.name and link.target.name != sourceNode.name
+            #       link.target.value += 1
+            #     return
+            #   return
+            # for each in d3.values(_nodes)
+            #   @collection.add(new App.Entity.LocationNode({'target': each.name}))
             # $("#main-region").append("<div id='map'></div>")
             L.mapbox.accessToken = "pk.eyJ1IjoiYXJtaW5hdm4iLCJhIjoiSTFteE9EOCJ9.iDzgmNaITa0-q-H_jw1lJw"
             @_m = L.mapbox.map("map", "arminavn.jhehgjan
@@ -103,16 +120,13 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
               initialize: =>
                 position = "left"
                 _domEl = L.DomUtil.create('div', "container " + "bioController" + "-info")
-                L.DomUtil.enableTextSelection(_domEl)  
+                # _domEl.innerHTML = "<div></div>"
+                # L.DomUtil.enableTextSelection(_domEl)  
                 @_m.getContainer().getElementsByClassName("leaflet-control-container")[0].appendChild(_domEl)
                 _domObj = $(L.DomUtil.get(_domEl))
                 _domObj.css('width', $(@_m.getContainer())[0].clientWidth/4)
-                _domObj.css('height', $(@_m.getContainer())[0].clientHeight/1.3)
-                _domObj.css('background-color', 'white')
-                _domObj.css("font-family", "Gill Sans")
-                _domObj.css("font-size", "24")
-                _domObj.css('overflow', 'auto')
-                _domObj.css('line-height', '28px')
+                _domObj.css('height', $(@_m.getContainer())[0].clientHeight/1.1)
+                _domObj.css('line-height', '22px')
                 L.DomUtil.setOpacity(L.DomUtil.get(_domEl), 0.0)
                 L.DomUtil.setPosition(L.DomUtil.get(_domEl), L.point(-$(@_m.getContainer())[0].clientWidth/1.2, 0), disable3D=0)
                 @position = L.point(-$(@_m.getContainer())[0].clientWidth/1.05, 0)
@@ -121,11 +135,10 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                 @_bios_domEl = _domEl
                 @_m.on "click", =>
                   @fx.run(L.DomUtil.get(_domEl), @position, 0.9)
-                  console.log "click on map"
                 @_d3BiosEl = d3.select(_domEl)
             )
             new divControl()
-
+            console.log "_links", _links
             @_nodes = _nodes
             @_links = _links
             App.MapApp.Show.Controller._links = _links
@@ -141,42 +154,50 @@ define ["js/app", "tpl!js/apps/map_app/show/templates/show_view.tpl"], (App, sho
                 if each.group == 1 and each.lat
                   ltlong = new L.LatLng(+each.lat, +each.long)
                   circle = new L.CircleMarker(ltlong,
-                      color: "blue"
                       opacity: 0.5
                       fillOpacity: 0.5
                       weight: 1
-                      className: "#{eachcnt-1}"
+                      className: 'locations-nodes'
                       id: "#{each.name}"
-                      clickable: true).setRadius(Math.sqrt(each.value) * 5).bindPopup("<p style='font-size:12px; line-height:10px; font-style:bold;'><a>#{each.name}</p><p style='font-size:12px; font-style:italic; line-height:10px;'>#{each.value - 1} artists connected to this location</p>")
+                      clickable: true).setRadius(Math.sqrt(each.value) * 3).bindPopup("<span href='#location/#{each.name}'>#{each.name}</span>")
                   nodeGroup.addLayer(circle)
             nodeGroup.eachLayer (layer) =>
-              @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
-              @markers.addTo(@_m)
+              # @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
+              # @markers.addTo(@_m)
+              layer.on "mouseover", (e) =>
+                # console.log "mouseover"
+                e.target.openPopup()
+              layer.on "mouseout", (e) =>
+                # console.log "mouseover"
+                e.target.closePopup()
               layer.on "click", (e) =>
-                @markers.clearLayers()
-                textResponse = $.ajax
-                    url: "/artstsby/#{layer.options.id}"
-                    success: (nodes) =>
-                      currentzoom = @_m.getZoom()
-                      # @_m.remove(markers)
-                      marker = new L.CircleMarker([])
-                      nodes.forEach (artist) =>
-                        artistNode = new L.LatLng(+artist.lat, +artist.long)
-                        marker = new L.CircleMarker(artistNode,
-                          color: d3.lab("blue").darker(-2)
-                          opacity: 0.5
-                          fillOpacity: 0.5
-                          weight: 1
-                          # id: "#{artist.name}"
-                          clickable: true).setRadius(7).bindPopup("<p>#{artist.source}</p>")
-                        @markers.addLayer(marker)
+                App.MainApp.Show.Controller.updateView layer.options.id
+            #     @markers.clearLayers()
+            #     textResponse = $.ajax
+            #         url: "/artstsby/#{layer.options.id}"
+            #         success: (nodes) =>
+            #           currentzoom = @_m.getZoom()
+            #           # @_m.remove(markers)
+            #           marker = new L.CircleMarker([])
+            #           nodes.forEach (artist) =>
+            #             artistNode = new L.LatLng(+artist.lat, +artist.long)
+            #             marker = new L.CircleMarker(artistNode,
+            #               color: d3.lab("gray").darker(-2)
+            #               opacity: 0.5
+            #               fillOpacity: 0.5
+            #               weight: 1
+            #               # id: "#{artist.name}"
+            #               clickable: true).setRadius(7).bindPopup("<p>#{artist.source}</p>")
+            #             @markers.addLayer(marker)
 
-              return
+            #   return
             nodeGroup.addTo(@_m)
             @nodeGroup = nodeGroup
+            @model = @nodeGroup
             App.MapApp.Show.Controller.nodeGroup = nodeGroup
             App.MapApp.Show.Controller.markers = @markers
             App.MapApp.Show.Controller.popupGroup = @popupGroup
+            # console.log "@nodeGroup.getLayers()", @nodeGroup.getLayers()
             # w = $(_m.getContainer())[0].clientWidth#/1.2
             # h = $(_m.getContainer())[0].clientHeight
             # nodes = @artistNodes

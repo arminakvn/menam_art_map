@@ -13,6 +13,7 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
         "click #person":"personFired"
         "click #organization":"organizationFired"
         "click #biotraj":"biotrajFired"
+        "click #main":"mainFired"
       locationFired: (e) =>
         App.vent.trigger "locationFired"
       personFired: (e) =>
@@ -20,6 +21,9 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
       organizationFired: (e) =>
         App.vent.trigger "organizationFired"
       biotrajFired: (e) =>
+
+      mainFired: (e) =>
+        App.vent.trigger "mainFired"
     )
 
   App.HeaderApp.View

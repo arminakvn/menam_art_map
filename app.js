@@ -31,7 +31,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
     var appDir = process.argv[2] || '../menam_art_map/app';
     exports.mongoose = mongoose;
-Schema = mongoose.Schema;
+    Schema = mongoose.Schema;
 
   BiosSchema = new Schema({
     _id: Schema.Types.ObjectId,
@@ -74,6 +74,7 @@ Schema = mongoose.Schema;
   });
 
 
+
   BiosSchema.methods.findLimited = function(cb) {
     var query;
     query = this.model('Bios').find({});
@@ -102,10 +103,20 @@ Schema = mongoose.Schema;
     return query.exec(cb);
   };
 
+
   ArtistSchema.methods.findByTarget = function(cb) {
     var query;
     query = this.model('Artist').find({});
     query.where('target', this.target);
+    query.limit();
+    return query.exec(cb);
+  };
+
+  ArtistSchema.methods.findOrgBySource = function(cb) {
+    var query;
+    query = this.model('Artist').find({});
+    query.where('source', this.source);
+    query.where('group', this.group);
     query.limit();
     return query.exec(cb);
   };
@@ -129,6 +140,14 @@ Schema = mongoose.Schema;
   ArtistSchema.methods.findSource = function(cb) {
     var query;
     query = this.model('Artist').find({});
+    query.distinct('source');
+    return query.exec(cb);
+  };
+
+  ArtistSchema.methods.findSourceByTarget = function(cb) {
+    var query;
+    query = this.model('Artist').find({});
+    query.where('target', this.target);
     query.distinct('source');
     return query.exec(cb);
   };
@@ -194,6 +213,16 @@ Schema = mongoose.Schema;
     });
   });
 
+  app.get('/nodes', function(req, res) {
+    var nodes;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    nodes = Nodes({});
+    nodes.findLimited(function(err, nodes) {
+      return res.json(nodes);
+    });
+  });
+
   app.get('/artists', function(req, res) {
     var artist;
     res.header('Access-Control-Allow-Origin', '*');
@@ -214,15 +243,6 @@ Schema = mongoose.Schema;
     });
   });
 
-  app.get('/nodes', function(req, res) {
-    var nodes;
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    nodes = Nodes({});
-    nodes.findLimited(function(err, nodes) {
-      return res.json(nodes);
-    });
-  });
 
   app.get('/artstsby/:t', function(req, res) {
     var artist;
@@ -252,11 +272,32 @@ Schema = mongoose.Schema;
     var artist;
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    if (req.params.t == "all"){
+      artist = Artist({});
+    artist.findSource(function(err, artist) {
+      return res.json(artist);
+    });
+
+    } else {
+      artist = new Artist({
+        source: req.params.source
+      });
+      artist.findBySource(function(err, artist) {
+        return res.json(artist);
+      });
+    }
+    
+  });
+  app.get('/orgbysourceartist/:source', function(req, res) {
+    var artist;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     artist = new Artist({
+      group: 2,
       source: req.params.source
     });
-    artist.findBySource(function(err, artist) {
-      return res.json(artist);
+    artist.findOrgBySource(function(err, artist) {
+      res.json(artist);
     });
   });
 
@@ -268,6 +309,37 @@ Schema = mongoose.Schema;
     artist.findSource(function(err, artist) {
       return res.json(artist);
     });
+  });
+    options = {
+        dotfiles: 'ignore',
+        etag: false,
+        extensions: ['htm', 'html'],
+        index: false,
+        maxAge: '1d',
+        redirect: false,
+        setHeaders: function(res, path, stat) {
+          res.set('x-timestamp', Date.now());
+        }
+      };
+    app.get('/sourceByTarget/:t', function(req, res) {
+    var artist;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    if (req.params.t == "all"){
+      artist = Artist({});
+    artist.findSource(function(err, artist) {
+      return res.json(artist);
+    });
+
+    } else {
+      artist = new Artist({
+        target: req.params.t
+        });
+        artist.findSourceByTarget(function(err, artist) {
+          return res.json(artist);
+        });
+    }
+    
   });
     options = {
         dotfiles: 'ignore',

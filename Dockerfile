@@ -1,32 +1,28 @@
-# The image is based on the Debian Wheezy distribution.
-FROM google/debian:wheezy
 
-# Fetch and install Node.js
-RUN apt-get update -y && apt-get install --no-install-recommends -y -q curl python build-essential git ca-certificates
-RUN mkdir /nodejs && curl http://nodejs.org/dist/v0.10.29/node-v0.10.29-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
-
-
-# Add Node.js installation to PATH, and set
-# the current working directory to /app
-# so future commands in this Dockerfile are easier to write
-ENV PATH $PATH:/nodejs/bin
+#	Copyright 2015, Google, Inc. 
+# Licensed under the Apache License, Version 2.0 (the "License"); 
+# you may not use this file except in compliance with the License. 
+# You may obtain a copy of the License at 
+#  
+#    http://www.apache.org/licenses/LICENSE-2.0 
+#  
+# Unless required by applicable law or agreed to in writing, software 
+# distributed under the License is distributed on an "AS IS" BASIS, 
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+# See the License for the specific language governing permissions and 
+# limitations under the License.
+#
+# [START docker]
+FROM google/nodejs-runtime
 WORKDIR /app
+ADD package.json /usr/app/package.json
+ADD bower.json /usr/app/bower.json  
+ADD dist /usr/app/dist
+ADD Dockerfile /usr/app/Dockerfile
+ADD app.js /usr/app/app.js
+ADD README.md /usr/app/README.md
+ADD app.yaml /usr/app/app.yaml
+# EXPOSE 8080
+# [END docker]
 
 
-# Copy the file package.json from your app's /app directory to the Docker
-# image. (See note below regarding image caching and dependencies.)
-ADD package.json /app/
-
-# Run npm (node’s package manager) to install packages specified in
-# package.json
-RUN npm install
-
-# Adds the rest of the application source. Since this is a node.js app
-ADD . /app
-
-# No further source transformations are performed.
-# It is possible to install and run additional tooling such as CSS
-# minifiers.
-
-# Specify that npm start is the process that will run in the Docker container. The app should listen on port 8080.
-ENTRYPOINT ["/nodejs/bin/npm", "start"]

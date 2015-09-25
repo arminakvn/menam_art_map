@@ -1,9 +1,31 @@
 define ["js/app"], (App) ->
   App.module "Entities", (Entities, App, Backbone, Marionette, $, _) ->
-    Entities.PersonNodeCollection = Backbone.Collection.extend(
-    )
     Entities.PersonNode = Backbone.Model.extend(
     )
+    Entities.PersonNodeCollection = Backbone.Collection.extend(
+      initialize:  ->
+        @on 'request', ->
+          # MfiaClient.app.trigger 'loading'
+          console.log "loading"
+          return
+        @on 'sync', ->
+          # MfiaClient.app.trigger 'loaded'
+          console.log "loaded"
+          return
+        return
+      url:-> 
+        return "/nodes"
+      
+      parse: (response) ->
+        # console.log "response", response
+        data = _.map response, (key, value) =>
+          # _.map key, (key, value) =>
+            # key
+          "name": key
+        data
+
+    )
+    
     initializePersonNode = new Entities.PersonNode(
     )
 

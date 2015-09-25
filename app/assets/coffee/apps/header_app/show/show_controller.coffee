@@ -3,10 +3,10 @@ define ["js/app", "js/apps/header_app/show/show_view"], (App, View) ->
     Show.Controller =
       ShowModel =
       showHeader: ->
-        require ["js/entities/header"], ->
-          getHeader = App.request "header:entities"
-          $.when(getHeader).done (header) ->
-            showView = new View.HeadersView(collection: header)
+        # require ["js/entities/header"], ->
+          # getHeader = App.request "header:entities"
+          # $.when(getHeader).done (header) ->
+            showView = new View.HeadersView()
 
             App.headerRegion.show showView
 

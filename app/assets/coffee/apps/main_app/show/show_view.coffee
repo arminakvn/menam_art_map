@@ -1,99 +1,245 @@
-define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl"], (App, showTpl) ->
-  App.module "MainApp.View", (View, App, Backbone, Marionette, $, _) ->
-    View.ShowView = Marionette.ItemView.extend(
-    	template: showTpl
-    	id: 'bios'
-    	$el: $('#bios')
-    	ui: 'name': '#bio-list'
-    	initialize: ->
-    		
+define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/apps/main_app/show/templates/show_views.tpl", "tpl!js/apps/main_app/show/templates/spider_view.tpl"], (App, showTpl, showTpls, spiderTpl) ->
+	App.module "MainApp.View", (View, App, Backbone, Marionette, $, _) ->
 
-    	onShow: ->
-    		$(document).ready =>
-			    			@data = _.map App.ArtistSourceCollection.models, (key, value) =>
-			      			_.map key.attributes, (key, value) =>
-			      				value
-    			# require ["js/entities/artist_source"], =>
-    				# $.ajax '/artistssource',
-    					# type: 'GET'
-    					# dataType: 'json'
-    					# error: (jqXHR, textStatus, errorThrown) ->
-    						# $('body').append "AJAX Error: #{textStatus}"
-    					# success: (data, textStatus, jqXHR) ->
-    						# App.request "set:source:artist", data
-			    			biosRegion = $("#bios-region")
-			    			$el = biosRegion
-			    			_textDomEl = L.DomUtil.create('div', 'container paratext-info')
-			    			_el = L.DomUtil.create('svg', 'svg')
-			    			biosRegion.append _textDomEl
-			    			L.DomUtil.enableTextSelection(_textDomEl)  
-			    			_textDomObj = $(L.DomUtil.get(_textDomEl))
-			    			inWidth = $el[0].clientWidth/5
-			    			_textDomObj.css('width', $el[0].clientWidth)
-			    			_textDomObj.css('height', "970")
-			    			_textDomObj.css('background-color', 'none')
-			    			_textDomObj.css('overflow', 'auto')
-			    			L.DomUtil.setOpacity(L.DomUtil.get(_textDomEl), .8)
-			    			color = d3.scale.category10()
-			    			_d3text = d3.select(".paratext-info")
-					        .append("ul"
-					        ).style("list-style-type", "none"
-					        ).style("padding-left", "0px"
-					        ).style('overflow', 'auto'
-					        ).attr("id", "bios-list")
-					        .attr("width", $el[0].clientWidth)
-					        .attr("height", $el[0].clientHeight)
-					        @_d3li = _d3text
-					        .selectAll("li")
-					        .data(@data)
-					        .enter()
-					        .append("li")
-					        @_d3li.style("font-family", "Gill Sans").style("font-size", "16px")
-					        .style("line-height", "1")
-					        .style("border", "0px solid black")
-					        .style("margin-top", "20px")
-					        .style("padding-right", "20px")
-					        .style("padding-left", "40px")
-					        .attr("id", (d, i) =>
-					            # artistBios.push {'name' :d.name, 'id': i}
-					            return "line-#{i}" 
-					        ).on("mouseover", (d) ->
-					          $(this).css('cursor','pointer')
-					        ).on("click", (d,i) ->
-					          L.DomEvent.disableClickPropagation(this) 
-					          d3.select(this).transition().duration(0).style("color", "black").style("background-color", (d, i) ->
-					            "white"
-					          ).style "opacity", 1
-					          d3.select(this).transition().duration(1000).style("color", "rgb(72,72,72)").style("background-color", (d, i) =>
-					            id = d3.select(this).attr("id").replace("line-", "")
-					            return color(1) # color(id)
-					          ).style("opacity", 1)
-					          
-					          return
-					        ).append("text").text((d,i) =>
-					            @_leafletli = L.DomUtil.get("line-#{i}")
-					            timeout = undefined
-					            L.DomEvent.addListener @_leafletli, 'click', (e) =>
-					              d3.selectAll(@_d3li[0]).style("color", "black").style("background-color", "white"
-					              ).style "opacity", 1
-					              # App.execute("resetHighlightNode")
-					              timeout = 0
-					              timeout = setTimeout(->
-					                # 
-					                if timeout isnt 0 
-					                  timeout = 0
-					                  App.execute("highlightNode", d)
-					                  console.log "executing showBio"
-					                  # App.MapApp.Show.Controller.showBio(d)
-					                  App.execute("showBio", d)
-					              , 600)
-					              return 
-					            , ->
+		View.SpiderView = Marionette.CollectionView.extend(
+			template: spiderTpl
+			id: 'bios-list'
+			$el: $('#bios-list')
+		)
 
-					              return
-					              e.stopPropagation()
-					            d
-					        ).style("font-family", "Gill Sans").style("font-size", "14px").style("color", "black").transition().duration(1).delay(1).style("opacity", 1)
-    )
+		View.ShowView = Marionette.ItemView.extend(
+			template: showTpl
+			tagName: "div"            
+			# $el: $('#bios')
+			ui: 
+				'name': 'li'
+			$el: $('li')
+			className: 'artistsList'
+			events:
+				# 'mouseenter @ui.name':'mouseEnterNames'
+				# 'hover @ui.name':'mouseoverNames'
+				'mouseover @ui.name':'mouseoverNames'
+				'mouseout @ui.name':'mouseoutNames'
+				'click @ui.name' : 'clickNames'
+			modelEvents:
+				'change' : 'render'
+			# mouseoverDots: (e) ->
+			mouseoverNames: (e)->
+				console.log "e", e
+				@timeout = setTimeout(=>
+					if @timeout > 75
+						App.execute("showBio", e.target.id)
+						console.log "$('bioTriggerd')", $('.bioTriggerd')
+						$('.bioTriggerd').removeClass('bioTriggerd') 
+						$(e.target).addClass('highlighted bioTriggerd')
+						# App.execute("highlightNode", e.target.id)
+						@timeout=0
 
-  App.MainApp.View
+
+					return
+				, 300, (e) =>
+					return
+				)
+				$(e.target).css('cursor','pointer')
+				$(e.target).addClass('highlighted')
+
+			mouseoutNames: (e)->
+				@timeout = 0
+				$(e.target).animate({
+					opacity: 1
+				}, 500)
+				$(e.target).css('cursor','default')
+				$(e.target).removeClass('highlighted')
+				$(e.target).removeClass('bioTriggerd')
+				# App.execute("hideBio")
+			clickNames: (e) ->
+				App.navigate "#/organization/#{e.target.id}", trgigger: true
+			onBeforeRender: ->
+				@$el.css("opacity", 0)
+			
+			onBeforeDestroy: ->
+				@$el.animate({
+					 "opacity": 0
+				}, 2000 , =>
+				)
+			onShow: ->
+				$(".hoverdots").hide()
+				@$el.animate({
+					 "opacity": 1
+				}, 1000 , =>
+				)
+
+		)
+		View.ShowViews = Marionette.CompositeView.extend(
+			itemView: View.ShowView
+			template: showTpls
+			id: 'bios-list'
+			$el: $('#bios-list')
+			ui: 
+				'list':'ul'
+				'divs': 'div'
+				'navigator': 'span'
+			events:
+				'mouseover @ui.divs':'mouseEnterDivs'
+				'mouseover @ui.navigator' : 'mouseoverNavigator'
+				'click @ui.navigator' : 'clickNavigator'
+				# 'mouseout @ui.divs':'mouseoutDivs'
+				# 'mouseover @ui.dots':'mouseoverNavigator'
+			
+			modelEvents:
+				"model:change": "doSomething"
+			  
+			doSomething: ->
+				console.log "doSomething"
+			# mouseEnterDivs: (e) ->
+			# 	$(".hoverdots").show().fadeIn()
+			# 	console.log "divs", e.target, e
+				# console.log "$(e.target)..children('span')", $(e.target).children('span')
+				# if $(e.target).children('span').css('visibility') == 'hidden'
+				# 	$(e.target).children('span').css('visibility','visible')
+				# else
+				# 	$(e.target).children('span').css('visibility','hidden')
+				# $(e.target).next().toggleClass("visible")
+
+			# modelEvents:
+			# 	'change' : 'fieldsChanged'
+			mouseoverNavigator: (e) ->
+				$(e.target).css('cursor','pointer')
+				
+				console.log "mouse over navigator"
+			clickNavigator: (e) ->
+				App.MainApp.Show.Controller.updateView('all')
+				App.MapApp.Show.Controller.resetMapHighlights()
+			mouseoutDivs: (e)->
+				$(".hoverdots").show().fadeOut()
+				console.log "mouseoutDivs"
+				console.log "divs", e.target
+				# $(e.target).next().removeClass("visible")
+				# $(e.target).next().toggleClass("artisthover")
+			initialize: ->
+				Marionette.bindEntityEvents(this, this.model, this.modelEvents)
+			onBeforeRender: ->
+				@$el.css('height', "700").css("list-style-type", "none").css('overflow', 'scroll')
+				@biosRegion = $("#bios-region")
+			# 	$(@biosRegion).animate({
+			# 		 "left": "-=250px" 
+			# 		 "opacity"
+			# 	}, "slow" , =>
+			# 	)
+			# 	$(@biosRegion.next()).animate({
+			# 		 "left": "-=150px" 
+			# 		 "opacity"
+			# 	}, "slow" , =>
+			# 	)
+			# onBeforeDestroy: ->
+				console.log "onBeforeDestroy"
+			onBeforeRemoveChild: ->
+				console.log "onBeforeRemoveChild"
+			buildChildView: (child, ChildViewClass, childViewOptions) ->
+			  # build the final list of options for the childView class
+			  options = _.extend({ model: child }, childViewOptions)
+			  # create the child view instance
+			  view = new ChildViewClass(options)
+			  # return it
+			  view
+			onBeforeAddChild: ->
+				console.log "onBeforeAddChild"
+
+			onShow: ->
+				$(document).ready =>
+					console.log "@model", @model
+					biosRegion = @biosRegion
+					b_el = $("#main-region")
+					btterflyRegion = b_el
+					projection = d3.geo.polyhedron.waterman().rotate([20, 0]).scale(150).translate([btterflyRegion[0].clientWidth / 2, 400]).precision(.1)
+					pathG = d3.geo.path().projection(projection)
+					graticule = d3.geo.graticule()
+					clicks = []
+					gradient = ['black', 'red']
+					color = d3.scale.linear().domain([0, 3]).range(gradient)
+					svg = d3.select('#main-region').append('svg').attr('width', btterflyRegion[0].clientWidth).attr('height', 800)
+					defs = svg.append('defs')
+					land = undefined
+					mouseovered = (d) ->
+						console.log "mouseovered"
+					clicked = (d) =>
+						p = d3.select(this)
+						clicks[d.id]++
+						domain = [d3.min(clicks), d3.max(clicks)]
+						color.domain domain
+						land.filter('.land').style 'fill', (d) ->
+							color clicks[d.id]
+						timeout = 0
+						timeout = setTimeout(=>
+							if timeout isnt 0 
+								timeout = 0
+								console.log "d", d
+								# $(@biosRegion).animate({
+								# 	 "left": "+=250px" 
+								# 	 "opacity"
+								# }, "slow" , =>
+								# )
+								# $(@biosRegion.next()).animate({
+								# 	 "left": "+=150px" 
+								# 	 "opacity"
+								# }, "slow" , =>
+								# )
+						, 1600, =>
+							App.execute("showBio", [d.source])
+							App.execute("highlightNode", [d.source])
+						)
+						App.navigate "#/location/", trgigger: true
+						return 
+					defs.append('path').datum(type: 'Sphere').attr('id', 'sphere').attr 'd', pathG
+					defs.append('clipPath').attr('id', 'clip').append('use').attr 'xlink:href', '#sphere'
+					svg.append('use').attr('class', 'stroke').attr 'xlink:href', '#sphere'
+					svg.append('use').attr('class', 'fill').attr 'xlink:href', '#sphere'
+					svg.append('path').datum(graticule).attr('class', 'graticule').attr('clip-path', 'url(#clip)').attr 'd', pathG
+					d3.json 'world-50m.json', (error, world) ->
+						polys = topojson.feature(world, world.objects.countries).features
+						polys.forEach (d) ->
+							clicks[d.id] = 0
+							return
+						land = svg.selectAll('path').data(polys)
+						land.enter().insert('path', '.graticule').attr('class', 'land').attr('clip-path', 'url(#clip)').style('fill', (d) ->
+							color clicks[d.id]
+						).attr('d', pathG).on('click', clicked).on('mouseover', mouseovered)
+						textResponse = $.ajax
+							url: "/artistsbygroup/1"
+							success: (result) =>
+								result
+						$.when(textResponse).done (artists) =>
+          					console.log "ar]", artists
+          					svg.selectAll('path').data(artists).enter().append('circle', '.pin').attr('r', 4).attr('fill', 'white').attr('transform', (d) ->
+          						if d.long != "NA"
+	          						'translate(' + projection([
+	          							d.long
+	          							d.lat
+	          						]) + ')'
+          						# ).on('mouseover', mouseovered
+          						).on('click', clicked).on('mouseover', (d) ->
+          							xPosition = d3.select(this).attr('x')
+          							yPosition = d3.select(this).attr('y')
+          							#Update the tooltip position and value
+          							d3.select('#tooltip').style('left', d3.event.pageX + 'px').style('top', d3.event.pageY - 90 + 'px').select('#-label'
+          							).html('<strong>' + 'Location: ' + d.target + '</strong>' + '<br/>' + 'View Artist: ' + d.source
+
+          							#Show the tooltip
+          							)
+          							d3.select('#tooltip').classed 'hidden', false
+          							return
+          						).on 'mouseout', ->
+          							#Hide the tooltip
+          							d3.select('#tooltip').classed 'hidden', true
+          							return
+							return
+					d3.select(self.frameElement).style 'height', btterflyRegion[0].clientHeight + 'px'
+		)
+		# View.ShowView = Marionette.CollectionView.extend(
+		# 	template: showTpls
+		# 	itemView: View.ShowView
+  #       	itemViewContainer: "tbody"
+		# 	)
+		
+
+	App.MainApp.View

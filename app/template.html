@@ -3,11 +3,12 @@
   <head>
     <!-- TODO: Manually write with project name -->
 
-    <title>artistsnetwork</title>
+    <title>Menam Art Map</title>
     <meta charset="utf-8" />
     <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.js"></script>
     <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
     <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,13 +24,16 @@
   <body>
   <div class="container">
   <div class="row">
-      <div id="header-region"></div>
+      <!-- <div id="header-region"></div> -->
   </div>    
   <div class="row">
+    <div id="tooltip" class="hidden" style="z-index:20000;">
+      <p><span id="-label"></span></p>
+    </div>
       <div id="bios-region" class="col-md-2">
       </div>
       <div id="main-region" class="col-md-10">
-        <h3>Starting artistsnetwork</h3>
+        <h3></h3>
         
       </div>
   </div>

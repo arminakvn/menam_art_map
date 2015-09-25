@@ -10,7 +10,9 @@
       marionette: "./bower_components/backbone.marionette/lib/backbone.marionette",
       tpl: "./bower_components/requirejs-tpl/tpl",
       json2: "./bower_components/json2/json2",
-      d3: "./bower_components/d3/d3"
+      d3: "./bower_components/d3/d3",
+      polyhedron: "./bower_components/d3-plugins/geo/polyhedron/polyhedron",
+      topojson: "./bower_components/topojson/topojson"
     },
     shim: {
       underscore: {
@@ -26,6 +28,10 @@
       },
       d3: {
         exports: "d3"
+      },
+      polyhedron: {
+        deps: ["d3"],
+        exports: "polyhedron"
       }
     },
     name: "app",
@@ -36,8 +42,8 @@
     return App.start();
   });
 
-  requirejs(["jquery", "d3"], function($, d3) {
-    (function($, d3, window, undefined_) {
+  requirejs(["jquery", "d3", "polyhedron", "topojson"], function($, d3, polyhedron) {
+    (function($, d3, polyhedron, window, undefined_) {
       var $doc;
       return $doc = $(document);
     })($, window);
