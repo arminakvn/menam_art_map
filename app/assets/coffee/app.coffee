@@ -7,6 +7,7 @@ define ["marionette"], (Marionette) ->
     footerRegion: "#footer-region"
     headerRegion: "#header-region"
     biosRegion: "#bios-region"
+    bioRegion: "#bio-region"
     mainRegion: "#main-region"
 
   # route helpers
@@ -44,7 +45,7 @@ define ["marionette"], (Marionette) ->
                 App.request "set:personLink", data
                 
   App.on "initialize:after", ->
-    require ["js/apps/header_app/header_app", "js/apps/main_app/main_app", "js/apps/map_app/map_app", "js/apps/footer_app/footer_app", "js/apps/person_app/person_app", "js/apps/org_app/org_app"], ->
+    require ["js/apps/header_app/header_app", "js/apps/main_app/main_app", "js/apps/map_app/map_app", "js/apps/footer_app/footer_app", "js/apps/person_app/person_app", "js/apps/org_app/org_app", "js/apps/bio_app/bio_app"], ->
       console.log "Marionette Application Started"
       if Backbone.history
         Backbone.history.start()

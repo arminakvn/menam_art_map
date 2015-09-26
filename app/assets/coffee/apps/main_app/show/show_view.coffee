@@ -25,23 +25,32 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				'change' : 'render'
 			# mouseoverDots: (e) ->
 			mouseoverNames: (e)->
+				@timeout = 0
 				console.log "e", e
 				@timeout = setTimeout(=>
-					if @timeout > 75
+					if @timeout > 100
 						App.execute("showBio", e.target.id)
 						console.log "$('bioTriggerd')", $('.bioTriggerd')
+						$('.highlighted').removeClass('highlighted') 
 						$('.bioTriggerd').removeClass('bioTriggerd') 
 						$(e.target).addClass('highlighted bioTriggerd')
 						# App.execute("highlightNode", e.target.id)
-						@timeout=0
 
 
 					return
-				, 300, (e) =>
+				, 100, (e) =>
+					try
+						App.execute("showBio", e.target.id)
+						console.log "$('bioTriggerd')", $('.bioTriggerd')
+						$('.highlighted').removeClass('highlighted') 
+						$('.bioTriggerd').removeClass('bioTriggerd') 
+						$(e.target).addClass('highlighted bioTriggerd')
+					catch e
+						console.log "mouseover moved"					
 					return
 				)
 				$(e.target).css('cursor','pointer')
-				$(e.target).addClass('highlighted')
+				# $(e.target).addClass('highlighted')
 
 			mouseoutNames: (e)->
 				@timeout = 0
@@ -49,7 +58,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 					opacity: 1
 				}, 500)
 				$(e.target).css('cursor','default')
-				$(e.target).removeClass('highlighted')
+				# $(e.target).removeClass('highlighted')
 				$(e.target).removeClass('bioTriggerd')
 				# App.execute("hideBio")
 			clickNames: (e) ->

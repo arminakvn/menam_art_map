@@ -108,6 +108,7 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
             if name_res not in output
               App.MainApp.Show.Controller.showView.collection.add(new App.Entity.ArtistSource({'name': name_res}))
                 # App.MainApp.Show.Controller.showView.collection.addChild(newEnt)
+          console.log "App.Entities.LocationNodeCollection", App.MapApp.Show.Controller.showView.collection
           # index = respnd.indexOf childModel.get('name')
               # childModel.destroy()
           # App.MainApp.Show.Controller.showView.render()

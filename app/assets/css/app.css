@@ -221,11 +221,30 @@ cantainer.paratext-info {
 }
 .artistsList.list-navigator {
   position: fixed;
+  width: inherit;
   margin: 0 0 0 0;
 }
 #bios-region {
   padding: 0 0 0 0;
 }
+#bio-region {
+  padding: 10 10 10 10;
+  height: 700px;
+  background-color:  #7CB3C0; /*#7CB3C0*/
+  font-family: "CartoGothicStd";
+  color: white;
+  font-size: 12px;
+  border: solid 1.5px #7CB3C0;
+  overflow: auto;
+  background-image: url('tab-2.png');
+  background-size: 50px 25px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 720px 54px;; 
+}
 #main-region {
   padding: 0 0 0 0;
+}
+.location {
+  border-bottom: solid 2px white;
 }

@@ -17,6 +17,9 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
         @$el.animate({
           opacity: 0
         }, 750)
+        
+      
+       
       onShow: ->
         # require ["js/entities/artist"], =>
           # console.log "@collection", @collection
@@ -29,6 +32,22 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
           #   # artists = artist.responseJSON
           #   # @collection = App.ArtistCollection
             # @$el = $('main-region')
+            console.log "@collection map", @collection
+            removeDuplicates = (ar) ->
+              if ar.length == 0
+                return []  
+              res = {}
+              res[ar[key]] = ar[key] for key in [0..ar.length-1]
+              value for key, value of res
+            list = []
+            for model in @collection.models
+              # console.log "model", model
+              try
+                list.push model.attributes.target
+              catch e
+                # ...
+            @list = list
+            console.log "@list", @list
             id = 0
             @artistNodes = [] 
             nodes = []
@@ -70,6 +89,12 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
               link.attributes.source = _nodes[link.attributes.source] or (_nodes[link.attributes.source] = name: link.attributes.source, value: 1)
               link.attributes.target = _nodes[link.attributes.target] or (_nodes[link.attributes.target] = {name: link.attributes.target, group: link.attributes.group, lat: link.attributes.lat, long: link.attributes.long, value: 1})
 
+            d3.values((_nodes)).forEach (sourceNode) =>
+              @collection.models.forEach (link) => 
+                if link.attributes.source.name == sourceNode.name and link.attributes.target.name != sourceNode.name
+                  link.attributes.target.value += 1
+                return
+              return  
               return
             # d3.values((_nodes)).forEach (sourceNode) =>
             #   _links.forEach (link) => 
@@ -116,28 +141,28 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
             ###
             making the bios controller
             ###
-            divControl = L.Control.extend(  
-              initialize: =>
-                position = "left"
-                _domEl = L.DomUtil.create('div', "container " + "bioController" + "-info")
-                # _domEl.innerHTML = "<div></div>"
-                # L.DomUtil.enableTextSelection(_domEl)  
-                @_m.getContainer().getElementsByClassName("leaflet-control-container")[0].appendChild(_domEl)
-                _domObj = $(L.DomUtil.get(_domEl))
-                _domObj.css('width', $(@_m.getContainer())[0].clientWidth/4)
-                _domObj.css('height', $(@_m.getContainer())[0].clientHeight/1.1)
-                _domObj.css('line-height', '22px')
-                L.DomUtil.setOpacity(L.DomUtil.get(_domEl), 0.0)
-                L.DomUtil.setPosition(L.DomUtil.get(_domEl), L.point(-$(@_m.getContainer())[0].clientWidth/1.2, 0), disable3D=0)
-                @position = L.point(-$(@_m.getContainer())[0].clientWidth/1.05, 0)
-                @fx = new L.PosAnimation()
-                @fx.run(L.DomUtil.get(_domEl), position, 0.9)
-                @_bios_domEl = _domEl
-                @_m.on "click", =>
-                  @fx.run(L.DomUtil.get(_domEl), @position, 0.9)
-                @_d3BiosEl = d3.select(_domEl)
-            )
-            new divControl()
+            # divControl = L.Control.extend(  
+            #   initialize: =>
+            #     position = "left"
+            #     _domEl = L.DomUtil.create('div', "container " + "bioController" + "-info")
+            #     # _domEl.innerHTML = "<div></div>"
+            #     # L.DomUtil.enableTextSelection(_domEl)  
+            #     @_m.getContainer().getElementsByClassName("leaflet-control-container")[0].appendChild(_domEl)
+            #     _domObj = $(L.DomUtil.get(_domEl))
+            #     _domObj.css('width', $(@_m.getContainer())[0].clientWidth/4)
+            #     _domObj.css('height', $(@_m.getContainer())[0].clientHeight/1.1)
+            #     _domObj.css('line-height', '22px')
+            #     L.DomUtil.setOpacity(L.DomUtil.get(_domEl), 0.0)
+            #     L.DomUtil.setPosition(L.DomUtil.get(_domEl), L.point(-$(@_m.getContainer())[0].clientWidth/1.2, 0), disable3D=0)
+            #     @position = L.point(-$(@_m.getContainer())[0].clientWidth/1.05, 0)
+            #     @fx = new L.PosAnimation()
+            #     @fx.run(L.DomUtil.get(_domEl), position, 0.9)
+            #     @_bios_domEl = _domEl
+            #     @_m.on "click", =>
+            #       @fx.run(L.DomUtil.get(_domEl), @position, 0.9)
+            #     @_d3BiosEl = d3.select(_domEl)
+            # )
+            # new divControl()
             console.log "_links", _links
             @_nodes = _nodes
             @_links = _links
