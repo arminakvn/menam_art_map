@@ -35,9 +35,6 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 		            console.log "response", response
 		            @showView = new View.ShowView(collection: artistss)
 		            App.mainRegion.show @showView
-				console.log "oApp.ArtistCollection", App.ArtistCollection
-				console.log "App.MainApp.Show.Controller.showView.collection", App.MainApp.Show.Controller.showView.collection
-				console.log "controller show showOrganization"
 				
 			
 			highlightNodesBy: (sourceNode) ->

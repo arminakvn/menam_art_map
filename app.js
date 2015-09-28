@@ -130,6 +130,14 @@ db.once('open', function callback () {
     return query.exec(cb);
   };
 
+  ArtistSchema.methods.findDistLocs = function(cb) {
+    var query;
+    query = this.model('Artist').find({});
+    query.where('group', this.group);
+    query.distinct('target');
+    return query.exec(cb);
+  };
+
   ArtistSchema.methods.findBySource = function(cb) {
     var query;
     query = this.model('Artist').find({});
@@ -314,6 +322,17 @@ db.once('open', function callback () {
       target: req.params.target
     });
     artist.findDistLocByTarget(function(err, artist) {
+      res.json(artist);
+    });
+  });
+  app.get('/distLocs', function(req, res) {
+    var artist;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    artist = new Artist({
+      group: 1,
+    });
+    artist.findDistLocs(function(err, artist) {
       res.json(artist);
     });
   });

@@ -193,6 +193,13 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 			highlightNodesBy: (sourceNode) =>
 				# console.log "@ inside highlightNodesBy", @
 				# @Controller.showBio(sourceNode)
+				if App.NavApp.Show.Controller.showView.model.get('statelist') != sourceNode
+					App.NavApp.Show.Controller.showView.model.destroy()
+					App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState
+						statelist: 'All artists'
+						statelocation: "All locations > " + sourceNode
+						statebio: ""
+					App.NavApp.Show.Controller.showView.render()
 				updateCollection = $.ajax '/artistsbysource/'+sourceNode,
 		              type: 'GET'
 		              dataType: 'json'

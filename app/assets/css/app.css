@@ -198,8 +198,10 @@ cantainer.paratext-info {
   /*border-right-width: 2px;*/
   opacity: 1;
 }
-
-.previewHighlight {
+.list-items {
+  border-bottom: solid 4px white;
+}
+.previewHighlight>li {
   background-color: #7CB3C0;
   opacity: 0.2;
 }
@@ -221,9 +223,9 @@ cantainer.paratext-info {
   background-attachment: fixed;
   background-position: 720px 54px;; 
 }
-.artistsList:nth-child(2){
+/*.artistsList:nth-child(2){
   padding: 20px 0 0 20px;
-}
+}*/
 .artistsList.list-navigator {
   position: fixed;
   width: 200px;
@@ -250,6 +252,9 @@ cantainer.paratext-info {
   background-position: 720px 54px;; 
 }
 #main-region {
+  padding: 0 0 0 0;
+}
+#navigation-region {
   padding: 0 0 0 0;
 }
 .location {

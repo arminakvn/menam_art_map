@@ -51,9 +51,9 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 
 			mouseoutNames: (e)->
 				@timeout = 0
-				$(e.target).animate({
-					opacity: 1
-				}, 500)
+				# $(e.target).animate({
+				# 	opacity: 1
+				# }, 500)
 				$(e.target).css('cursor','default')
 				# $(e.target).removeClass('highlighted')
 				$(e.target).removeClass('bioTriggerd')

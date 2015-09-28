@@ -18,16 +18,16 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
         'mouseout @ui.elems': 'mouseoutElems'
         'click @ui.elems': 'mouseclickElems'
       mouseoverElems: (e) ->
+        console.log "App.DistinctLinkCollection.models", App.MapApp.Show.Controller.showView.list
         # console.log "@$el", @$el[0].textContent
         @$el.css('cursor','pointer')
         if @$el.hasClass("location")          
           @$el.addClass('highlighted')
           list = App.BioApp.Show.Controller.listLevelOne(@$el[0].textContent)
-          $.when(list).done (respnd) =>
-              console.log "list", respnd
-              respnd
-              App.MainApp.Show.Controller.highlightArtistsby(list)
-          # App.MapApp.Show.Controller.previewByLocation(@$el[0].textContent)
+          # $.when(App.list).done (respnd) =>
+          #     respnd
+          App.MainApp.Show.Controller.highlightArtistsby(list)
+          App.MapApp.Show.Controller.previewByLocation(@$el[0].textContent)
           # highlightArtistsby
 
       mouseoutElems: (e) ->

@@ -76,8 +76,13 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
           #       output.push initmodels.get('name')
           App.MainApp.Show.Controller.showView.children.each (childView) =>
               childModel = childView.model
+              childView.$el.removeClass("previewHighlight")
+              childView.$el.removeClass("highlighted")
+              childView.$el.removeClass("bioTriggerd")
               if childModel.get('name') in respnd
                 if childView.$el.hasClass("highlighted")
+                  console.log "actual one". childView
+                else if childView.$el.hasClass("bioTriggerd")
                   console.log "actual one". childView
                 else
                   childView.$el.addClass("previewHighlight")
@@ -109,10 +114,15 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                     # key
                   "name": key
                 # return ret
-        if App.MainApp.Show.Controller.showView.model.get('state') != names
-          App.MainApp.Show.Controller.showView.model.destroy()
-          App.MainApp.Show.Controller.showView.model = new App.Entity.ArtistListState({'state': 'All Artists > ' + names})
-          App.MainApp.Show.Controller.showView.render()
+        # this entire blok needs to be refoctored into a controller api method
+        if App.NavApp.Show.Controller.showView.model.get('statelist') != names
+          App.NavApp.Show.Controller.showView.model.destroy()
+          App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState 
+            statelist: 'All Artists > ' + names
+            statelocation: "All Locations"
+            statebio: ""
+          App.NavApp.Show.Controller.showView.render()
+        # end of the block for refactoring
         $.when(updateCollection).done (respnd) =>
           output = []
           App.MainApp.Show.Controller.showView.collection.each (initmodels) =>

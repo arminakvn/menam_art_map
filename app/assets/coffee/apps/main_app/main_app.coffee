@@ -18,6 +18,7 @@ define ["js/app"], (App) ->
 
     this == MainApp
     myData = 'this is private data'
+    DistinctLocationsList = ''
     ifControl = false
     # noFollowLinks = true
     inWidth = 60

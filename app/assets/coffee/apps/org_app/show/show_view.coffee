@@ -9,11 +9,9 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         @height = @el.clientHeight
       initialize: ->
         # orgbysourceartist
-        console.log "@collection.models", @collection.models
         @nodes = @collection.models[0].attributes.level0
         @nodes1 = @collection.models[1].attributes.level1
         # @nodes = _.map model, (key, value) =>
-          # console.log "@nodes", @nodes
           # key.attributes
         for each in @nodes1
           @nodes.push each
@@ -40,7 +38,6 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
           i++
         _nodes = {}
         _links.forEach (link) ->
-          console.log "link", link
           link.source = _nodes[link.source] or (_nodes[link.source] = name: link.source, value: 0, group: 0)
           link.target = _nodes[link.target] or (_nodes[link.target] = {name: link.target, group: link.group, lat: link.lat, long: link.long, value: 1})
           return
@@ -51,7 +48,6 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
             return
           return
         @_nodes = _nodes
-        console.log "_nodes", _nodes
         @_links = _links
       onShow: ->
         @height = 700 if @height == 0
@@ -90,7 +86,6 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         ).attr('x', '-1px').attr('y', '10px').attr('width', '4px').attr('height', '4px'
         ).style("stroke", "none"
         ).style("opacity", 0.6).style('fill', (d) =>
-          console.log "d", d, "d.group", d.group
           return @color(d.group)
         ).on('mouseover', (d, i) ->
 
