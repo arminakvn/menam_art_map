@@ -28,7 +28,6 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
         
       
     parse: (response) ->
-      console.log "response", response
       data = _.map response, (key, value) =>
         # _.map key, (key, value) =>
           # key
@@ -65,6 +64,32 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
   )
   App.module "MainApp.Show", (Show, App, Backbone, Marionette, $, _) ->
     Show.Controller =
+      
+
+      resetHighlightArtistsby: () ->
+        App.MainApp.Show.Controller.showView.children.each (childView) =>
+          childView.$el.removeClass("previewHighlight")
+      highlightArtistsby: (list) ->
+        $.when(list).done (respnd) =>
+          console.log "list in MainApp", respnd
+          # App.MainApp.Show.Controller.showView.collection.each (initmodels) =>
+          #       output.push initmodels.get('name')
+          App.MainApp.Show.Controller.showView.children.each (childView) =>
+              childModel = childView.model
+              if childModel.get('name') in respnd
+                if childView.$el.hasClass("highlighted")
+                  console.log "actual one". childView
+                else
+                  childView.$el.addClass("previewHighlight")
+
+        # respnd.forEach (name_res) =>
+        #     if name_res not in output
+        #       App.MainApp.Show.Controller.showView.collection.add(new App.Entity.ArtistSource({'name': name_res}))
+              # thrn = childModel.get('name')
+              # App.MainApp.Show.Controller.showView.filter(App.MainApp.Show.Controller.showView.collection.get(childModel), App.MainApp.Show.Controller.showView.collection)
+              # @showView.children.remove(App.MainApp.Show.Controller.showView.children.findByModel(App.MainApp.Show.Controller.showView.collection.get(childModel)))
+              # model_rem = App.MainApp.Show.Controller.showView.collection.get(childModel)
+              # App.MainApp.Show.Controller.showView.collection.remove(App.MainApp.Show.Controller.showView.collection.get(childModel))
       updateView: (names) ->
         # @showView.destroy()
         # @showView.children.each (childview) =>
@@ -108,7 +133,6 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
             if name_res not in output
               App.MainApp.Show.Controller.showView.collection.add(new App.Entity.ArtistSource({'name': name_res}))
                 # App.MainApp.Show.Controller.showView.collection.addChild(newEnt)
-          console.log "App.Entities.LocationNodeCollection", App.MapApp.Show.Controller.showView.collection
           # index = respnd.indexOf childModel.get('name')
               # childModel.destroy()
           # App.MainApp.Show.Controller.showView.render()

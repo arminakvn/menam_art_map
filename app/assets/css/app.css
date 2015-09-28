@@ -198,6 +198,11 @@ cantainer.paratext-info {
   /*border-right-width: 2px;*/
   opacity: 1;
 }
+
+.previewHighlight {
+  background-color: #7CB3C0;
+  opacity: 0.2;
+}
 .bioTriggerd {
   /*color: white;*/
   font-style: bold;
@@ -221,7 +226,9 @@ cantainer.paratext-info {
 }
 .artistsList.list-navigator {
   position: fixed;
-  width: inherit;
+  width: 200px;
+  height: 25px;
+/*  top: 10px;*/
   margin: 0 0 0 0;
 }
 #bios-region {

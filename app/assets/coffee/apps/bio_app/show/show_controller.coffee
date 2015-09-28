@@ -13,8 +13,8 @@ define ["js/app", "js/apps/bio_app/show/show_view", "tpl!js/apps/bio_app/show/te
 	        return
 	      return
 	    url:-> 
-	    	url = App.BioApp.Show.Controller.url
-	    	console.log "url", url
+	    	url = "/biosby/#{App.BioApp.Show.Controller.url}" 
+	    	# console.log "url", url
 	    	url
 	    parse: (response) ->
 	      splirR = response[0].__text.split(' ')
@@ -41,17 +41,29 @@ define ["js/app", "js/apps/bio_app/show/show_view", "tpl!js/apps/bio_app/show/te
 	App.module "BioApp.Show", (Show, App, Backbone, Marionette, $, _) ->
 		Show.Controller =
 
+			listLevelOne: (sourceNode) ->
+				# console.log "sourceNode", '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, ""
+				updateCollection = $.ajax '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, "",
+		              type: 'GET'
+		              dataType: 'json'
+		              error: (jqXHR, textStatus, errorThrown) ->
+		                # $('body').append "AJAX Error: #{textStatus}"
+		              success: (data, textStatus, jqXHR) =>
+		              	ret = _.map data, (key, value) =>
+		              		"target": key.target
+		        $.when(updateCollection).done (respnd) =>
+		          respnd
+		        updateCollection
+
 			hideBio: () =>
 				# @Controller.showView.fx.run(L.DomUtil.get(@Controller.showView._bios_domEl), L.point(-$(@Controller.showView._m.getContainer())[0].clientWidth/1.2, 0), 0.5)
 
 			showBio: (artist) =>
 		    	# L.DomUtil.setOpacity(L.DomUtil.get(@Controller.showView._bios_domEl), 0.75)
 		    	@artist = artist
-		    	App.BioApp.Show.Controller.url = "/biosby/#{artist}"
-		    	console.log "App.BioApp.Show.Controller.url", App.BioApp.Show.Controller.url
+		    	App.BioApp.Show.Controller.url = artist
 		    	bioCollection = new App.Entities.BioElementTextCollection
 		    	bioCollection.fetch 'success': (response) =>
-		    		console.log "bios response", response
 		    		@showView = new View.ShowViews(collection: response)
 		    		App.bioRegion.show(@showView)
 		    	# @Controller.showView.fx.run(L.DomUtil.get(@Controller.showView._bios_domEl), L.point(-$(@Controller.showView._m.getContainer())[0].clientWidth/2.6, 0.5), 0.5)

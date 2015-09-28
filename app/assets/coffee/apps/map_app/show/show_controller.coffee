@@ -59,7 +59,6 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 			# 	full_url
 			'/artistsbygroup/1'
 		parse: (response) ->
-			console.log "response", response
 			data = _.map response, (key, value) =>
 				'name' :key.source
 				'group': key.group
@@ -76,10 +75,24 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 
 	App.module "MapApp.Show", (Show, App, Backbone, Marionette, $, _) ->
 		Show.Controller =
+
+			previewByLocation: (sourceNode) ->
+				console.log "sourceNode", '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, ""
+				updateCollection = $.ajax '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, "",
+		              type: 'GET'
+		              dataType: 'json'
+		              error: (jqXHR, textStatus, errorThrown) ->
+		                # $('body').append "AJAX Error: #{textStatus}"
+		              success: (data, textStatus, jqXHR) =>
+		              	console.log "data", data
+		              	ret = _.map data, (key, value) =>
+		              		"target": key.target
+		        $.when(updateCollection).done (respnd) =>
+		          console.log "previewByLocation", respnd
+
 			showLocation: ->
 				locationNodes = new App.Entities.LocationNodeCollection
 				locationNavigator = new App.Entity.LocationState({'state': 'World'})
-				console.log "locationNavigator", locationNavigator
 				locationNodes.fetch 'success': (response) =>
 					@showView = new View.ShowView(collection:locationNodes, model: locationNavigator)
 					App.mainRegion.show(@showView)
@@ -186,29 +199,25 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		              error: (jqXHR, textStatus, errorThrown) ->
 		                # $('body').append "AJAX Error: #{textStatus}"
 		              success: (data, textStatus, jqXHR) =>
-		              	console.log "ret data", data
 		              	ret = _.map data, (key, value) =>
 		              		"target": key.target
 		        $.when(updateCollection).done (respnd) =>
 		          output = []
-		          console.log "App.MapApp.Show.Controller.showView.model", App.MapApp.Show.Controller.showView
 		          try
-		          	App.MapApp.Show.Controller.showView.model.destroy()
+		          	# App.MapApp.Show.Controller.showView.model.destroy()
 		          catch e
 		          	# ...
 		          
-		          App.MapApp.Show.Controller.showView.model = new App.Entity.ArtistListState({'state': 'World > ' + sourceNode})
-		          App.MapApp.Show.Controller.showView.render()
+		          # App.MapApp.Show.Controller.showView.model = new App.Entity.ArtistListState({'state': 'World > ' + sourceNode})
+		          # App.MapApp.Show.Controller.showView.render()
 		          App.MapApp.Show.Controller.showView.collection.each (initmodels) =>
 		              output.push initmodels.get('target').name
 		              # console.log "this is the out put which is a list of the list in the left", output
 		          # console.log "respnd when done", respnd
 		          # console.log "updateCollection when done", updateCollection
-		          console.log "output", output    
 		          # console.log console.log "App.MapApp.Show.Controller.showView.collection.get(childModel)", App.MapApp.Show.Controller.showView.collection.get(childModel)
 		          App.MapApp.Show.Controller.showView.children.each (childView) =>
 		            # console.log "childModel.get('target')", childModel.get('target')
-		            console.log "childView", childView
 		            childModel = childView.model
 		            # if childModel.get('target') not in output
 		              # thrn = childModel.get('name')
@@ -217,8 +226,6 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		              # model_rem = App.MainApp.Show.Controller.showView.collection.get(childModel)
 		              # App.MainApp.Show.Controller.showView.collection.remove(App.MapApp.Show.Controller.showView.collection.get(childModel))
 		          respnd.forEach (name_res) =>
-		            console.log "name_res", name_res
-		            console.log "sourceNode", sourceNode
 		            # if name_res.target in output
 		            # 	if name_res == 1
 			           #    App.MapApp.Show.Controller.showView.collection.add(new App.Entity.LocationNode(
@@ -266,13 +273,13 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 								# console.log "@Controller.showView._m._layers", @Controller.showView._m._layers[layer._leaflet_id]
 								# @Controller.showView.popupGroup.addLayer(popup)
 								layer.bringToFront()
-								# nodes = @Controller.showView._m._layers
-								# for node in nodes
-								# 	console.log "node.iid", node._leaflet_id
-								# 	console.log "node", node
-								# 	node.options.className = 'locations-nodes highlighted'
-								# 	return
-								# $(L.DomUtil.get(layer._path)).addClass('artistshighleted')
+								nodes = @Controller.showView._m._layers
+								for node in nodes
+									console.log "node.iid", node._leaflet_id
+									console.log "node", node
+									node.options.className = 'locations-nodes highlighted'
+									return
+								$(L.DomUtil.get(layer._path)).addClass('artistshighleted')
 								# maplayers = @Controller.showView._m.getLayers()
 								# console.log "maplayers", maplayers
 								$(@Controller.showView._m._layers[layer._leaflet_id]._container.lastChild).addClass('highlighted')
@@ -284,7 +291,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 										opacity: 0.9
 									, 1, ->
 										layer.setStyle
-											# className: 'locations-nodes highlighted'
+											className: 'locations-nodes highlighted'
 											fillOpacity: 0.8
 											weight: 2
 											opacity: 1

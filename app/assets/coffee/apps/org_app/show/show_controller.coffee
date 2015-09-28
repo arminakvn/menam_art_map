@@ -32,6 +32,7 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 			showOrganization: (ssource) ->
 				artistss = new App.Entities.ArtistCollection(param:ssource)
 				artistss.fetch 'success': (response) =>
+		            console.log "response", response
 		            @showView = new View.ShowView(collection: artistss)
 		            App.mainRegion.show @showView
 				console.log "oApp.ArtistCollection", App.ArtistCollection

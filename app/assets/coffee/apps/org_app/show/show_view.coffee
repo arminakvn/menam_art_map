@@ -9,9 +9,15 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         @height = @el.clientHeight
       initialize: ->
         # orgbysourceartist
-        @nodes = _.map @collection.models, (key, value) =>
-          key.attributes
-        
+        console.log "@collection.models", @collection.models
+        @nodes = @collection.models[0].attributes.level0
+        @nodes1 = @collection.models[1].attributes.level1
+        # @nodes = _.map model, (key, value) =>
+          # console.log "@nodes", @nodes
+          # key.attributes
+        for each in @nodes1
+          @nodes.push each
+
         _links = @nodes
         _links.sort (a, b) ->
             if a.source > b.source
@@ -34,6 +40,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
           i++
         _nodes = {}
         _links.forEach (link) ->
+          console.log "link", link
           link.source = _nodes[link.source] or (_nodes[link.source] = name: link.source, value: 0, group: 0)
           link.target = _nodes[link.target] or (_nodes[link.target] = {name: link.target, group: link.group, lat: link.lat, long: link.long, value: 1})
           return
@@ -53,11 +60,11 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         # width = $("#organization-region")[0].clientWidth
         svg = vis = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @width)
         force = @force = d3.layout.force(
-        ).gravity(.7
-        ).linkDistance(20
-        ).charge(-150
+        ).gravity(.5
+        ).linkDistance(175
+        ).charge(-250
         ).linkStrength(1
-        ).friction(0.9
+        ).friction(0.8
         ).size([
           @width
           @height
@@ -79,12 +86,14 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
           if d.group == 2
             return Math.sqrt(d.value) * 2
           else
-            return 2
+            return 4
         ).attr('x', '-1px').attr('y', '10px').attr('width', '4px').attr('height', '4px'
         ).style("stroke", "none"
         ).style("opacity", 0.6).style('fill', (d) =>
+          console.log "d", d, "d.group", d.group
           return @color(d.group)
         ).on('mouseover', (d, i) ->
+
           return
         ).on('mouseout', (d,i) ->
           return
@@ -110,29 +119,29 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
               d.source.y
           ).attr('x2', (d) ->
             if d.target.value 
-              d.target.x  - 100 - (e.alpha * Math.sqrt(d.target.value))
+              d.target.x 
             else
               d.target.x  - 500 
           ).attr 'y2', (d) ->
             if d.value 
-              d.target.y - 100 - (e.alpha * Math.sqrt(d.target.value))
+              d.target.y
             else
               d.target.y
           node.attr('transform', (d) ->
             if d.group == 0
               if d.value
-                x = e.alpha * 100/d.value + d.x + 100
+                x = e.alpha * 100/d.value + d.x 
                 y = e.alpha * 100/d.value + d.y
               else
-                x = d.x + 100
+                x = d.x 
                 y = d.y
               'translate(' + x + ',' + y + ')'
             else 
               if d.value
-                x = d.x - e.alpha * 100/d.value - 100
+                x = d.x - e.alpha * 100/d.value 
                 y = d.y - e.alpha * 100/d.value
               else
-                x = d.x - 500
+                x = d.x
                 y = d.y
               'translate(' + x + ',' + y + ')'
           )

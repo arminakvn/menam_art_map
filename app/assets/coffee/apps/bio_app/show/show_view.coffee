@@ -8,18 +8,37 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
         else
           return 'bioItem'
       tagName: 'span'
+      id: 'bioItem'
+      # el: 'span'
+      $el: $("#bioItem")
       ui: 
         'elems': 'span'
       events:
         'mouseover @ui.elems': 'mouseoverElems'
         'mouseout @ui.elems': 'mouseoutElems'
+        'click @ui.elems': 'mouseclickElems'
       mouseoverElems: (e) ->
-        $(e.target).css('cursor','pointer')
-        $(e.target).addClass('highlighted')
+        # console.log "@$el", @$el[0].textContent
+        @$el.css('cursor','pointer')
+        if @$el.hasClass("location")          
+          @$el.addClass('highlighted')
+          list = App.BioApp.Show.Controller.listLevelOne(@$el[0].textContent)
+          $.when(list).done (respnd) =>
+              console.log "list", respnd
+              respnd
+              App.MainApp.Show.Controller.highlightArtistsby(list)
+          # App.MapApp.Show.Controller.previewByLocation(@$el[0].textContent)
+          # highlightArtistsby
 
       mouseoutElems: (e) ->
-        $(e.target).css('cursor','default')
-        $(e.target).removeClass('highlighted')
+        @$el.css('cursor','default')
+        @$el.removeClass('highlighted')
+        App.MainApp.Show.Controller.resetHighlightArtistsby()
+
+      mouseclickElems: (e) ->
+        if @model.attributes.name in App.MapApp.Show.Controller.showView.list
+          App.MainApp.Show.Controller.updateView(@model.attributes.name)
+          App.MapApp.Show.Controller.resetMapHighlights()
       onShow: ->
     )
     View.ShowViews = Marionette.CompositeView.extend(
