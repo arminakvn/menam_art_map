@@ -29,8 +29,9 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-    // process.argv[0] = 'node'; // comment this when not using docker
-    var appDir = process.argv[2] || '../menam_art_map/dist';
+    process.argv[0] = 'node'; // comment this when not using docker
+    var appDir = process.argv[2] || '../app/dist';
+
     exports.mongoose = mongoose;
     Schema = mongoose.Schema;
 
@@ -454,27 +455,10 @@ db.once('open', function callback () {
     app.get('/', function(req, res) {
         res.sendfile(path.join(__dirname, appDir + '/index.html'));
     });
-     const PORT = 80;
-    const ADDRESS = '0.0.0.0';
-
-    app.listen(PORT, ADDRESS, function () {
-    console.log('Server running at http://%s:%d/', ADDRESS, PORT);
-    console.log('Press CTRL+C to exit');
-
-    // Check if we are running as root
-    if (process.getgid() === 0) {
-      process.setgid('nobody');
-      process.setuid('nobody');
-    }
-});
-        // http.createServer(app).listen(app.get('port'), function() {
-      //   console.log('Express App started for port:', app.get('port'));
-    // });
-
     //app.listen(80, argv.fe_ip);
-     // http.createServer(app).listen(app.get('port'), function() {
-     //     console.log('Express App started for port:', app.get('port'));
-     // });
+     http.createServer(app).listen(app.get('port'), function() {
+         console.log('Express App started for port:', app.get('port'));
+     });
 });
 
 

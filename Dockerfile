@@ -16,7 +16,7 @@
 FROM google/nodejs-runtime
 WORKDIR /app
 ADD package.json /usr/app/package.json
-ADD bower.json /usr/app/bower.json  
+ADD bower.json /usr/app/bower.json
 ADD dist /usr/app/dist
 ADD Dockerfile /usr/app/Dockerfile
 ADD app.js /usr/app/app.js

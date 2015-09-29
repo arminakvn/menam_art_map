@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         express: {
             options: {
                 // Override defaults here
-                port: '8080'
+                port: '8000'
             },
             dev: {
                 options: {
@@ -180,7 +180,7 @@ module.exports = function (grunt) {
                 app: 'Google Chrome'
             },
             build: {
-                path: 'http://0.0.0.0:8080',
+                path: 'http://0.0.0.0:8000',
                 app: 'Google Chrome'
             },
             testrunner: {
@@ -205,15 +205,26 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-targethtml');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-open');
-    grunt.registerTask('default', ['dev', 'express:dev', 'connect:test', 'shell:mocha-phantomjs', 'open:dev', 'open:testrunner', 'watch']);
+    grunt.registerTask('default', ['dev', 'express:dev']);
     grunt.task.registerTask('dev', 'subset of common development tasks used in other tasks', function () {
-        grunt.task.run(['copy:templates', 'cssmin:combine','cssmin:minify', 'coffee', 'targethtml:app'
+        grunt.task.run(['copy:templates', 'cssmin:combine', 'targethtml:app'
         ]);
     });
     grunt.task.registerTask('test', 'for writing tests, only watches test folder and runs on change', function () {
         grunt.task.run(['coffee:testcoffee', 'connect:test', 'shell:mocha-phantomjs', 'watch:tests']);
     });
     grunt.task.registerTask('build', 'creates optimized distribution', function () {
-        grunt.task.run(['dev', 'targethtml:dist' ,  'shell:buildRequire', 'copy:requireBuilt', 'cssmin:minify', 'express:dist', 'open:build', 'watch:indextemplate']);
+        grunt.task.run(['dev', 'targethtml:dist' ,  'shell:buildRequire', 'copy:requireBuilt', 'cssmin:minify']);//, 'express:dist', 'open:build', 'watch:indextemplate']);
+    });
+    // grunt.registerTask('default', ['dev', 'express:dev', 'connect:test', 'shell:mocha-phantomjs', 'open:dev', 'open:testrunner', 'watch']);
+    // grunt.task.registerTask('dev', 'subset of common development tasks used in other tasks', function () {
+    //     grunt.task.run(['copy:templates', 'cssmin:combine', 'coffee', 'targethtml:app'
+    //     ]);
+    // });
+    // grunt.task.registerTask('test', 'for writing tests, only watches test folder and runs on change', function () {
+    //     grunt.task.run(['coffee:testcoffee', 'connect:test', 'shell:mocha-phantomjs', 'watch:tests']);
+    // });
+    grunt.task.registerTask('build', 'creates optimized distribution', function () {
+        grunt.task.run(['dev', 'targethtml:dist' ,  'shell:buildRequire', 'copy:requireBuilt', 'cssmin:minify']);//, 'express:dist', 'open:build', 'watch:indextemplate']);
     });
 };
