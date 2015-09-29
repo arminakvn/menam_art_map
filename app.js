@@ -355,7 +355,6 @@ db.once('open', function callback () {
     len = artist.length;
     while (i < len) {
       each = artist[i];
-      console.log('each', each);
         var artist1;
         artist1 = new Artist({
           group: 2,
@@ -367,15 +366,16 @@ db.once('open', function callback () {
             each1 = artist2[j];
             level1.push(each1);
           }
-          return res.json([
+          
+        });
+      i++;
+      return res.json([
             {
               'level0': artist
             }, {
               'level1': level1
             }
-          ]);
-        });
-      i++;
+          ]); 
     }
     
   

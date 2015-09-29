@@ -25,24 +25,35 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				'change' : 'render'
 			# mouseoverDots: (e) ->
 			mouseoverNames: (e)->
-				@timeout = 0
+				@timeout1 = 10
 				@timeout = setTimeout(=>
-					if @timeout > 100
+					console.log "@timeout - @timeout1", @timeout - @timeout1
+					if @timeout1 - @timeout < 20
 						App.execute("showBio", e.target.id)
 						$('.highlighted').removeClass('highlighted') 
 						$('.bioTriggerd').removeClass('bioTriggerd') 
 						$(e.target).addClass('highlighted bioTriggerd')
 						App.execute("highlightNode", e.target.id)
+						@timeout1 = 10
+						@timeout = 0
+					else
+						@timeout = 0
+						return 0
 
 
 					return
-				, 100, (e) =>
+				, 20, (e) =>
 					try
 						App.execute("showBio", e.target.id)
 						$('.highlighted').removeClass('highlighted') 
 						$('.bioTriggerd').removeClass('bioTriggerd') 
 						$(e.target).addClass('highlighted bioTriggerd')
+						@timeout = 0
+						@timeout1 = 10
+						return 0
 					catch e
+						@timeout = 0
+						@timeout1 = 10
 						# console.log "mouseover moved"					
 					return
 				)
@@ -51,6 +62,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 
 			mouseoutNames: (e)->
 				@timeout = 0
+				@timeout1 = 0
 				# $(e.target).animate({
 				# 	opacity: 1
 				# }, 500)

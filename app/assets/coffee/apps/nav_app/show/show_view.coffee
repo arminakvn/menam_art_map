@@ -27,12 +27,14 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
       ui:
         'div':'div'
       events:
-        'click @ui.div' : 'navigate'
+        'click #statelist' : 'navigate'
+        'click #statelocation' : 'locations'
         'mouseover @ui.div' : 'mouseoverNav'
         'mouseout @ui.div' : 'mouseoutNav'
 
       navigate: (e) ->
-        console.log "nav @model", @model
+        # console.log "nav @model", @model
+        # if @model.attributes.statelocation != 'All locations'
         App.MainApp.Show.Controller.updateView('all')
         App.MapApp.Show.Controller.resetMapHighlights()
       # onDomRefresh:->
@@ -42,6 +44,11 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
         $(e.target).css('cursor','pointer')
       mouseoutNav: (e) ->
         $(e.target).css('cursor','default')
+      locations: (e) ->
+        App.navigate "/", trigger: true
+        # console.log "@model.attributes.statelocation.replace('All locations > ', "")", @model.attributes.statelocation.replace('All locations > ', "")
+        # if @model.attributes.statelocation != 'All locations'
+          # App.MapApp.Show.Controller.previewByLocation(@model.attributes.statelocation.replace('All locations > ', ""))
       initialize: ->
         # orgbysourceartist
       onShow: ->

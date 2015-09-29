@@ -115,11 +115,19 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                   "name": key
                 # return ret
         # this entire blok needs to be refoctored into a controller api method
-        if App.NavApp.Show.Controller.showView.model.get('statelist') != names
+        console.log "what is this names:", names, App.NavApp.Show.Controller.showView.model.get('statelocation')
+        if App.NavApp.Show.Controller.showView.model.get('statelocation').replace /^\s+|\s+$/g, "" == 'All locations'
+          App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState 
+            statelist: 'All artists'
+            statelocation: "All locations"
+            statebio: ""
+          App.NavApp.Show.Controller.showView.render()
+
+        else if App.NavApp.Show.Controller.showView.model.get('statelist') != names 
           App.NavApp.Show.Controller.showView.model.destroy()
           App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState 
-            statelist: 'All Artists > ' + names
-            statelocation: "All Locations"
+            statelist: 'All artists > ' + names
+            statelocation: "All locations"
             statebio: ""
           App.NavApp.Show.Controller.showView.render()
         # end of the block for refactoring
@@ -210,7 +218,7 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
             # console.log "App.ArtistSourceCollection", App.ArtistSourceCollection
           # console.log "ArtistModel", ArtistModel
             # console.log "before returning response", response
-          stateModel =  new App.Entity.ArtistListState({'state': 'All Artists'})
+          stateModel =  new App.Entity.ArtistListState({'state': 'All artists'})
           artistssourceC = new App.Entities.ArtistSourceCollection
           artistssourceC.fetch 'success': (response) =>
             # console.log response
