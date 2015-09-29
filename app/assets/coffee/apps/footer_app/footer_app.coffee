@@ -17,5 +17,5 @@ define ["js/app"], (App) ->
 
     App.addInitializer ->
       new App.Router(controller: API)
-      API.showFooter()
+      # API.showFooter()
   App.FooterApp

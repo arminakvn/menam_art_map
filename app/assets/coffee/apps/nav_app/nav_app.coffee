@@ -9,6 +9,9 @@ define ["js/app"], (App) ->
       showNavigation: ()->
         require ["js/apps/nav_app/show/show_controller"], ->
           App.NavApp.Show.Controller.showNavigation()
+      showModal: ()->
+        require ["js/apps/nav_app/show/show_controller"], ->
+          App.NavApp.Show.Controller.showModal()
     App.addInitializer ->
       new App.Router(controller: API)
       API.showNavigation()

@@ -29,7 +29,8 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-    var appDir = process.argv[2] || '../menam_art_map/app';
+    // process.argv[0] = 'node'; // comment this when not using docker
+    var appDir = process.argv[2] || '../menam_art_map/dist';
     exports.mongoose = mongoose;
     Schema = mongoose.Schema;
 
@@ -362,13 +363,10 @@ db.once('open', function callback () {
         });
         artist1.findSourceByTargetAll(function(err, artist2) {
           var each1, j, len1;
-          console.log('artist2', artist2);
           for (j = 0, len1 = artist2.length; j < len1; j++) {
             each1 = artist2[j];
-            console.log('each1', each1);
             level1.push(each1);
           }
-          console.log('level1', level1);
           return res.json([
             {
               'level0': artist
@@ -453,7 +451,6 @@ db.once('open', function callback () {
     app.use( app.router );
     app.use( express.methodOverride() );
     app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
-
     app.get('/', function(req, res) {
         res.sendfile(path.join(__dirname, appDir + '/index.html'));
     });

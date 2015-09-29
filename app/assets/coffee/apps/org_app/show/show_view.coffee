@@ -50,27 +50,29 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         @_nodes = _nodes
         @_links = _links
       onShow: ->
-        @height = 700 if @height == 0
-        padding = 1.5
+        console.log "widht, height", @width, @height
+        if @height == 0
+          @height = 700
+        padding = .5
         color = @color = d3.scale.category10()
         # width = $("#organization-region")[0].clientWidth
-        svg = vis = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @width)
+        svg = vis = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @width/2)
         force = @force = d3.layout.force(
-        ).gravity(.5
+        ).gravity(.6
         ).linkDistance(175
-        ).charge(-250
-        ).linkStrength(1
+        ).charge(-450
+        ).linkStrength(0.5
         ).friction(0.8
         ).size([
           @width
-          @height
+          @width/2
         ]).on("tick", tick)
         @nodes = @force.nodes(d3.values(@_nodes))
         @links = @force.links()
         link = svg.selectAll('.link').data(@_links)
         link.enter().insert("line", ".node").attr("class", "link").style("stroke","lightgray").style("stroke-width", (d, i) -> 
             return Math.sqrt(d.target.value)
-          ).style("opacity", 0.3)
+          ).style("opacity", 0.4)
         link.exit().remove()
         
         node = @vis.selectAll('g.node'
@@ -103,41 +105,16 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         )                       
         tick = (e) ->
           link.attr('x1', (d) ->
-            if d.source.value
-              e.alpha * 100/d.source.value + d.source.x + 100
-            else
-              d.source.x + 100
+            d.source.x
           ).attr('y1', (d) ->
-            if d.source.value
-              e.alpha * 100/d.source.value + d.source.y
-            else
-              d.source.y
+            d.source.y
           ).attr('x2', (d) ->
-            if d.target.value 
-              d.target.x 
-            else
-              d.target.x  - 500 
+            d.target.x
           ).attr 'y2', (d) ->
-            if d.value 
-              d.target.y
-            else
-              d.target.y
+            d.target.y
           node.attr('transform', (d) ->
-            if d.group == 0
-              if d.value
-                x = e.alpha * 100/d.value + d.x 
-                y = e.alpha * 100/d.value + d.y
-              else
-                x = d.x 
-                y = d.y
-              'translate(' + x + ',' + y + ')'
-            else 
-              if d.value
-                x = d.x - e.alpha * 100/d.value 
-                y = d.y - e.alpha * 100/d.value
-              else
-                x = d.x
-                y = d.y
+              x = d.x 
+              y = d.y
               'translate(' + x + ',' + y + ')'
           )
           return

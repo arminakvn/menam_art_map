@@ -1,8 +1,7 @@
 define ["marionette"], (Marionette) ->
-
   App = new Marionette.Application()
   App.vent = new Backbone.Wreqr.EventAggregator()
-
+  # require ["js/entities/modal"], =>
   App.addRegions
     footerRegion: "#footer-region"
     headerRegion: "#header-region"
