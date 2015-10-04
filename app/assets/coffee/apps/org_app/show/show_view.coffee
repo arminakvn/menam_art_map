@@ -5,18 +5,21 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
       id:"organization-region"
       tagName:"div"
       onDomRefresh:->
+        console.log $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
         @width = @el.clientWidth
-        @height = @el.clientHeight
+        @height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
       initialize: ->
         # orgbysourceartist
-        @nodes = @collection.models[0].attributes.level0
+        @nodes = []
+        @nodes.push @collection.models[0].attributes.level0
         @nodes1 = @collection.models[1].attributes.level1
         # @nodes = _.map model, (key, value) =>
           # key.attributes
+        # console.log "@nodes", @nodes
         for each in @nodes1
           @nodes.push each
-
-        _links = @nodes
+        # console.log "@nodes", @nodes
+        _links = @nodes[1]
         _links.sort (a, b) ->
             if a.source > b.source
               1
@@ -50,13 +53,11 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         @_nodes = _nodes
         @_links = _links
       onShow: ->
-        console.log "widht, height", @width, @height
-        if @height == 0
-          @height = 700
+        # console.log "widht, height", @width, @height
         padding = .5
         color = @color = d3.scale.category10()
         # width = $("#organization-region")[0].clientWidth
-        svg = vis = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @width/2)
+        svg = vis = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @height)
         force = @force = d3.layout.force(
         ).gravity(.6
         ).linkDistance(175
@@ -65,7 +66,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         ).friction(0.8
         ).size([
           @width
-          @width/2
+          @height
         ]).on("tick", tick)
         @nodes = @force.nodes(d3.values(@_nodes))
         @links = @force.links()

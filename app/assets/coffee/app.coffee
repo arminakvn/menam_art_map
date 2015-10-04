@@ -54,7 +54,7 @@ define ["marionette"], (Marionette) ->
                 App.request "set:personLink", data
                 
   App.on "initialize:after", ->
-    require ["js/apps/header_app/header_app", "js/apps/main_app/main_app", "js/apps/map_app/map_app", "js/apps/footer_app/footer_app", "js/apps/person_app/person_app", "js/apps/org_app/org_app", "js/apps/bio_app/bio_app",  "js/apps/nav_app/nav_app"], ->
+    require ["js/apps/header_app/header_app", "js/apps/bio_app/bio_app", "js/apps/main_app/main_app", "js/apps/map_app/map_app", "js/apps/footer_app/footer_app", "js/apps/person_app/person_app", "js/apps/org_app/org_app",  "js/apps/nav_app/nav_app"], ->
       console.log "Marionette Application Started"
       if Backbone.history
         Backbone.history.start()
@@ -72,14 +72,17 @@ define ["marionette"], (Marionette) ->
   App.vent.on "personFired", ->
     App.navigate "/person", trgigger: true
   
-  App.vent.on "locationFired", ->
-    App.navigate "/location", trgigger: true
+  App.vent.on "locationFired", (l) ->
+    App.navigate "/location/#{l}", trgigger: true
   
   App.vent.on "organizationFired", (s)->
     App.navigate "/organization/#{s}", trgigger: true
 
   App.vent.on "locationsFired", (l)->
     App.navigate "/#{l}", trgigger: true
+
+  App.vent.on "showBioFired", (b)->
+    App.navigate "/show"
 
   App.vent.on "mainFired", ->
     App.navigate "/", trigger: true

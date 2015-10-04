@@ -18,7 +18,7 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
         'mouseout @ui.elems': 'mouseoutElems'
         'click @ui.elems': 'mouseclickElems'
       mouseoverElems: (e) ->
-        console.log "App.DistinctLinkCollection.models", App.MapApp.Show.Controller.showView.list
+        # console.log "App.DistinctLinkCollection.models", App.MapApp.Show.Controller.showView.list
         # console.log "@$el", @$el[0].textContent
         @$el.css('cursor','pointer')
         if @$el.hasClass("location")          
@@ -40,6 +40,16 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
           App.MainApp.Show.Controller.updateView(@model.attributes.name)
           App.MapApp.Show.Controller.resetMapHighlights()
       onShow: ->
+        timedText = ->
+          setTimeout myTimeout1, 200
+          return
+        myTimeout1 = =>
+          if @model.attributes.name in App.MapApp.Show.Controller.showView.list
+            @$el.addClass 'bioItem location'
+            # console.log "@el", @$el
+          else
+            @$el.addClass 'bioItem'
+          return
     )
     View.ShowViews = Marionette.CompositeView.extend(
       itemView: View.ShowView
@@ -57,6 +67,7 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
           opacity: 0
         }, 750)
       onShow: ->
+        
 
 
     )

@@ -1,0 +1,1 @@
+<span class="location-navigator"><%= state %></span>

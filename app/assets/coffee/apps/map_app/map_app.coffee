@@ -1,25 +1,31 @@
 define ["js/app"], (App) ->
   App.module "MapApp", (MapApp, App, Backbone, Marionette, $, _) ->
     @startWithParent = true
-    App.commands.setHandler 'showLocation', (sourceNode) ->
-      API.showLocation(sourceNode)
+    App.commands.setHandler 'showLocation', () ->
+      API.showLocation()
       return
     App.commands.setHandler 'highlightNode', (sourceNode) ->
       API.highlightNode(sourceNode)
       return
     
+    App.commands.setHandler 'showLocationByName', (name) ->
+      API.showLocationByExistingCollection()
+      App.MapApp.Show.Controller.showView.collection.on "sync", ->
+        API.highlightNode(name)
+      return
+
     App.commands.setHandler 'showLocationGroup', (locationGroup) ->
-      API.showLocationByGroup(locationGroup)
+      API.showLocation()
       return
     App.Router = Marionette.AppRouter.extend(
       appRoutes:
         "location/":"showLocation"
-        "location/:locationGroup":"showLocationByGroup"
+        "location/:locationGroup":"showLocation"
     )
     # App.vent.on 'show:LocationByGroup', (q) ->
     #   Backbone.history.navigate "location/#{q}", { trigger: true }
     API =
-      showLocation: ->
+      showLocation: (sourceNode)->
         require ["js/apps/map_app/show/show_controller"], ->
           App.MapApp.Show.Controller.showLocation()
           console.log "inside API"
@@ -30,6 +36,9 @@ define ["js/app"], (App) ->
 
 
 
+      showLocationByExistingCollection: () ->
+        require ["js/apps/map_app/show/show_controller"], ->
+          App.MapApp.Show.Controller.showLocationByExistingCollection() 
       showLocationByGroup: (locationGroup) ->
         require ["js/apps/map_app/show/show_controller"], ->
           App.MapApp.Show.Controller.showLocationByGroup(locationGroup)

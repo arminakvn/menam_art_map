@@ -1,0 +1,66 @@
+<!-- Template File for use with targethtml -->
+<!doctype html>
+  <head>
+    <!-- TODO: Manually write with project name -->
+
+    <title>Menam Art Map</title>
+    <meta charset="utf-8" />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.js"></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+    <link href="assets/css/app.combined.css" rel="stylesheet">
+
+     <link href='assets/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css' rel='stylesheet' />
+    
+    
+    
+  </head>
+  <body>
+  <div class="container">
+  <div class="row">
+      <div id="header-region"></div>
+  </div>  
+  <div class="row">
+      <div id="navigation-region"></div>
+  </div>    
+  <div class="row">
+    <div id="tooltip" class="hidden" style="z-index:20000;">
+      <p><span id="-label"></span></p>
+    </div>
+      <div id="bios-region" class="col-md-2">
+      </div>
+      <div id="bio-region" class="col-md-2"></div>
+      <div id="main-region" class="col-md-8">
+        <h3></h3>
+        
+      </div>
+  </div>
+    <div class="row">
+      </div>
+      <div id="footer-region"></div>
+      <div id="modal"></div>
+    </div>
+  </div>
+  </div>
+    <!-- require in dev -->
+    
+      <script data-main="assets/require_main" src="assets/bower_components/requirejs/require.js"></script>
+      <script src="//localhost:35729/livereload.js"></script>
+    
+
+    <!-- optimized with r.js -->
+    <!--
+    <script src="./js/vendor/require.js"></script>
+    <script src="./js/require_main.built.js"></script>
+    -->
+
+    <!-- optimized with r.js using almond shim -->
+    
+  </body>
+</html>

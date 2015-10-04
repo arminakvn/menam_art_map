@@ -61,6 +61,8 @@ define ["js/app", "js/apps/bio_app/show/show_view", "tpl!js/apps/bio_app/show/te
 			showBio: (artist) =>
 		    	# L.DomUtil.setOpacity(L.DomUtil.get(@Controller.showView._bios_domEl), 0.75)
 		    	@artist = artist
+		    	App.NavApp.Show.Controller.showView.model.attributes.statebio = "#{artist}"
+		    	# console.log "App.NavApp.Show.Controller.showView.model.attributes.statebio", App.NavApp.Show.Controller.showView.model.attributes.statebio
 		    	App.BioApp.Show.Controller.url = artist
 		    	bioCollection = new App.Entities.BioElementTextCollection
 		    	bioCollection.fetch 'success': (response) =>

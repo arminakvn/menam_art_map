@@ -50,9 +50,10 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
         # if @model.attributes.statelocation != 'All locations'
           # App.MapApp.Show.Controller.previewByLocation(@model.attributes.statelocation.replace('All locations > ', ""))
       initialize: ->
-        # orgbysourceartist
+
       onShow: ->
-        console.log "@models", @model
+
+        # $('input[name="my-checkbox"]').bootstrapSwitch('handleWidth', $("#statebio"))
     )
     View.ShowModal = Marionette.Layout.extend(
       template: modalTpl

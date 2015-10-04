@@ -26,7 +26,6 @@ define ["js/app", "js/apps/nav_app/show/show_view"], (App, View) ->
 					statelist: "All artists"
 					statelocation: "All locations"
 					statebio: ""
-				console.log "navigation", navigation
 				@showView = new View.ShowView(model: navigation)
 
 				# console.log "@showView",@showView
@@ -35,6 +34,9 @@ define ["js/app", "js/apps/nav_app/show/show_view"], (App, View) ->
 				# $modalEl = $("#modal")
 				# $modalEl.html(view.el)
 				# $modalEl.modal()
+			updateNavigation: (navigation) ->
+				@showView = new View.ShowView(model: navigation)
+				App.navRegion.show @showView
 			showModal: () ->
 				App.addRegions
 					modal: new ModalRegion()

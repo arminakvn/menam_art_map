@@ -1,10 +1,3 @@
-node_modules/
-app/assets/bower_components/
-app/assets/js
-app/index.html
-test/
-test/spec/
-test/SpecRunner.js
 data/
 data/db
 design/

@@ -46,11 +46,11 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
               catch e
                 # ...
             @list = list
-            console.log "@list", @list
+            # console.log "@list", @list
             id = 0
             @artistNodes = [] 
             nodes = []
-            console.log "@model", @model
+            # console.log "@model", @model
             for artist in @collection.models
               nodes.push artist
               # make a list of artist names when data arrives and keep it
@@ -59,7 +59,7 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
             # using the data to create links and nodes in format
       
             _links = @collection.models
-            console.log "@collection.models", @collection.models
+            # console.log "@collection.models", @collection.models
             # sort links by source, then target
             _links.sort (a, b) ->
                 if a.attributes.source > b.attributes.source
@@ -162,7 +162,7 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
             #     @_d3BiosEl = d3.select(_domEl)
             # )
             # new divControl()
-            console.log "_links", _links
+            # console.log "_links", _links
             @_nodes = _nodes
             @_links = _links
             App.MapApp.Show.Controller._links = _links

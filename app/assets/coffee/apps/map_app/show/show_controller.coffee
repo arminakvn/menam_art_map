@@ -41,11 +41,24 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 	App.Entity.LocationState = Backbone.Model.extend()
 	App.Entities.LocationNodeCollection = Backbone.Collection.extend(
 		model: App.Entity.LocationNode
-		initialize:  ->
+		initialize:  (url)->
+			if url is undefined
+				@param = "all"
+				@url = "/artistsbygroup/1"
+			else if url == "all"
+				@url = "/artistsbygroup/1"
+			else
+				@param = url
+				@url = "/artistsbysource/"+@param.param
 			@on 'request', ->
 				console.log "loading"
 				return
-			@on 'sync', ->
+			@on 'sync', =>
+				try
+					API.highlightNode(@param.param)
+				catch e
+					console.log "cousnrr", @param
+				
 				console.log "loaded"
 				return
 			return
@@ -57,7 +70,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 			# else
 			# 	full_url = '/artistsbygroup/1'
 			# 	full_url
-			'/artistsbygroup/1'
+			return @url
 		parse: (response) ->
 			data = _.map response, (key, value) =>
 				'name' :key.source
@@ -76,24 +89,32 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 	App.module "MapApp.Show", (Show, App, Backbone, Marionette, $, _) ->
 		Show.Controller =
 
+			showLocationByExistingCollection: () ->
+				locationNodes = App.MapApp.Show.Controller.showView.collection
+				@showView = new View.ShowView(collection:locationNodes)
+				App.mainRegion.show(@showView)
+
 			previewByLocation: (sourceNode) ->
-				console.log "sourceNode", '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, ""
+				# console.log "sourceNode", '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, ""
 				updateCollection = $.ajax '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, "",
 		              type: 'GET'
 		              dataType: 'json'
 		              error: (jqXHR, textStatus, errorThrown) ->
 		                # $('body').append "AJAX Error: #{textStatus}"
 		              success: (data, textStatus, jqXHR) =>
-		              	console.log "data", data
+		              	# console.log "data", data
 		              	ret = _.map data, (key, value) =>
 		              		"target": key.target
 		        $.when(updateCollection).done (respnd) =>
-		          console.log "previewByLocation", respnd
+		          # console.log "previewByLocation", respnd
 
-			showLocation: ->
-				locationNodes = new App.Entities.LocationNodeCollection
+			showLocation: (source) ->
+				console.log "source", source
+				console.log "this is showLocation"
+				locationNodes = new App.Entities.LocationNodeCollection source
 				locationNavigator = new App.Entity.LocationState({'state': 'World'})
 				locationNodes.fetch 'success': (response) =>
+					console.log "response", response
 					@showView = new View.ShowView(collection:locationNodes, model: locationNavigator)
 					App.mainRegion.show(@showView)
 			resetMapHighlights: () =>
@@ -107,7 +128,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 						0.12
 					], 3)
 					return
-			showLocationByGroup: (locationGroup) =>
+			showLocationByGroup: (locationGroup) ->
 				# console.log "locationGroup",locationGroup
 				# filteredModel = $.ajax "/sourceByTarget/#{locationGroup}",
 		  #   			type: 'GET'
@@ -121,8 +142,10 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 				# $.when(filteredModel).done (Model) =>
 					# console.log "filtered model?", Model
 				# $.when(filteredModel).done (locationGroup) =>
+				# console.log "locationGroup", locationGroup
+				# @showLocation
 				App.MainApp.Show.Controller.updateView(locationGroup)
-
+				# @highlightNodesBy locationGroup
 				# filteredModel = App.request "artistsourceCollectionBy", locationGroup
 				# $.when(filteredModel).done (Model) =>
 				# 	console.log "filtered model?", Model
@@ -198,7 +221,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 					App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState
 						statelist: 'All artists'
 						statelocation: "All locations > " + sourceNode
-						statebio: ""
+						statebio: "#{sourceNode}"
 					App.NavApp.Show.Controller.showView.render()
 				updateCollection = $.ajax '/artistsbysource/'+sourceNode,
 		              type: 'GET'
@@ -282,8 +305,8 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 								layer.bringToFront()
 								nodes = @Controller.showView._m._layers
 								for node in nodes
-									console.log "node.iid", node._leaflet_id
-									console.log "node", node
+									# console.log "node.iid", node._leaflet_id
+									# console.log "node", node
 									node.options.className = 'locations-nodes highlighted'
 									return
 								$(L.DomUtil.get(layer._path)).addClass('artistshighleted')

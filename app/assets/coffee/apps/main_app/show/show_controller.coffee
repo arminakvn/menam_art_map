@@ -71,7 +71,6 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
           childView.$el.removeClass("previewHighlight")
       highlightArtistsby: (list) ->
         $.when(list).done (respnd) =>
-          console.log "list in MainApp", respnd
           # App.MainApp.Show.Controller.showView.collection.each (initmodels) =>
           #       output.push initmodels.get('name')
           App.MainApp.Show.Controller.showView.children.each (childView) =>
@@ -81,9 +80,7 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
               childView.$el.removeClass("bioTriggerd")
               if childModel.get('name') in respnd
                 if childView.$el.hasClass("highlighted")
-                  console.log "actual one". childView
                 else if childView.$el.hasClass("bioTriggerd")
-                  console.log "actual one". childView
                 else
                   childView.$el.addClass("previewHighlight")
 
@@ -115,21 +112,35 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                   "name": key
                 # return ret
         # this entire blok needs to be refoctored into a controller api method
-        console.log "what is this names:", names, App.NavApp.Show.Controller.showView.model.get('statelocation')
-        if App.NavApp.Show.Controller.showView.model.get('statelocation').replace /^\s+|\s+$/g, "" == 'All locations'
-          App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState 
-            statelist: 'All artists'
-            statelocation: "All locations"
-            statebio: ""
-          App.NavApp.Show.Controller.showView.render()
-
-        else if App.NavApp.Show.Controller.showView.model.get('statelist') != names 
+        # console.log "what is this names:", names, App.NavApp.Show.Controller.showView.model.get('statelocation')
+        console.log "#{App.NavApp.Show.Controller.showView.model.get('statebio')}"
+        console.log "#{App.NavApp.Show.Controller.showView.model.get('statelist')}"
+        if "#{App.NavApp.Show.Controller.showView.model.get('statelist')}" == "All artists"
+          location_text = "All locations"
+        else
+          location_text = "#{App.NavApp.Show.Controller.showView.model.get('statelist')}"
+        if App.NavApp.Show.Controller.showView.model.get('statelist') == 'All artists' and App.NavApp.Show.Controller.showView.model.get('statelist') != 'All locations'
+          navigation = new App.Entity.ArtistListState 
+            statelist: "All artists > #{names}"
+            statelocation: "#{location_text}"
+            statebio: "#{App.NavApp.Show.Controller.showView.model.get('statebio')}"
           App.NavApp.Show.Controller.showView.model.destroy()
-          App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState 
-            statelist: 'All artists > ' + names
+          App.NavApp.Show.Controller.updateNavigation(navigation)
+        else if App.NavApp.Show.Controller.showView.model.get('statelocation').replace /^\s+|\s+$/g, "" == 'All locations' and  App.NavApp.Show.Controller.showView.model.get('statelist') == 'All artists' + names 
+          App.NavApp.Show.Controller.showView.model.destroy()
+          navigation = new App.Entity.ArtistListState 
+            statelist: "All artists > #{names}"
             statelocation: "All locations"
             statebio: ""
-          App.NavApp.Show.Controller.showView.render()
+          App.NavApp.Show.Controller.updateNavigation(navigation)
+
+        else if App.NavApp.Show.Controller.showView.model.get('statelist') == 'All artists'
+          App.NavApp.Show.Controller.showView.model.destroy()
+          navigation = new App.Entity.ArtistListState 
+            statelist: "All artists > #{names}"
+            statelocation: "All locations"
+            statebio: ""
+          App.NavApp.Show.Controller.updateNavigation(navigation)
         # end of the block for refactoring
         $.when(updateCollection).done (respnd) =>
           output = []
