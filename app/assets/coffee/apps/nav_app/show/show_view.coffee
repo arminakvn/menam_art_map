@@ -23,7 +23,7 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
       template: showTpl
       id:"nav"
       tagName:"div"
-      class: "artistsList list-navigator"
+      class: "artistsList list-navigator hidden"
       ui:
         'div':'div'
       events:
@@ -36,7 +36,7 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
         # console.log "nav @model", @model
         # if @model.attributes.statelocation != 'All locations'
         App.MainApp.Show.Controller.updateView('all')
-        App.MapApp.Show.Controller.resetMapHighlights()
+        # App.MapApp.Show.Controller.resetMapHighlights()
       # onDomRefresh:->
       #   @width = @el.clientWidth
       #   @height = @el.clientHeight
@@ -50,8 +50,28 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
         # if @model.attributes.statelocation != 'All locations'
           # App.MapApp.Show.Controller.previewByLocation(@model.attributes.statelocation.replace('All locations > ', ""))
       initialize: ->
+        # @$el.animate({
+        #   opacity: 0
+        # }, 1)
 
+      # onBeforeRender: ->
+      #   @$el.animate({
+      #     opacity: 1
+      #   }, 1000)
+      # onBeforeClose: ->
+      #   @$el.animate({
+      #     opacity: 0
+      #   }, 1)
+
+      # onDomRefresh: ->
+      #   @$el.animate({
+      #     opacity: 1
+      #   }, 1000)
       onShow: ->
+        @$el.animate({
+          opacity: 1
+        }, 1000)
+        @$el.removeClass("hidden")
 
         # $('input[name="my-checkbox"]').bootstrapSwitch('handleWidth', $("#statebio"))
     )

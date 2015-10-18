@@ -24,19 +24,9 @@
       return Backbone.history.fragment;
     };
     App.on("initialize:before", function() {
-      require(["js/entities/distincts"], (function(_this) {
-        return function() {
-          return $.ajax('/distLocs', {
-            type: 'GET',
-            dataType: 'json',
-            error: function(jqXHR, textStatus, errorThrown) {},
-            success: function(data, textStatus, jqXHR) {
-              this.list = data;
-              return this.list;
-            }
-          });
-        };
-      })(this));
+      App.state = {
+        "current": 0
+      };
       return require(["js/entities/person_link"], (function(_this) {
         return function() {
           return $.ajax('/links', {
@@ -51,6 +41,14 @@
       })(this));
     });
     App.on("initialize:after", function() {
+      $.ajax('/distLocs', {
+        type: 'GET',
+        dataType: 'json',
+        error: function(jqXHR, textStatus, errorThrown) {},
+        success: function(data, textStatus, jqXHR) {
+          App.list = data;
+        }
+      });
       return require(["js/apps/header_app/header_app", "js/apps/bio_app/bio_app", "js/apps/main_app/main_app", "js/apps/map_app/map_app", "js/apps/footer_app/footer_app", "js/apps/person_app/person_app", "js/apps/org_app/org_app", "js/apps/nav_app/nav_app"], function() {
         console.log("Marionette Application Started");
         if (Backbone.history) {

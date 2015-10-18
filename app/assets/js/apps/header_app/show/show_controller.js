@@ -6,6 +6,9 @@
         showHeader: function() {
           var showView;
           showView = new View.HeadersView();
+          App.state = {
+            "current": 0
+          };
           return App.headerRegion.show(showView);
         }
       };

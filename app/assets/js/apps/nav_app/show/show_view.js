@@ -27,7 +27,7 @@
         template: showTpl,
         id: "nav",
         tagName: "div",
-        "class": "artistsList list-navigator",
+        "class": "artistsList list-navigator hidden",
         ui: {
           'div': 'div'
         },
@@ -38,8 +38,7 @@
           'mouseout @ui.div': 'mouseoutNav'
         },
         navigate: function(e) {
-          App.MainApp.Show.Controller.updateView('all');
-          return App.MapApp.Show.Controller.resetMapHighlights();
+          return App.MainApp.Show.Controller.updateView('all');
         },
         mouseoverNav: function(e) {
           return $(e.target).css('cursor', 'pointer');
@@ -53,7 +52,12 @@
           });
         },
         initialize: function() {},
-        onShow: function() {}
+        onShow: function() {
+          this.$el.animate({
+            opacity: 1
+          }, 1000);
+          return this.$el.removeClass("hidden");
+        }
       });
       return View.ShowModal = Marionette.Layout.extend({
         template: modalTpl,

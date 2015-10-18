@@ -16,6 +16,7 @@ runtime: custom
 vm: true
 api_version: 1
 module: default
+# runtime: nodejs
 # [END runtime]
 
 # [START resources]

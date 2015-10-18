@@ -13,24 +13,33 @@
         events: {
           "click #location": "locationFired",
           "click #person": "personFired",
-          "click #organization": "organizationFired",
+          "click #organizations": "organizationFired",
+          "mouseover #organizations": "organizationMousover",
+          "mouseout #organizations": "organizationMousout",
           "click #biotraj": "biotrajFired",
           "click #main": "mainFired",
           "click #menam-icon": "showModal"
         },
         locationFired: (function(_this) {
-          return function(e) {
-            return App.vent.trigger("locationFired");
-          };
+          return function(e) {};
         })(this),
         personFired: (function(_this) {
-          return function(e) {
-            return App.vent.trigger("personFired");
-          };
+          return function(e) {};
         })(this),
         organizationFired: (function(_this) {
           return function(e) {
-            return App.vent.trigger("organizationFired");
+            if (App.state.current === 0) {
+              $('#organizations').html("");
+              $('#organizations').html("Organizations");
+              return App.state.current = 1;
+            } else {
+              $('#organizations').html("");
+              $('#organizations').html("Locations");
+              App.state.current = 0;
+              return App.navigate("/", {
+                trgigger: true
+              });
+            }
           };
         })(this),
         biotrajFired: (function(_this) {
@@ -47,35 +56,17 @@
             return App.NavApp.Show.Controller.showModal();
           };
         })(this),
-        onShow: function() {
-          $('input[name="my-checkbox"]').bootstrapSwitch('state', false, true);
-          $('input[name="my-checkbox"]').bootstrapSwitch('onText', 'Locations');
-          $('input[name="my-checkbox"]').bootstrapSwitch('offText', 'Organizations');
-          $('input[name="my-checkbox"]').bootstrapSwitch('size', 'small');
-          $('input[name="my-checkbox"]').bootstrapSwitch('onColor', "default");
-          $('input[name="my-checkbox"]').bootstrapSwitch('offColor', "default");
-          $('input[name="my-checkbox"]').bootstrapSwitch('labelWidth', $("#statebio") * 4);
-          return $('input[name="my-checkbox"]').bootstrapSwitch('onSwitchChange', (function(_this) {
-            return function(e) {
-              var name;
-              e.stopPropagation();
-              name = App.NavApp.Show.Controller.showView.model.attributes.statelocation.replace("All locations > ", "");
-              if ($('input[name="my-checkbox"]').bootstrapSwitch('state') === true) {
-                App.execute("showLocationByName", name);
-                return App.navigate("#/location/" + name, {
-                  trgigger: true
-                });
-              } else if ((App.getCurrentRoute() === 'location/') && ($('input[name="my-checkbox"]').bootstrapSwitch('state') === false)) {
-                return App.navigate("#/organization/" + name, {
-                  trgigger: true
-                });
-              } else if ($('input[name="my-checkbox"]').bootstrapSwitch('state') === false) {
-                name = App.getCurrentRoute().replace("organization/", "");
-                return App.execute("showLocationByName", name);
-              }
-            };
-          })(this));
-        }
+        organizationMousover: (function(_this) {
+          return function(e) {
+            return $(e.target).css('cursor', 'pointer');
+          };
+        })(this),
+        organizationMousoout: (function(_this) {
+          return function(e) {
+            return $(e.target).css('cursor', 'default');
+          };
+        })(this),
+        onShow: function() {}
       });
     });
     return App.HeaderApp.View;

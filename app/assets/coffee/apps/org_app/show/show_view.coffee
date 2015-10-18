@@ -5,20 +5,20 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
       id:"organization-region"
       tagName:"div"
       onDomRefresh:->
-        console.log $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
-        @width = @el.clientWidth
-        @height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
-      initialize: ->
-        # orgbysourceartist
+        try
+          @_links.enter([]).exit().remove()
+        catch e
+          # ...
+        
         @nodes = []
         @nodes.push @collection.models[0].attributes.level0
         @nodes1 = @collection.models[1].attributes.level1
         # @nodes = _.map model, (key, value) =>
           # key.attributes
-        # console.log "@nodes", @nodes
+        console.log "@nodes", @nodes
         for each in @nodes1
           @nodes.push each
-        # console.log "@nodes", @nodes
+        console.log "@nodes", @nodes
         _links = @nodes[1]
         _links.sort (a, b) ->
             if a.source > b.source
@@ -52,8 +52,13 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
           return
         @_nodes = _nodes
         @_links = _links
+        console.log $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
+        @width = @el.clientWidth
+        @height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
+      initialize: ->
+        # orgbysourceartist
       onShow: ->
-        # console.log "widht, height", @width, @height
+        console.log "widht, height", @width, @height
         padding = .5
         color = @color = d3.scale.category10()
         # width = $("#organization-region")[0].clientWidth
@@ -75,11 +80,16 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
             return Math.sqrt(d.target.value)
           ).style("opacity", 0.4)
         link.exit().remove()
+        node = @vis.selectAll('g.node')
+        console.log "node in orf br", node
         
+        node.data(d3.values([])).exit().remove()
+        console.log "node in orf ri", node
         node = @vis.selectAll('g.node'
         ).data(d3.values(@_nodes), (d) ->
           d.name
         )
+        console.log "node in orf", node
         nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "1.35em").call(@force.drag)
         nodeEnter.append('circle').property("id", (d, i) => "node-#{i}").attr('r', (d) ->
           if d.group == 2

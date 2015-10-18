@@ -57,6 +57,30 @@
     App.Entities.LocationNodeSelectedCollection = Backbone.Collection.extend();
     App.module("MapApp.Show", function(Show, App, Backbone, Marionette, $, _) {
       return Show.Controller = {
+        listLevelOne: function(sourceNode) {
+          var updateCollection;
+          updateCollection = $.ajax('/distLocbysourceartist/' + sourceNode.replace(/^\s+|\s+$/g, "", {
+            type: 'GET',
+            dataType: 'json',
+            error: function(jqXHR, textStatus, errorThrown) {},
+            success: (function(_this) {
+              return function(data, textStatus, jqXHR) {
+                var ret;
+                return ret = _.map(data, function(key, value) {
+                  return {
+                    "target": key.target
+                  };
+                });
+              };
+            })(this)
+          }));
+          $.when(updateCollection).done((function(_this) {
+            return function(respnd) {
+              return respnd;
+            };
+          })(this));
+          return updateCollection;
+        },
         showLocationByExistingCollection: function() {
           var locationNodes;
           locationNodes = App.MapApp.Show.Controller.showView.collection;
@@ -76,14 +100,23 @@
                 var ret;
                 return ret = _.map(data, function(key, value) {
                   return {
-                    "target": key.target
+                    "target": value
                   };
                 });
               };
             })(this)
           }));
           return $.when(updateCollection).done((function(_this) {
-            return function(respnd) {};
+            return function(respnd) {
+              var each, _i, _len, _results;
+              console.log("previewByLocation", respnd);
+              _results = [];
+              for (_i = 0, _len = respnd.length; _i < _len; _i++) {
+                each = respnd[_i];
+                _results.push(App.MapApp.Show.Controller.highlightNodesBy(each));
+              }
+              return _results;
+            };
           })(this));
         },
         showLocation: function(source) {
@@ -125,15 +158,6 @@
         highlightNodesBy: (function(_this) {
           return function(sourceNode) {
             var updateCollection;
-            if (App.NavApp.Show.Controller.showView.model.get('statelist') !== sourceNode) {
-              App.NavApp.Show.Controller.showView.model.destroy();
-              App.NavApp.Show.Controller.showView.model = new App.Entity.ArtistListState({
-                statelist: 'All artists',
-                statelocation: "All locations > " + sourceNode,
-                statebio: "" + sourceNode
-              });
-              App.NavApp.Show.Controller.showView.render();
-            }
             updateCollection = $.ajax('/artistsbysource/' + sourceNode, {
               type: 'GET',
               dataType: 'json',

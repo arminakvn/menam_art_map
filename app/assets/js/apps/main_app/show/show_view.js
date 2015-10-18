@@ -23,7 +23,11 @@
           'change': 'render'
         },
         mouseoverNames: function(e) {
-          return $(e.target).css('cursor', 'pointer');
+          $(e.target).css('cursor', 'pointer');
+          $('.highlighted').removeClass('highlighted');
+          $('.bioTriggerd').removeClass('bioTriggerd');
+          $(e.target).addClass('highlighted bioTriggerd');
+          return $(e.target).addClass('highlighted');
         },
         mouseoutNames: function(e) {
           this.timeout = 0;
@@ -32,44 +36,35 @@
           return $(e.target).removeClass('bioTriggerd');
         },
         clickNames: function(e) {
-          if ($('input[name="my-checkbox"]').bootstrapSwitch('state') === true) {
-            this.timeout1 = 10;
-            return this.timeout = setTimeout((function(_this) {
-              return function() {
-                if (_this.timeout1 - _this.timeout < 20) {
-                  App.execute("showBio", e.target.id);
-                  $('.highlighted').removeClass('highlighted');
-                  $('.bioTriggerd').removeClass('bioTriggerd');
-                  $(e.target).addClass('highlighted bioTriggerd');
-                  App.execute("highlightNode", e.target.id);
-                  _this.timeout1 = 10;
-                  _this.timeout = 0;
-                } else {
-                  _this.timeout = 0;
-                  return 0;
-                }
-              };
-            })(this), 20, (function(_this) {
-              return function(e) {
-                try {
-                  App.execute("showBio", e.target.id);
-                  $('.highlighted').removeClass('highlighted');
-                  $('.bioTriggerd').removeClass('bioTriggerd');
-                  $(e.target).addClass('highlighted bioTriggerd');
-                  _this.timeout = 0;
-                  _this.timeout1 = 10;
-                  return 0;
-                } catch (_error) {
-                  e = _error;
-                  _this.timeout = 0;
-                  _this.timeout1 = 10;
-                }
-              };
-            })(this));
+          var navigation, statelist;
+          if (App.state.current === 0) {
+            navigation = new App.Entity.Navigation({
+              statelist: "" + e.target.id,
+              statelocation: "All locations > " + e.target.id,
+              statebio: "" + e.target.id
+            });
+            App.execute("showBio", e.target.id);
+            App.NavApp.Show.Controller.updateNavigation(e.target.id);
+            statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist;
+            navigation = new App.Entity.Navigation({
+              statelist: "" + statelist,
+              statelocation: "All locations > " + e.target.id
+            });
+            App.NavApp.Show.Controller.updateNavigationLoc(navigation);
+            $('.highlighted').removeClass('highlighted');
+            $('.bioTriggerd').removeClass('bioTriggerd');
+            $(e.target).addClass('highlighted bioTriggerd');
+            return App.execute("highlightNode", e.target.id);
           } else {
             App.execute("showBio", e.target.id);
             $('.highlighted').removeClass('highlighted');
             $('.bioTriggerd').removeClass('bioTriggerd');
+            statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist;
+            navigation = new App.Entity.Navigation({
+              statelist: "" + statelist,
+              statelocation: "All organizations > " + e.target.id
+            });
+            App.NavApp.Show.Controller.updateNavigationLoc(navigation);
             return App.navigate("#/organization/" + e.target.id, {
               trgigger: true
             });

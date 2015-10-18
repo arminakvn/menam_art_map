@@ -177,13 +177,23 @@
           nodeGroup.eachLayer((function(_this) {
             return function(layer) {
               layer.on("mouseover", function(e) {
+                list = App.MapApp.Show.Controller.listLevelOne(layer.options.id);
+                App.MainApp.Show.Controller.highlightArtistsby(list);
                 return e.target.openPopup();
               });
               layer.on("mouseout", function(e) {
+                App.MainApp.Show.Controller.resetHighlightArtistsby();
                 return e.target.closePopup();
               });
               return layer.on("click", function(e) {
-                return App.MainApp.Show.Controller.updateView(layer.options.id);
+                var navigation, statelocation;
+                statelocation = App.NavApp.Show.Controller.showView.model.attributes.statelocation;
+                App.MainApp.Show.Controller.updateView(layer.options.id);
+                navigation = new App.Entity.Navigation({
+                  statelist: "All artists > " + layer.options.id,
+                  statelocation: "" + statelocation
+                });
+                return App.NavApp.Show.Controller.updateNavigationLoc(navigation);
               });
             };
           })(this));

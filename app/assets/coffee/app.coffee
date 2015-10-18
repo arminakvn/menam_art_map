@@ -35,15 +35,7 @@ define ["marionette"], (Marionette) ->
     #             # $('body').append "AJAX Error: #{textStatus}"
     #           success: (data, textStatus, jqXHR) ->
     #             App.request "set:artistsource", data
-    require ["js/entities/distincts"], => 
-            $.ajax '/distLocs',
-              type: 'GET'
-              dataType: 'json'
-              error: (jqXHR, textStatus, errorThrown) ->
-                # $('body').append "AJAX Error: #{textStatus}"
-              success: (data, textStatus, jqXHR) ->
-                @list = data
-                @list
+    App.state = {"current": 0}
     require ["js/entities/person_link"], => 
             $.ajax '/links',
               type: 'GET'
@@ -54,6 +46,14 @@ define ["marionette"], (Marionette) ->
                 App.request "set:personLink", data
                 
   App.on "initialize:after", ->
+    $.ajax '/distLocs',
+              type: 'GET'
+              dataType: 'json'
+              error: (jqXHR, textStatus, errorThrown) ->
+                # $('body').append "AJAX Error: #{textStatus}"
+              success: (data, textStatus, jqXHR) ->
+                App.list = data
+                return
     require ["js/apps/header_app/header_app", "js/apps/bio_app/bio_app", "js/apps/main_app/main_app", "js/apps/map_app/map_app", "js/apps/footer_app/footer_app", "js/apps/person_app/person_app", "js/apps/org_app/org_app",  "js/apps/nav_app/nav_app"], ->
       console.log "Marionette Application Started"
       if Backbone.history

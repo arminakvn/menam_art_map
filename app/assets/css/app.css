@@ -76,6 +76,9 @@ src: url("../fonts/CartoGothicStd-Bold.otf") format("opentype");
 }
 html,body{
   height:100%;
+  font-family: "CartoGothicStd", sans-serif;
+  font-size: 13px;
+  font-weight: bold;
   position:relative;
 }
 html {
@@ -242,9 +245,10 @@ cantainer.paratext-info {
   font-size: 12px;
   line-height: 1.5;
   border: 0px solid black;
-  margin-top: 20px;
+  margin: 0 0 20 0;
+  padding-bottom: 10px;
   padding-right: 0;
-  padding-left: 20px;
+  padding-left: 15px;
   background-color: white;
 }
 .hoverdots {
@@ -311,17 +315,34 @@ cantainer.paratext-info {
   background-attachment: fixed;
   background-position: 720px 54px;; 
 }
+#statelist {
+  margin: 0 0 0 0;
+  padding: 0 0 10 0;
+}
 #statelist>span {
-  background-color: #7CB3C0;
+  height: 40px;
+
 }
 #statelocation>span {
  background-color: #7CB3C0; 
+ height: 40px;
+}
+#statebio>span {
+  background-color: #7CB3C0;
+ height: 40px;
 }
 #main-region {
   padding: 0 0 0 0;
 }
+#navigation-region.hidden {
+  padding: 0 0 0 0;
+  height: 40px;
+    opacity: 0;
+
+}
 #navigation-region {
   padding: 0 0 0 0;
+  height: 40px;
 }
 .location {
   border-bottom: solid 2px white;
@@ -345,4 +366,24 @@ cantainer.paratext-info {
   border-radius: 0px !important;
   border: 0px !important;
 
+}
+#organizations {
+  background-color:  #7CB3C0;
+ font-family: "CartoGothicStd";
+  font-size: 12px;
+  line-height: 1.5;
+  border: 0px solid black;
+  margin-top: 20px;
+  padding-right: 0;
+  padding-left: 0;
+}
+#mode {
+  background-color:  white;
+ font-family: "CartoGothicStd";
+  font-size: 10px;
+  line-height: 1.5;
+  border: 0px solid black;
+  margin-top: 20px;
+  padding-right: 0;
+  padding-left: 0;
 }

@@ -1,6 +1,6 @@
 define ["js/app"], (App) ->
   App.module "BioApp", (BioApp, App, Backbone, Marionette, $, _) ->
-    @startWithParent = false
+    @startWithParent = true
     App.commands.setHandler 'showBio', (artist) ->
       API.showBio(artist)
       return

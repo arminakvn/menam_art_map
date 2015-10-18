@@ -62,7 +62,6 @@
           return function(artist) {
             var bioCollection;
             _this.artist = artist;
-            App.NavApp.Show.Controller.showView.model.attributes.statebio = "" + artist;
             App.BioApp.Show.Controller.url = artist;
             bioCollection = new App.Entities.BioElementTextCollection;
             bioCollection.fetch({

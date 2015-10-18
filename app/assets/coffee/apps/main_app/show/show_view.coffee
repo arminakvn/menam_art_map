@@ -27,7 +27,11 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 			mouseoverNames: (e)->
 				
 				$(e.target).css('cursor','pointer')
-				# $(e.target).addClass('highlighted')
+				$('.highlighted').removeClass('highlighted') 
+				$('.bioTriggerd').removeClass('bioTriggerd') 
+				$(e.target).addClass('highlighted bioTriggerd')
+				# App.execute("highlightNode", e.target.id)
+				$(e.target).addClass('highlighted')
 
 			mouseoutNames: (e)->
 				@timeout = 0
@@ -41,43 +45,32 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				# App.execute("hideBio")
 			clickNames: (e) ->
 				# console.log "state in main", $('input[name="my-checkbox"]').bootstrapSwitch('state')
-				if $('input[name="my-checkbox"]').bootstrapSwitch('state') is true	
-					@timeout1 = 10
-					@timeout = setTimeout(=>
-						# console.log "@timeout - @timeout1", @timeout - @timeout1
-						if @timeout1 - @timeout < 20
-							App.execute("showBio", e.target.id)
-							$('.highlighted').removeClass('highlighted') 
-							$('.bioTriggerd').removeClass('bioTriggerd') 
-							$(e.target).addClass('highlighted bioTriggerd')
-							App.execute("highlightNode", e.target.id)
-							@timeout1 = 10
-							@timeout = 0
-						else
-							@timeout = 0
-							return 0
-
-
-						return
-					, 20, (e) =>
-						try
-							App.execute("showBio", e.target.id)
-							$('.highlighted').removeClass('highlighted') 
-							$('.bioTriggerd').removeClass('bioTriggerd') 
-							$(e.target).addClass('highlighted bioTriggerd')
-							@timeout = 0
-							@timeout1 = 10
-							return 0
-						catch e
-							@timeout = 0
-							@timeout1 = 10
-							# console.log "mouseover moved"					
-						return
-					)
-				else
+				if App.state.current == 0	
+					navigation = new App.Entity.Navigation 
+						statelist: "#{e.target.id}"
+						statelocation: "All locations > #{e.target.id}"
+						statebio: "#{e.target.id}"
 					App.execute("showBio", e.target.id)
+					App.NavApp.Show.Controller.updateNavigation(e.target.id)
+					statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist
+					navigation = new App.Entity.Navigation 
+						statelist: "#{statelist}"
+						statelocation: "All locations > #{e.target.id}"
+					App.NavApp.Show.Controller.updateNavigationLoc(navigation)	
 					$('.highlighted').removeClass('highlighted') 
 					$('.bioTriggerd').removeClass('bioTriggerd') 
+					$(e.target).addClass('highlighted bioTriggerd')
+					App.execute("highlightNode", e.target.id)
+				else
+					App.execute("showBio", e.target.id)
+					# App.NavApp.Show.Controller.updateNavigation(e.target.id)
+					$('.highlighted').removeClass('highlighted') 
+					$('.bioTriggerd').removeClass('bioTriggerd') 
+					statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist
+					navigation = new App.Entity.Navigation 
+						statelist: "#{statelist}"
+						statelocation: "All organizations > #{e.target.id}"
+					App.NavApp.Show.Controller.updateNavigationLoc(navigation)	
 					App.navigate "#/organization/#{e.target.id}", trgigger: true
 			onBeforeRender: ->
 				@$el.css("opacity", 0)

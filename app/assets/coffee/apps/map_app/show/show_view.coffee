@@ -189,13 +189,25 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
               # @markers = new L.MarkerClusterGroup([],maxZoom: 8, spiderfyOnMaxZoom:true, zoomToBoundsOnClick:true, spiderfyDistanceMultiplier:2)
               # @markers.addTo(@_m)
               layer.on "mouseover", (e) =>
+                # console.log "layer.options.id", layer.options.id
+                list = App.MapApp.Show.Controller.listLevelOne(layer.options.id)
+                # $.when(App.list).done (respnd) =>
+                #     respnd
+                App.MainApp.Show.Controller.highlightArtistsby(list)
                 # console.log "mouseover"
                 e.target.openPopup()
               layer.on "mouseout", (e) =>
+                App.MainApp.Show.Controller.resetHighlightArtistsby()
                 # console.log "mouseover"
                 e.target.closePopup()
               layer.on "click", (e) =>
+                statelocation = App.NavApp.Show.Controller.showView.model.attributes.statelocation
                 App.MainApp.Show.Controller.updateView layer.options.id
+
+                navigation = new App.Entity.Navigation 
+                  statelist: "All artists > #{layer.options.id}"
+                  statelocation: "#{statelocation}"
+                App.NavApp.Show.Controller.updateNavigationLoc(navigation)
             #     @markers.clearLayers()
             #     textResponse = $.ajax
             #         url: "/artstsby/#{layer.options.id}"

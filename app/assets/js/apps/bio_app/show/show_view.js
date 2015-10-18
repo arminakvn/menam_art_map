@@ -7,7 +7,7 @@
         template: showTpl,
         className: function() {
           var _ref;
-          if (_ref = this.model.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+          if (_ref = this.model.attributes.name, __indexOf.call(App.list, _ref) >= 0) {
             return 'bioItem location';
           } else {
             return 'bioItem';
@@ -30,9 +30,25 @@
           if (this.$el.hasClass("location")) {
             this.$el.addClass('highlighted');
             list = App.BioApp.Show.Controller.listLevelOne(this.$el[0].textContent);
-            App.MainApp.Show.Controller.highlightArtistsby(list);
-            return App.MapApp.Show.Controller.previewByLocation(this.$el[0].textContent);
+            return App.MainApp.Show.Controller.highlightArtistsby(list);
           }
+        },
+        onBeforeRender: function() {
+          var _ref;
+          if (_ref = this.model.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+            this.$el.addClass('bioItem location');
+          } else {
+            this.$el.addClass('bioItem');
+          }
+          return;
+          return this.$el.animate({
+            opacity: 1
+          }, 500);
+        },
+        onBeforeClose: function() {
+          return this.$el.animate({
+            opacity: 0
+          }, 750);
         },
         mouseoutElems: function(e) {
           this.$el.css('cursor', 'default');
@@ -40,10 +56,16 @@
           return App.MainApp.Show.Controller.resetHighlightArtistsby();
         },
         mouseclickElems: function(e) {
-          var _ref;
+          var navigation, _ref;
           if (_ref = this.model.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
             App.MainApp.Show.Controller.updateView(this.model.attributes.name);
-            return App.MapApp.Show.Controller.resetMapHighlights();
+            App.MapApp.Show.Controller.resetMapHighlights();
+            App.MapApp.Show.Controller.previewByLocation(this.$el[0].textContent);
+            navigation = new App.Entity.Navigation({
+              statelist: "All artists > " + this.$el[0].textContent,
+              statelocation: "All locations > " + this.$el[0].textContent
+            });
+            return App.NavApp.Show.Controller.updateNavigationLoc(navigation);
           }
         },
         onShow: function() {
@@ -54,7 +76,7 @@
           return myTimeout1 = (function(_this) {
             return function() {
               var _ref;
-              if (_ref = _this.model.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+              if (_ref = _this.model.attributes.name, __indexOf.call(App.list, _ref) >= 0) {
                 _this.$el.addClass('bioItem location');
               } else {
                 _this.$el.addClass('bioItem');
@@ -73,11 +95,48 @@
           }, 500);
         },
         onBeforeClose: function() {
-          return this.$el.animate({
+          this.$el.animate({
             opacity: 0
           }, 750);
+          return this.children.each((function(_this) {
+            return function(childView) {
+              var childModel, _ref;
+              childModel = childView.model;
+              if (_ref = childModel.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+                childView.$el.addClass('bioItem location');
+              } else {
+                childView.$el.addClass('bioItem');
+              }
+            };
+          })(this));
         },
-        onShow: function() {}
+        onAfterRender: function() {
+          return this.children.each((function(_this) {
+            return function(childView) {
+              var childModel, _ref;
+              childModel = childView.model;
+              if (_ref = childModel.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+                childView.$el.addClass('bioItem location');
+              } else {
+                childView.$el.addClass('bioItem');
+              }
+            };
+          })(this));
+        },
+        onShow: function() {
+          console.log(App);
+          return this.children.each((function(_this) {
+            return function(childView) {
+              var childModel, _ref;
+              childModel = childView.model;
+              if (_ref = childModel.attributes.name, __indexOf.call(App.list, _ref) >= 0) {
+                childView.$el.addClass('bioItem location');
+              } else {
+                childView.$el.addClass('bioItem');
+              }
+            };
+          })(this));
+        }
       });
     });
     return App.BioApp.View;

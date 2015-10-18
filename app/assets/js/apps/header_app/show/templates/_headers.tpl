@@ -1,26 +1,23 @@
-<!-- header_view.tpl -->
+<div class="col-md-2" style="padding: 0 0 0 0 !important;">
 
-	<div class="row" id="header">
+</div>
+<div class="col-md-2" style="padding: 0 0 0 0 !important;">
+		<div class="row" id="header">
 		<nav class="navbar navbar-default navbar-fixed top" role="navigation" style="background-color: #FFFFFF; border-color: #FFFFFF;">
 			<div class="container">
 				<div class="navbar-header">
-					<a href="/" class="navbar-brand" style="font-size: xx-large; line-height: 55%;">
+					<a href="/" class="navbar-brand" style="font-size: small; line-height: 55%;">
 						 <img style="max-width:100px; margin-top: -7px;" src="Icon-02-01.png">
 					</a>
 				</div>
-				<div class="collapse navbar-collapse" id="headercollapse"style="padding: 0px;">
+				<span id="organizations" data-toggle="portfilter">Locations</span> <span id="mode">mode</span>
+				<div class="collapse navbar-collapse" id="headercollapse"style="padding: 0 0 0 0;">
 					<!-- <ul id="header-container" class="nav navbar-nav navbar-right">
 								
 					</ul> -->
-					<input id="checkbox" type="checkbox" name="my-checkbox" checked>
 					<ul class="nav navbar-nav navbar-left">
 												          <div id="menam-icon" class="icon icon-menam"></div>
 
-						<!-- <li><a id="main" href="/#/" data-toggle="portfilter">
-						          <div class="icon icon-menam"></div>
-								<span class="glyphicon glyphicon-menu-hamburger"></span>
-							</a>
-						</li> -->
 						<!-- <li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -37,4 +34,11 @@
 			</div>
 		</nav>
 	</div>
+
+
+</div>
+
+<div class="col-md-8"style="padding: 0 0 0 0 !important;">
+
+</div>
 

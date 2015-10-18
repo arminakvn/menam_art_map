@@ -13,7 +13,6 @@ requirejs.config
     d3: "./bower_components/d3/d3"
     polyhedron: "./bower_components/d3-plugins/geo/polyhedron/polyhedron"
     topojson: "./bower_components/topojson/topojson"
-    bootstrapswitch: "./bower_components/bootstrap-switch/dist/js/bootstrap-switch"
 
   shim:
     underscore:
@@ -34,9 +33,6 @@ requirejs.config
       deps: ["d3"]
       exports: "polyhedron"
 
-    bootstrapswitch:
-      deps: ["jquery"]
-      exports: "bootstrapswitch"
 
   name: "app",
   out: "app.min.js"
@@ -47,9 +43,8 @@ require ["js/app"], (App) ->
 requirejs [
   "jquery"
   "d3"
-  "bootstrapswitch"
-], ($, d3, polyhedron, bootstrapswitch) ->
-  (($, d3, polyhedron, bootstrapswitch, window, undefined_) ->
+], ($, d3, polyhedron) ->
+  (($, d3, polyhedron, window, undefined_) ->
     $doc = $(document)
   ) $, window
   return

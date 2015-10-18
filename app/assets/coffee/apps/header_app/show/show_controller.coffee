@@ -8,6 +8,7 @@ define ["js/app", "js/apps/header_app/show/show_view"], (App, View) ->
           # $.when(getHeader).done (header) ->
             showView = new View.HeadersView()
 
+            App.state = {"current": 0}
             App.headerRegion.show showView
 
   App.HeaderApp.Show.Controller

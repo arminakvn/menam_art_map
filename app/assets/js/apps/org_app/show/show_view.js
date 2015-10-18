@@ -6,20 +6,22 @@
         id: "organization-region",
         tagName: "div",
         onDomRefresh: function() {
-          console.log($('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight());
-          this.width = this.el.clientWidth;
-          return this.height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight();
-        },
-        initialize: function() {
-          var each, i, _i, _len, _links, _nodes, _ref;
+          var e, each, i, _i, _len, _links, _nodes, _ref;
+          try {
+            this._links.enter([]).exit().remove();
+          } catch (_error) {
+            e = _error;
+          }
           this.nodes = [];
           this.nodes.push(this.collection.models[0].attributes.level0);
           this.nodes1 = this.collection.models[1].attributes.level1;
+          console.log("@nodes", this.nodes);
           _ref = this.nodes1;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             each = _ref[_i];
             this.nodes.push(each);
           }
+          console.log("@nodes", this.nodes);
           _links = this.nodes[1];
           _links.sort(function(a, b) {
             if (a.source > b.source) {
@@ -71,10 +73,15 @@
             };
           })(this));
           this._nodes = _nodes;
-          return this._links = _links;
+          this._links = _links;
+          console.log($('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight());
+          this.width = this.el.clientWidth;
+          return this.height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight();
         },
+        initialize: function() {},
         onShow: function() {
           var color, force, j, link, linkedByIndex, node, nodeEnter, optArray, padding, searchNode, svg, tick, toggle, vis;
+          console.log("widht, height", this.width, this.height);
           padding = .5;
           color = this.color = d3.scale.category10();
           svg = vis = this.vis = d3.select('#organization-region').append('svg:svg').attr('width', this.width).attr('height', this.height);
@@ -86,9 +93,14 @@
             return Math.sqrt(d.target.value);
           }).style("opacity", 0.4);
           link.exit().remove();
+          node = this.vis.selectAll('g.node');
+          console.log("node in orf br", node);
+          node.data(d3.values([])).exit().remove();
+          console.log("node in orf ri", node);
           node = this.vis.selectAll('g.node').data(d3.values(this._nodes), function(d) {
             return d.name;
           });
+          console.log("node in orf", node);
           nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "1.35em").call(this.force.drag);
           nodeEnter.append('circle').property("id", (function(_this) {
             return function(d, i) {

@@ -70,7 +70,7 @@
           })(this));
         },
         updateView: function(names) {
-          var location_text, navigation, updateCollection;
+          var updateCollection;
           updateCollection = $.ajax('/sourceByTarget/' + names, {
             type: 'GET',
             dataType: 'json',
@@ -88,36 +88,6 @@
           });
           console.log("" + (App.NavApp.Show.Controller.showView.model.get('statebio')));
           console.log("" + (App.NavApp.Show.Controller.showView.model.get('statelist')));
-          if (("" + (App.NavApp.Show.Controller.showView.model.get('statelist'))) === "All artists") {
-            location_text = "All locations";
-          } else {
-            location_text = "" + (App.NavApp.Show.Controller.showView.model.get('statelist'));
-          }
-          if (App.NavApp.Show.Controller.showView.model.get('statelist') === 'All artists' && App.NavApp.Show.Controller.showView.model.get('statelist') !== 'All locations') {
-            navigation = new App.Entity.ArtistListState({
-              statelist: "All artists > " + names,
-              statelocation: "" + location_text,
-              statebio: "" + (App.NavApp.Show.Controller.showView.model.get('statebio'))
-            });
-            App.NavApp.Show.Controller.showView.model.destroy();
-            App.NavApp.Show.Controller.updateNavigation(navigation);
-          } else if (App.NavApp.Show.Controller.showView.model.get('statelocation').replace(/^\s+|\s+$/g, "" === 'All locations' && App.NavApp.Show.Controller.showView.model.get('statelist') === 'All artists' + names)) {
-            App.NavApp.Show.Controller.showView.model.destroy();
-            navigation = new App.Entity.ArtistListState({
-              statelist: "All artists > " + names,
-              statelocation: "All locations",
-              statebio: ""
-            });
-            App.NavApp.Show.Controller.updateNavigation(navigation);
-          } else if (App.NavApp.Show.Controller.showView.model.get('statelist') === 'All artists') {
-            App.NavApp.Show.Controller.showView.model.destroy();
-            navigation = new App.Entity.ArtistListState({
-              statelist: "All artists > " + names,
-              statelocation: "All locations",
-              statebio: ""
-            });
-            App.NavApp.Show.Controller.updateNavigation(navigation);
-          }
           return $.when(updateCollection).done((function(_this) {
             return function(respnd) {
               var output;

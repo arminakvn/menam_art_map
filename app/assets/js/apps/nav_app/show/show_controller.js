@@ -37,19 +37,49 @@
           });
           return App.navRegion.show(this.showView);
         },
-        updateNavigation: function(navigation) {
+        updateNavigationArtist: function(navigation) {
+          var nav;
+          console.log("navigation", navigation);
+          App.NavApp.Show.Controller.showView.model.destroy();
+          nav = new App.Entity.ArtistListState({
+            statelist: navigation.attributes.statelist,
+            statelocation: navigation.attributes.statelocation,
+            statebio: navigation.attributes.statebio
+          });
           this.showView = new View.ShowView({
-            model: navigation
+            model: nav
           });
           return App.navRegion.show(this.showView);
         },
-        showModal: function() {
-          App.addRegions({
-            modal: new ModalRegion()
+        updateNavigationLoc: function(navigation) {
+          var nav;
+          console.log("navigation", navigation);
+          App.NavApp.Show.Controller.showView.model.destroy();
+          nav = new App.Entity.ArtistListState({
+            statelist: navigation.attributes.statelist,
+            statelocation: navigation.attributes.statelocation,
+            statebio: navigation.attributes.statebio
           });
-          this.showModal = new View.ShowModal();
-          return App.modal.show(this.showModal);
-        }
+          this.showView = new View.ShowView({
+            model: nav
+          });
+          return App.navRegion.show(this.showView);
+        },
+        updateNavigationBio: function(navigation) {
+          var nav;
+          App.NavApp.Show.Controller.showView.model.destroy();
+          nav = new App.Entity.ArtistListState({
+            statelist: navigation.attributes.statelist,
+            statelocation: navigation.attributes.statelocation,
+            statebio: navigation.attributes.statebio
+          });
+          this.showView = new View.ShowView({
+            model: nav
+          });
+          return App.navRegion.show(this.showView);
+        },
+        updateNavigation: function(names) {},
+        showModal: function() {}
       };
     });
     return App.NavApp.Show.Controller;

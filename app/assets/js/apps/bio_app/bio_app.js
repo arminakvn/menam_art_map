@@ -2,7 +2,7 @@
   define(["js/app"], function(App) {
     App.module("BioApp", function(BioApp, App, Backbone, Marionette, $, _) {
       var API;
-      this.startWithParent = false;
+      this.startWithParent = true;
       App.commands.setHandler('showBio', function(artist) {
         API.showBio(artist);
       });

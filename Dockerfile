@@ -13,12 +13,14 @@
 # limitations under the License.
 #
 # [START docker]
-FROM google/nodejs-runtime
+FROM gcr.io/google_appengine/nodejs
+ADD package.json npm-shrinkwrap.json* /app/
+RUN npm --unsafe-perm install
+ADD . /app
 WORKDIR /app
 ADD package.json /usr/app/package.json
 ADD bower.json /usr/app/bower.json
 ADD dist /usr/app/dist
-ADD Dockerfile /usr/app/Dockerfile
 ADD app.js /usr/app/app.js
 ADD README.md /usr/app/README.md
 ADD app.yaml /usr/app/app.yaml

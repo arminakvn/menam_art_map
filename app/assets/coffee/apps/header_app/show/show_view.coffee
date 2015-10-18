@@ -12,16 +12,29 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
       events:
         "click #location":"locationFired"
         "click #person":"personFired"
-        "click #organization":"organizationFired"
+        "click #organizations":"organizationFired"
+        "mouseover #organizations":"organizationMousover"
+        "mouseout #organizations":"organizationMousout"
         "click #biotraj":"biotrajFired"
         "click #main":"mainFired"
         "click #menam-icon":"showModal"
       locationFired: (e) =>
-        App.vent.trigger "locationFired"
+        # App.vent.trigger "locationFired"
       personFired: (e) =>
-        App.vent.trigger "personFired"
+        # App.vent.trigger "personFired"
       organizationFired: (e) =>
-        App.vent.trigger "organizationFired"
+        if App.state.current == 0
+          $('#organizations').html ""
+          $('#organizations').html "Organizations"
+          App.state.current = 1
+          # App.vent.trigger "locationFired"
+        else
+          $('#organizations').html ""
+          $('#organizations').html "Locations"
+          App.state.current = 0
+          # App.navigate "/organization/#{App.NavApp.Show.Controller.showView.model.get('statebio')}", trgigger: true
+          App.navigate "/", trgigger: true
+          # App.vent.trigger "organizationFired"
       biotrajFired: (e) =>
 
       mainFired: (e) =>
@@ -30,37 +43,35 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
       showModal: (e) =>
         console.log "showModal"
         App.NavApp.Show.Controller.showModal()
+
+      organizationMousover: (e) =>
+        $(e.target).css('cursor','pointer')
+      organizationMousoout: (e) =>
+        $(e.target).css('cursor','default')
       onShow: ->
 
-        $('input[name="my-checkbox"]').bootstrapSwitch('state', false, true)
-        $('input[name="my-checkbox"]').bootstrapSwitch('onText', 'Locations')
-        $('input[name="my-checkbox"]').bootstrapSwitch('offText', 'Organizations')
-        $('input[name="my-checkbox"]').bootstrapSwitch('size', 'small')
-        $('input[name="my-checkbox"]').bootstrapSwitch('onColor', "default")
-        $('input[name="my-checkbox"]').bootstrapSwitch('offColor', "default")
-        $('input[name="my-checkbox"]').bootstrapSwitch('labelWidth', $("#statebio")*4)
-        $('input[name="my-checkbox"]').bootstrapSwitch('onSwitchChange', (e) =>
-          e.stopPropagation()
-          # console.log "App.getCurrentRoute()", App.getCurrentRoute()
-          name = App.NavApp.Show.Controller.showView.model.attributes.statelocation.replace "All locations > ", ""
-          # console.log "name", name
-          # console.log "state", $('input[name="my-checkbox"]').bootstrapSwitch('state')
-          if $('input[name="my-checkbox"]').bootstrapSwitch('state') is true
-            # console.log "state is true"
-            # App.navigate "/", trigger: true
-            # App.MainApp.Show.Controller.updateView('all')
-            # App.MapApp.Show.Controller.resetMapHighlights()
-            # App.MainApp.Show.Controller.updateView(name)
-            App.execute("showLocationByName", name)
-            App.navigate "#/location/#{name}", trgigger:  true
-          else if (App.getCurrentRoute() == 'location/') and ($('input[name="my-checkbox"]').bootstrapSwitch('state') is false)
-            App.navigate "#/organization/#{name}", trgigger: true
-          else if $('input[name="my-checkbox"]').bootstrapSwitch('state') is false
-            # console.log "App.getCurrentRoute()", App.getCurrentRoute()
-            name = App.getCurrentRoute().replace "organization/", ""
-            App.execute("showLocationByName", name)
+        # $('input[name="my-checkbox"]').bootstrapSwitch('onSwitchChange', (e) =>
+        #   e.stopPropagation()
+        #   # console.log "App.getCurrentRoute()", App.getCurrentRoute()
+        #   name = App.NavApp.Show.Controller.showView.model.attributes.statelocation.replace "All locations > ", ""
+        #   # console.log "name", name
+        #   # console.log "state", $('input[name="my-checkbox"]').bootstrapSwitch('state')
+        #   if $('input[name="my-checkbox"]').bootstrapSwitch('state') is true
+        #     # console.log "state is true"
+        #     # App.navigate "/", trigger: true
+        #     # App.MainApp.Show.Controller.updateView('all')
+        #     # App.MapApp.Show.Controller.resetMapHighlights()
+        #     # App.MainApp.Show.Controller.updateView(name)
+        #     App.execute("showLocationByName", name)
+        #     App.navigate "#/location/#{name}", trgigger:  true
+        #   else if (App.getCurrentRoute() == 'location/') and ($('input[name="my-checkbox"]').bootstrapSwitch('state') is false)
+        #     App.navigate "#/organization/#{name}", trgigger: true
+        #   else if $('input[name="my-checkbox"]').bootstrapSwitch('state') is false
+        #     # console.log "App.getCurrentRoute()", App.getCurrentRoute()
+        #     name = App.getCurrentRoute().replace "organization/", ""
+        #     App.execute("showLocationByName", name)
             # App.vent.trigger "locationsFired"
-        )
+        # )
     )
 
   App.HeaderApp.View
