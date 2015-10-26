@@ -38,6 +38,13 @@
           'mouseout @ui.div': 'mouseoutNav'
         },
         navigate: function(e) {
+          var navigation, statelocation;
+          statelocation = App.NavApp.Show.Controller.showView.model.attributes.statelocation;
+          navigation = new App.Entity.Navigation({
+            statelist: "All artists >",
+            statelocation: "" + statelocation
+          });
+          App.NavApp.Show.Controller.updateNavigationLoc(navigation);
           return App.MainApp.Show.Controller.updateView('all');
         },
         mouseoverNav: function(e) {
@@ -47,6 +54,13 @@
           return $(e.target).css('cursor', 'default');
         },
         locations: function(e) {
+          var navigation, statelist;
+          statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist;
+          navigation = new App.Entity.Navigation({
+            statelist: "" + statelist,
+            statelocation: "All locations >"
+          });
+          App.NavApp.Show.Controller.updateNavigationLoc(navigation);
           return App.navigate("/", {
             trigger: true
           });

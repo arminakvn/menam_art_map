@@ -9,6 +9,9 @@
       App.commands.setHandler('highlightNode', function(sourceNode) {
         API.highlightNode(sourceNode);
       });
+      App.commands.setHandler('highlightPlace', function(sourceNode) {
+        API.highlightPlace(sourceNode);
+      });
       App.commands.setHandler('showLocationByName', function(name) {
         API.showLocationByExistingCollection();
         App.MapApp.Show.Controller.showView.collection.on("sync", function() {
@@ -34,6 +37,11 @@
         highlightNode: function(sourceNode) {
           return require(["js/apps/map_app/show/show_controller"], function() {
             return App.MapApp.Show.Controller.highlightNodesBy(sourceNode);
+          });
+        },
+        highlightPlace: function(sourceNode) {
+          return require(["js/apps/map_app/show/show_controller"], function() {
+            return App.MapApp.Show.Controller.highlightPlace(sourceNode);
           });
         },
         showLocationByExistingCollection: function() {

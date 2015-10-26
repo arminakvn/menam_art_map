@@ -189,6 +189,8 @@
                 var navigation, statelocation;
                 statelocation = App.NavApp.Show.Controller.showView.model.attributes.statelocation;
                 App.MainApp.Show.Controller.updateView(layer.options.id);
+                App.MapApp.Show.Controller.resetMapHighlights();
+                App.MapApp.Show.Controller.previewByLocation(layer.options.id);
                 navigation = new App.Entity.Navigation({
                   statelist: "All artists > " + layer.options.id,
                   statelocation: "" + statelocation

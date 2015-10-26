@@ -65,7 +65,12 @@
               statelist: "All artists > " + this.$el[0].textContent,
               statelocation: "All locations > " + this.$el[0].textContent
             });
-            return App.NavApp.Show.Controller.updateNavigationLoc(navigation);
+            App.NavApp.Show.Controller.updateNavigationLoc(navigation);
+            return setTimeout(((function(_this) {
+              return function() {
+                App.execute("highlightPlace", _this.$el[0].textContent);
+              };
+            })(this)), 3000);
           }
         },
         onShow: function() {

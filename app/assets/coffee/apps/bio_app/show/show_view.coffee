@@ -59,6 +59,11 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
             statelist: "All artists > #{@$el[0].textContent}"
             statelocation: "All locations > #{@$el[0].textContent}"
           App.NavApp.Show.Controller.updateNavigationLoc(navigation)  
+          setTimeout (=>
+            App.execute("highlightPlace", @$el[0].textContent)
+            return
+          ), 3000
+
       onShow: ->
         timedText = ->
           setTimeout myTimeout1, 200

@@ -108,7 +108,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 				@showView = new View.ShowView(collection:locationNodes)
 				App.mainRegion.show(@showView)
 
-			previewByLocation: (sourceNode) ->
+			previewByLocation: (sourceNode) =>
 				# $.when(sourceNode).done (sourceNode) =>
 				# 	console.log "@ inside highlightNodesBy", sourceNode
 
@@ -123,20 +123,21 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 				# 			$(L.DomUtil.get(layer._container)).addClass('highlighted')
 
 				# console.log "sourceNode", '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, ""
+				sourceNode2 = sourceNode.replace /^\s+|\s+$/g, ""
 				updateCollection = $.ajax '/distLocbysourceartist/'+sourceNode.replace /^\s+|\s+$/g, "",
-		              type: 'GET'
-		              dataType: 'json'
-		              error: (jqXHR, textStatus, errorThrown) ->
-		                # $('body').append "AJAX Error: #{textStatus}"
-		              success: (data, textStatus, jqXHR) =>
-		              	# console.log "data", data
-		              	ret = _.map data, (key, value) =>
-		              		"target": value
-		        $.when(updateCollection).done (respnd) =>
-		          console.log "previewByLocation", respnd
-		          for each in respnd
-		              		App.MapApp.Show.Controller.highlightNodesBy(each)
+						type: 'GET'
+						dataType: 'json'
+						error: (jqXHR, textStatus, errorThrown) ->
 
+						success: (data, textStatus, jqXHR) =>
+							ret = _.map data, (key, value) =>
+								"target": value
+				$.when(updateCollection).done (respnd) =>
+					console.log "previewByLocation", respnd
+					for each in respnd
+						if each != sourceNode.replace /^\s+|\s+$/g, ""
+							App.MapApp.Show.Controller.highlightNodesBy(each)
+		        
 			showLocation: (source) ->
 				console.log "source", source
 				console.log "this is showLocation"
@@ -241,7 +242,27 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		 #    	else
 		 #    		console.log "else notheing"
 		 #    	return
-
+			highlightPlace: (sourceNode) =>
+				console.log "highlightPlace", sourceNode.replace /^\s+|\s+$/g, ""
+				@Controller.showView.nodeGroup.eachLayer (layer) =>
+					# console.log "layer.options.id", layer.options.id
+					if layer.options.id == sourceNode.replace /^\s+|\s+$/g, ""
+						console.log "tthis is the sourcePlace", layer.options.id
+						layer.bringToFront()
+						setTimeout (->
+									$(L.DomUtil.get(layer._container)).animate
+										fillOpacity: 0.8
+										opacity: 1
+									, 1, ->
+										layer.setStyle
+											className: 'locations-nodes highlighted'
+											fillOpacity: 0.8
+											weight: 2
+											opacity: 1
+											fill: "red"
+											clickable: true
+								)
+						layer.bringToFront()
 			highlightNodesBy: (sourceNode) =>
 				# @Controller.showBio(sourceNode)
 				# if App.NavApp.Show.Controller.showView.model.get('statelist') != sourceNode
@@ -345,14 +366,14 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 								timeout = 0
 								setTimeout (->
 									$(L.DomUtil.get(layer._container)).animate
-										fillOpacity: 0.8
-										opacity: 0.9
+										fillOpacity: 0.5
+										opacity: 0.6
 									, 1, ->
 										layer.setStyle
 											className: 'locations-nodes highlighted'
-											fillOpacity: 0.8
+											fillOpacity: 0.5
 											weight: 2
-											opacity: 1
+											opacity: 0.6
 											clickable: true
 								)
 				return 

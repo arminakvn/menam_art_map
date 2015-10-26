@@ -89,36 +89,39 @@
           });
           return App.mainRegion.show(this.showView);
         },
-        previewByLocation: function(sourceNode) {
-          var updateCollection;
-          updateCollection = $.ajax('/distLocbysourceartist/' + sourceNode.replace(/^\s+|\s+$/g, "", {
-            type: 'GET',
-            dataType: 'json',
-            error: function(jqXHR, textStatus, errorThrown) {},
-            success: (function(_this) {
-              return function(data, textStatus, jqXHR) {
+        previewByLocation: (function(_this) {
+          return function(sourceNode) {
+            var sourceNode2, updateCollection;
+            sourceNode2 = sourceNode.replace(/^\s+|\s+$/g, "");
+            updateCollection = $.ajax('/distLocbysourceartist/' + sourceNode.replace(/^\s+|\s+$/g, "", {
+              type: 'GET',
+              dataType: 'json',
+              error: function(jqXHR, textStatus, errorThrown) {},
+              success: function(data, textStatus, jqXHR) {
                 var ret;
                 return ret = _.map(data, function(key, value) {
                   return {
                     "target": value
                   };
                 });
-              };
-            })(this)
-          }));
-          return $.when(updateCollection).done((function(_this) {
-            return function(respnd) {
+              }
+            }));
+            return $.when(updateCollection).done(function(respnd) {
               var each, _i, _len, _results;
               console.log("previewByLocation", respnd);
               _results = [];
               for (_i = 0, _len = respnd.length; _i < _len; _i++) {
                 each = respnd[_i];
-                _results.push(App.MapApp.Show.Controller.highlightNodesBy(each));
+                if (each !== sourceNode.replace(/^\s+|\s+$/g, "")) {
+                  _results.push(App.MapApp.Show.Controller.highlightNodesBy(each));
+                } else {
+                  _results.push(void 0);
+                }
               }
               return _results;
-            };
-          })(this));
-        },
+            });
+          };
+        })(this),
         showLocation: function(source) {
           var locationNavigator, locationNodes;
           console.log("source", source);
@@ -155,6 +158,33 @@
         showLocationByGroup: function(locationGroup) {
           return App.MainApp.Show.Controller.updateView(locationGroup);
         },
+        highlightPlace: (function(_this) {
+          return function(sourceNode) {
+            console.log("highlightPlace", sourceNode.replace(/^\s+|\s+$/g, ""));
+            return _this.Controller.showView.nodeGroup.eachLayer(function(layer) {
+              if (layer.options.id === sourceNode.replace(/^\s+|\s+$/g, "")) {
+                console.log("tthis is the sourcePlace", layer.options.id);
+                layer.bringToFront();
+                setTimeout((function() {
+                  return $(L.DomUtil.get(layer._container)).animate({
+                    fillOpacity: 0.8,
+                    opacity: 1
+                  }, 1, function() {
+                    return layer.setStyle({
+                      className: 'locations-nodes highlighted',
+                      fillOpacity: 0.8,
+                      weight: 2,
+                      opacity: 1,
+                      fill: "red",
+                      clickable: true
+                    });
+                  });
+                }));
+                return layer.bringToFront();
+              }
+            });
+          };
+        })(this),
         highlightNodesBy: (function(_this) {
           return function(sourceNode) {
             var updateCollection;
@@ -222,14 +252,14 @@
                     timeout = 0;
                     return setTimeout((function() {
                       return $(L.DomUtil.get(layer._container)).animate({
-                        fillOpacity: 0.8,
-                        opacity: 0.9
+                        fillOpacity: 0.5,
+                        opacity: 0.6
                       }, 1, function() {
                         return layer.setStyle({
                           className: 'locations-nodes highlighted',
-                          fillOpacity: 0.8,
+                          fillOpacity: 0.5,
                           weight: 2,
-                          opacity: 1,
+                          opacity: 0.6,
                           clickable: true
                         });
                       });

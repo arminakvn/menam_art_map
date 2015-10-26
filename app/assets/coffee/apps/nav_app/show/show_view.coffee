@@ -33,6 +33,11 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
         'mouseout @ui.div' : 'mouseoutNav'
 
       navigate: (e) ->
+        statelocation = App.NavApp.Show.Controller.showView.model.attributes.statelocation
+        navigation = new App.Entity.Navigation 
+          statelist: "All artists >"
+          statelocation: "#{statelocation}"
+        App.NavApp.Show.Controller.updateNavigationLoc(navigation)  
         # console.log "nav @model", @model
         # if @model.attributes.statelocation != 'All locations'
         App.MainApp.Show.Controller.updateView('all')
@@ -45,6 +50,11 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
       mouseoutNav: (e) ->
         $(e.target).css('cursor','default')
       locations: (e) ->
+        statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist
+        navigation = new App.Entity.Navigation 
+          statelist: "#{statelist}"
+          statelocation: "All locations >"
+        App.NavApp.Show.Controller.updateNavigationLoc(navigation) 
         App.navigate "/", trigger: true
         # console.log "@model.attributes.statelocation.replace('All locations > ', "")", @model.attributes.statelocation.replace('All locations > ', "")
         # if @model.attributes.statelocation != 'All locations'

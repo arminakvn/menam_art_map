@@ -7,6 +7,9 @@ define ["js/app"], (App) ->
     App.commands.setHandler 'highlightNode', (sourceNode) ->
       API.highlightNode(sourceNode)
       return
+    App.commands.setHandler 'highlightPlace', (sourceNode) ->
+      API.highlightPlace(sourceNode)
+      return
     
     App.commands.setHandler 'showLocationByName', (name) ->
       API.showLocationByExistingCollection()
@@ -33,6 +36,10 @@ define ["js/app"], (App) ->
       highlightNode: (sourceNode)->
         require ["js/apps/map_app/show/show_controller"], ->
           App.MapApp.Show.Controller.highlightNodesBy(sourceNode)
+
+      highlightPlace: (sourceNode)->
+        require ["js/apps/map_app/show/show_controller"], ->
+          App.MapApp.Show.Controller.highlightPlace(sourceNode)
 
 
 
