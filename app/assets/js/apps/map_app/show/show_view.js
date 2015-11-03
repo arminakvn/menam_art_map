@@ -132,6 +132,9 @@
           this._m.scrollWheelZoom.disable();
           this._m.on("click", (function(_this) {
             return function() {
+              _this.placeNodeGroup.eachLayer(function(layer) {
+                return _this.placeNodeGroup.removeLayer(layer);
+              });
               _this.nodeGroup.eachLayer(function(layer) {
                 return layer.setStyle({
                   opacity: 0.1,
@@ -151,6 +154,7 @@
           App.MapApp.Show.Controller._links = _links;
           eachcnt = 0;
           nodeGroup = L.layerGroup([]);
+          this.placeNodeGroup = L.layerGroup([]);
           this.color = d3.scale.category10();
           color = this.color;
           this.popupGroup = L.layerGroup([]);
@@ -191,6 +195,7 @@
                 App.MainApp.Show.Controller.updateView(layer.options.id);
                 App.MapApp.Show.Controller.resetMapHighlights();
                 App.MapApp.Show.Controller.previewByLocation(layer.options.id);
+                App.MapApp.Show.Controller.highlightPlace(layer.options.id);
                 navigation = new App.Entity.Navigation({
                   statelist: "All artists > " + layer.options.id,
                   statelocation: "" + statelocation

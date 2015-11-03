@@ -37,6 +37,7 @@
         },
         clickNames: function(e) {
           var navigation, statelist;
+          console.log("state in main", App.state.current);
           if (App.state.current === 0) {
             navigation = new App.Entity.Navigation({
               statelist: "" + e.target.id,
@@ -145,9 +146,9 @@
           return $("document").ready(function() {
             console.log($('#bio-region'));
             console.log("" + ($('#bio-region').innerHeight()));
-            $('#bios-list').css("height", "" + ($('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()));
-            $('#main-region').css("height", "" + ($('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()));
-            return $('#bio-region').css("height", "" + ($('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()));
+            $('#bios-list').css("height", "" + ($('#bio-region').innerHeight()));
+            $('#main-region').css("height", "" + ($('#bio-region').innerHeight()));
+            return $('#bio-region').css("height", "" + ($('#bio-region').innerHeight()));
           });
         }
       });

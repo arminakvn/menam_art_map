@@ -127,6 +127,8 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
             @_m.boxZoom.enable()
             @_m.scrollWheelZoom.disable()
             @_m.on "click", =>
+              @placeNodeGroup.eachLayer (layer) =>
+                @placeNodeGroup.removeLayer layer
               @nodeGroup.eachLayer (layer) =>
                 layer.setStyle
                   opacity: 0.1
@@ -168,6 +170,8 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
             App.MapApp.Show.Controller._links = _links
             eachcnt = 0
             nodeGroup = L.layerGroup([])
+            #making an empty layer group for populating with the place highlight
+            @placeNodeGroup = L.layerGroup([])
             @color = d3.scale.category10()
             color = @color
             @popupGroup = L.layerGroup([])
@@ -205,6 +209,7 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
                 App.MainApp.Show.Controller.updateView layer.options.id
                 App.MapApp.Show.Controller.resetMapHighlights()
                 App.MapApp.Show.Controller.previewByLocation(layer.options.id)
+                App.MapApp.Show.Controller.highlightPlace(layer.options.id)
                 navigation = new App.Entity.Navigation 
                   statelist: "All artists > #{layer.options.id}"
                   statelocation: "#{statelocation}"
@@ -234,6 +239,7 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
             App.MapApp.Show.Controller.nodeGroup = nodeGroup
             App.MapApp.Show.Controller.markers = @markers
             App.MapApp.Show.Controller.popupGroup = @popupGroup
+            
             # console.log "@nodeGroup.getLayers()", @nodeGroup.getLayers()
             # w = $(_m.getContainer())[0].clientWidth#/1.2
             # h = $(_m.getContainer())[0].clientHeight

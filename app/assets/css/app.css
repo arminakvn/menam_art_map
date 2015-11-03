@@ -243,7 +243,7 @@ cantainer.paratext-info {
 .artistsList {
   font-family: "CartoGothicStd";
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.2;
   border: 0px solid black;
   margin: 0 0 20 0;
   padding-bottom: 10px;
@@ -367,7 +367,7 @@ cantainer.paratext-info {
   border: 0px !important;
 
 }
-#organizations {
+/*#organizations {
   background-color:  #7CB3C0;
  font-family: "CartoGothicStd";
   font-size: 12px;
@@ -377,7 +377,27 @@ cantainer.paratext-info {
   padding-right: 0;
   padding-left: 0;
 }
-#mode {
+#locations {
+  background-color:  #7CB3C0;
+ font-family: "CartoGothicStd";
+  font-size: 12px;
+  line-height: 1.5;
+  border: 0px solid black;
+  margin-top: 20px;
+  padding-right: 0;
+  padding-left: 0;
+}*/
+.navmodeOn {
+  background-color:  #7CB3C0;
+ font-family: "CartoGothicStd";
+  font-size: 10px;
+  line-height: 1.5;
+  border: 0px solid black;
+  margin-top: 20px;
+  padding-right: 0;
+  padding-left: 0;
+}
+.navmodeOff {
   background-color:  white;
  font-family: "CartoGothicStd";
   font-size: 10px;
@@ -386,4 +406,8 @@ cantainer.paratext-info {
   margin-top: 20px;
   padding-right: 0;
   padding-left: 0;
+}
+.locations-nodes.place.leaflet-clickable {
+  fill: #7CB3C0;
+  stroke: #7CB3C0;
 }

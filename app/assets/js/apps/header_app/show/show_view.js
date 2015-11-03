@@ -11,35 +11,41 @@
         itemViewContainer: "ul",
         id: "menam-icon",
         events: {
-          "click #location": "locationFired",
+          "click #locations": "organizationFired",
           "click #person": "personFired",
-          "click #organizations": "organizationFired",
+          "click #organizations": "locationFired",
           "mouseover #organizations": "organizationMousover",
           "mouseout #organizations": "organizationMousout",
+          "mouseover #locations": "locationMousover",
+          "mouseout #locations": "locationMousout",
           "click #biotraj": "biotrajFired",
           "click #main": "mainFired",
           "click #menam-icon": "showModal"
         },
-        locationFired: (function(_this) {
-          return function(e) {};
-        })(this),
         personFired: (function(_this) {
           return function(e) {};
         })(this),
+        locationFired: (function(_this) {
+          return function(e) {
+            console.log("App.state.current", App.state.current);
+            $('#locations').removeClass('navmodeOn');
+            $('#locations').addClass('navmodeOff');
+            $('#organizations').removeClass('navmodeOff');
+            $('#organizations').addClass('navmodeOn');
+            return App.state.current = 0;
+          };
+        })(this),
         organizationFired: (function(_this) {
           return function(e) {
-            if (App.state.current === 0) {
-              $('#organizations').html("");
-              $('#organizations').html("Organizations");
-              return App.state.current = 1;
-            } else {
-              $('#organizations').html("");
-              $('#organizations').html("Locations");
-              App.state.current = 0;
-              return App.navigate("/", {
-                trgigger: true
-              });
-            }
+            console.log("App.state.current", App.state.current);
+            $('#organizations').removeClass('navmodeOn');
+            $('#organizations').addClass('navmodeOff');
+            $('#locations').removeClass('navmodeOff');
+            $('#locations').addClass('navmodeOn');
+            App.state.current = 1;
+            return App.navigate("/", {
+              trgigger: true
+            });
           };
         })(this),
         biotrajFired: (function(_this) {
@@ -62,6 +68,16 @@
           };
         })(this),
         organizationMousoout: (function(_this) {
+          return function(e) {
+            return $(e.target).css('cursor', 'default');
+          };
+        })(this),
+        locationMousover: (function(_this) {
+          return function(e) {
+            return $(e.target).css('cursor', 'pointer');
+          };
+        })(this),
+        locationMousoout: (function(_this) {
           return function(e) {
             return $(e.target).css('cursor', 'default');
           };

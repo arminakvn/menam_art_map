@@ -44,7 +44,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				$(e.target).removeClass('bioTriggerd')
 				# App.execute("hideBio")
 			clickNames: (e) ->
-				# console.log "state in main", $('input[name="my-checkbox"]').bootstrapSwitch('state')
+				console.log "state in main",App.state.current
 				if App.state.current == 0	
 					navigation = new App.Entity.Navigation 
 						statelist: "#{e.target.id}"
@@ -169,9 +169,9 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				$("document").ready ->
 					console.log $('#bio-region')
 					console.log "#{$('#bio-region').innerHeight()}"
-					$('#bios-list').css("height", "#{$('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()}")
-					$('#main-region').css("height", "#{$('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()}")
-					$('#bio-region').css("height", "#{$('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()}")
+					$('#bios-list').css("height", "#{$('#bio-region').innerHeight() #- $('#header').innerHeight() - $('#statelist').innerHeight()}")
+					$('#main-region').css("height", "#{$('#bio-region').innerHeight()# - $('#header').innerHeight() - $('#statelist').innerHeight()}")
+					$('#bio-region').css("height", "#{$('#bio-region').innerHeight() #- $('#header').innerHeight() - $('#statelist').innerHeight()}")
 				# $(document).ready =>
 				# 	biosRegion = @biosRegion
 				# 	b_el = $("#main-region")

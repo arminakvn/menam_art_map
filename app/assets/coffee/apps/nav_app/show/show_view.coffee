@@ -41,7 +41,7 @@ define ["js/app", "tpl!js/apps/nav_app/show/templates/show_view.tpl", "tpl!js/ap
         # console.log "nav @model", @model
         # if @model.attributes.statelocation != 'All locations'
         App.MainApp.Show.Controller.updateView('all')
-        # App.MapApp.Show.Controller.resetMapHighlights()
+        App.MapApp.Show.Controller.resetMapHighlights()
       # onDomRefresh:->
       #   @width = @el.clientWidth
       #   @height = @el.clientHeight

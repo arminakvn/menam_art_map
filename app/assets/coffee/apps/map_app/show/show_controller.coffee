@@ -148,6 +148,8 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 					@showView = new View.ShowView(collection:locationNodes, model: locationNavigator)
 					App.mainRegion.show(@showView)
 			resetMapHighlights: () =>
+				@Controller.showView.placeNodeGroup.eachLayer (layer) =>
+                	@Controller.showView.placeNodeGroup.removeLayer layer
 				@Controller.showView.nodeGroup.eachLayer (layer) =>
 					layer.setStyle
 						opacity: 0.1
@@ -243,26 +245,43 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 		 #    		console.log "else notheing"
 		 #    	return
 			highlightPlace: (sourceNode) =>
+				
+				
 				console.log "highlightPlace", sourceNode.replace /^\s+|\s+$/g, ""
 				@Controller.showView.nodeGroup.eachLayer (layer) =>
 					# console.log "layer.options.id", layer.options.id
 					if layer.options.id == sourceNode.replace /^\s+|\s+$/g, ""
 						console.log "tthis is the sourcePlace", layer.options.id
 						layer.bringToFront()
-						setTimeout (->
-									$(L.DomUtil.get(layer._container)).animate
-										fillOpacity: 0.8
-										opacity: 1
-									, 1, ->
-										layer.setStyle
-											className: 'locations-nodes highlighted'
-											fillOpacity: 0.8
-											weight: 2
-											opacity: 1
-											fill: "red"
-											clickable: true
-								)
-						layer.bringToFront()
+						console.log "layer", layer
+						newLayerLatLong = layer._latlng
+						console.log "newLayerLatLong", newLayerLatLong
+						# @Controller.showView.nodeGroup.removeLayer layer
+						ltlong = new L.LatLng(+newLayerLatLong.lat, +newLayerLatLong.lng)
+						circle = new L.CircleMarker(ltlong,
+							opacity: 0.8
+							fillOpacity: 0.5
+							weight: 1
+							className: 'locations-nodes place'
+							id: "#{layer.options.id}"
+							clickable: true).setRadius(layer.options.radius).bindPopup("<span href='#location/#{layer.options.id}'>#{layer.options.id}</span>")
+						# @Controller.showView.nodeGroup.removeLay er layer
+						@Controller.showView.placeNodeGroup.addLayer(circle)
+						@Controller.showView.placeNodeGroup.addTo @Controller.showView._m
+						# setTimeout (->
+						# 			$(L.DomUtil.get(layer._container)).animate
+						# 				fillOpacity: 0.8
+						# 				opacity: 1
+						# 			, 1, ->
+						# 				layer.setStyle
+						# 					className: 'locations-nodes highlighted'
+						# 					fillOpacity: 0.8
+						# 					weight: 2
+						# 					opacity: 1
+						# 					fill: "red"
+						# 					clickable: true
+						# 		)
+						# layer.bringToFront()
 			highlightNodesBy: (sourceNode) =>
 				# @Controller.showBio(sourceNode)
 				# if App.NavApp.Show.Controller.showView.model.get('statelist') != sourceNode

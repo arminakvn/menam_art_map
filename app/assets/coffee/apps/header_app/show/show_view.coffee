@@ -10,31 +10,66 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
       itemViewContainer: "ul"
       id:"menam-icon"
       events:
-        "click #location":"locationFired"
+        "click #locations":"organizationFired"
         "click #person":"personFired"
-        "click #organizations":"organizationFired"
+        "click #organizations":"locationFired"
         "mouseover #organizations":"organizationMousover"
         "mouseout #organizations":"organizationMousout"
+        "mouseover #locations":"locationMousover"
+        "mouseout #locations":"locationMousout"
         "click #biotraj":"biotrajFired"
         "click #main":"mainFired"
         "click #menam-icon":"showModal"
-      locationFired: (e) =>
-        # App.vent.trigger "locationFired"
+      # locationFired: (e) =>
+      #   # App.vent.trigger "locationFired"
       personFired: (e) =>
         # App.vent.trigger "personFired"
-      organizationFired: (e) =>
-        if App.state.current == 0
-          $('#organizations').html ""
-          $('#organizations').html "Organizations"
-          App.state.current = 1
-          # App.vent.trigger "locationFired"
-        else
-          $('#organizations').html ""
-          $('#organizations').html "Locations"
+      locationFired: (e) =>
+          console.log "App.state.current", App.state.current
+        # if App.state.current == 0
+          # $('#organizations').html ""
+          # $('#organizations').html "Organizations"
+          $('#locations').removeClass('navmodeOn')
+          $('#locations').addClass('navmodeOff')
+          $('#organizations').removeClass('navmodeOff')
+          $('#organizations').addClass('navmodeOn')
           App.state.current = 0
+          # App.vent.trigger "locationFired"
+        # else
+        #   # $('#organizations').html ""
+        #   # $('#organizations').html "Locations"
+        #   $('#organizations').removeClass('navmodeOn')
+        #   $('#organizations').addClass('navmodeOff')
+        #   $('#locations').removeClass('navmodeOff')
+        #   $('#locations').addClass('navmodeOn')
+        #   App.state.current = 0
+        #   # App.navigate "/organization/#{App.NavApp.Show.Controller.showView.model.get('statebio')}", trgigger: true
+        #   App.navigate "/", trgigger: true
+          # App.vent.trigger "organizationFired"
+      organizationFired: (e) =>
+          console.log "App.state.current",App.state.current
+        # if App.state.current == 0
+          # $('#organizations').html ""
+          # $('#organizations').html "Organizations"
+        #   $('#locations').removeClass('navmodeOn')
+        #   $('#locations').addClass('navmodeOff')
+        #   $('#organizations').removeClass('navmodeOff')
+        #   $('#organizations').addClass('navmodeOn')
+        #   App.state.current = 1
+        #   # App.vent.trigger "locationFired"
+        # else
+          # $('#organizations').html ""
+          # $('#organizations').html "Locations"
+          $('#organizations').removeClass('navmodeOn')
+          $('#organizations').addClass('navmodeOff')
+          $('#locations').removeClass('navmodeOff')
+          $('#locations').addClass('navmodeOn')
+          App.state.current = 1
           # App.navigate "/organization/#{App.NavApp.Show.Controller.showView.model.get('statebio')}", trgigger: true
           App.navigate "/", trgigger: true
           # App.vent.trigger "organizationFired"
+
+
       biotrajFired: (e) =>
 
       mainFired: (e) =>
@@ -47,6 +82,10 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
       organizationMousover: (e) =>
         $(e.target).css('cursor','pointer')
       organizationMousoout: (e) =>
+        $(e.target).css('cursor','default')
+      locationMousover: (e) =>
+        $(e.target).css('cursor','pointer')
+      locationMousoout: (e) =>
         $(e.target).css('cursor','default')
       onShow: ->
 

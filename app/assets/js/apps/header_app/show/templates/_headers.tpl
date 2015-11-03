@@ -10,7 +10,7 @@
 						 <img style="max-width:100px; margin-top: -7px;" src="Icon-02-01.png">
 					</a>
 				</div>
-				<span id="organizations" data-toggle="portfilter">Locations</span> <span id="mode">mode</span>
+				<span id="organizations" class="navmodeOn" data-toggle="portfilter">Locations</span> <span id="mode"></span> <span id="locations" class="navmodeOff" data-toggle="portfilter">Organizations</span> 
 				<div class="collapse navbar-collapse" id="headercollapse"style="padding: 0 0 0 0;">
 					<!-- <ul id="header-container" class="nav navbar-nav navbar-right">
 								

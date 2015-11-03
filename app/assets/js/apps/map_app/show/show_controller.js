@@ -145,6 +145,9 @@
         },
         resetMapHighlights: (function(_this) {
           return function() {
+            _this.Controller.showView.placeNodeGroup.eachLayer(function(layer) {
+              return _this.Controller.showView.placeNodeGroup.removeLayer(layer);
+            });
             return _this.Controller.showView.nodeGroup.eachLayer(function(layer) {
               layer.setStyle({
                 opacity: 0.1,
@@ -162,25 +165,24 @@
           return function(sourceNode) {
             console.log("highlightPlace", sourceNode.replace(/^\s+|\s+$/g, ""));
             return _this.Controller.showView.nodeGroup.eachLayer(function(layer) {
+              var circle, ltlong, newLayerLatLong;
               if (layer.options.id === sourceNode.replace(/^\s+|\s+$/g, "")) {
                 console.log("tthis is the sourcePlace", layer.options.id);
                 layer.bringToFront();
-                setTimeout((function() {
-                  return $(L.DomUtil.get(layer._container)).animate({
-                    fillOpacity: 0.8,
-                    opacity: 1
-                  }, 1, function() {
-                    return layer.setStyle({
-                      className: 'locations-nodes highlighted',
-                      fillOpacity: 0.8,
-                      weight: 2,
-                      opacity: 1,
-                      fill: "red",
-                      clickable: true
-                    });
-                  });
-                }));
-                return layer.bringToFront();
+                console.log("layer", layer);
+                newLayerLatLong = layer._latlng;
+                console.log("newLayerLatLong", newLayerLatLong);
+                ltlong = new L.LatLng(+newLayerLatLong.lat, +newLayerLatLong.lng);
+                circle = new L.CircleMarker(ltlong, {
+                  opacity: 0.8,
+                  fillOpacity: 0.5,
+                  weight: 1,
+                  className: 'locations-nodes place',
+                  id: "" + layer.options.id,
+                  clickable: true
+                }).setRadius(layer.options.radius).bindPopup("<span href='#location/" + layer.options.id + "'>" + layer.options.id + "</span>");
+                _this.Controller.showView.placeNodeGroup.addLayer(circle);
+                return _this.Controller.showView.placeNodeGroup.addTo(_this.Controller.showView._m);
               }
             });
           };

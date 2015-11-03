@@ -45,7 +45,8 @@
             statelocation: "" + statelocation
           });
           App.NavApp.Show.Controller.updateNavigationLoc(navigation);
-          return App.MainApp.Show.Controller.updateView('all');
+          App.MainApp.Show.Controller.updateView('all');
+          return App.MapApp.Show.Controller.resetMapHighlights();
         },
         mouseoverNav: function(e) {
           return $(e.target).css('cursor', 'pointer');
