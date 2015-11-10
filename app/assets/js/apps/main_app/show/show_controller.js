@@ -121,6 +121,8 @@
           return artistssourceC.fetch({
             'success': (function(_this) {
               return function(response) {
+                _this.creditView = new View.CreditView();
+                App.bioRegion.show(_this.creditView);
                 _this.showView = new View.ShowViews({
                   collection: artistssourceC,
                   model: stateModel

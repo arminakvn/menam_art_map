@@ -12,7 +12,7 @@ define ["marionette"], (Marionette) ->
 
   # route helpers
   App.navigate= (route, options = {}) ->
-    route = "#/location" + route if route.charAt(0) is "/"
+    route = "#" + route if route.charAt(0) is "/"
     Backbone.history.navigate route, options
 
   App.getCurrentRoute = ->

@@ -16,7 +16,7 @@
         options = {};
       }
       if (route.charAt(0) === "/") {
-        route = "#/location" + route;
+        route = "#" + route;
       }
       return Backbone.history.navigate(route, options);
     };

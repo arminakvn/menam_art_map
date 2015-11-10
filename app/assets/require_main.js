@@ -42,7 +42,7 @@
     return App.start();
   });
 
-  requirejs(["jquery", "d3"], function($, d3, polyhedron) {
+  requirejs(["jquery", "d3", "polyhedron", "topojson"], function($, d3, polyhedron) {
     (function($, d3, polyhedron, window, undefined_) {
       var $doc;
       return $doc = $(document);

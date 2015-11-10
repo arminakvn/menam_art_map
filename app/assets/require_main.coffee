@@ -43,6 +43,8 @@ require ["js/app"], (App) ->
 requirejs [
   "jquery"
   "d3"
+  "polyhedron"
+  "topojson"
 ], ($, d3, polyhedron) ->
   (($, d3, polyhedron, window, undefined_) ->
     $doc = $(document)

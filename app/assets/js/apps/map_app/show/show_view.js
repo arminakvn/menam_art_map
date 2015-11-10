@@ -198,7 +198,7 @@
                 App.MapApp.Show.Controller.highlightPlace(layer.options.id);
                 navigation = new App.Entity.Navigation({
                   statelist: "All artists > " + layer.options.id,
-                  statelocation: "" + statelocation
+                  statelocation: "All locations > " + layer.options.id
                 });
                 return App.NavApp.Show.Controller.updateNavigationLoc(navigation);
               });

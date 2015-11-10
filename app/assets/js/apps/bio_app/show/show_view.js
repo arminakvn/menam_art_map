@@ -35,7 +35,7 @@
         },
         onBeforeRender: function() {
           var _ref;
-          if (_ref = this.model.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+          if (_ref = this.model.attributes.name, __indexOf.call(App.list, _ref) >= 0) {
             this.$el.addClass('bioItem location');
           } else {
             this.$el.addClass('bioItem');
@@ -57,7 +57,7 @@
         },
         mouseclickElems: function(e) {
           var navigation, _ref;
-          if (_ref = this.model.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+          if (_ref = this.model.attributes.name, __indexOf.call(App.list, _ref) >= 0) {
             App.MainApp.Show.Controller.updateView(this.model.attributes.name);
             App.MapApp.Show.Controller.resetMapHighlights();
             App.MapApp.Show.Controller.previewByLocation(this.$el[0].textContent);
@@ -66,11 +66,7 @@
               statelocation: "All locations > " + this.$el[0].textContent
             });
             App.NavApp.Show.Controller.updateNavigationLoc(navigation);
-            return setTimeout(((function(_this) {
-              return function() {
-                App.execute("highlightPlace", _this.$el[0].textContent);
-              };
-            })(this)), 3000);
+            return App.execute("highlightPlace", this.$el[0].textContent);
           }
         },
         onShow: function() {
@@ -107,7 +103,7 @@
             return function(childView) {
               var childModel, _ref;
               childModel = childView.model;
-              if (_ref = childModel.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+              if (_ref = childModel.attributes.name, __indexOf.call(App.list, _ref) >= 0) {
                 childView.$el.addClass('bioItem location');
               } else {
                 childView.$el.addClass('bioItem');
@@ -120,7 +116,7 @@
             return function(childView) {
               var childModel, _ref;
               childModel = childView.model;
-              if (_ref = childModel.attributes.name, __indexOf.call(App.MapApp.Show.Controller.showView.list, _ref) >= 0) {
+              if (_ref = childModel.attributes.name, __indexOf.call(App.list, _ref) >= 0) {
                 childView.$el.addClass('bioItem location');
               } else {
                 childView.$el.addClass('bioItem');

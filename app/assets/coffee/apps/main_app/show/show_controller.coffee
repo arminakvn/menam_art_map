@@ -210,10 +210,13 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
           artistssourceC.fetch 'success': (response) =>
             # console.log response
             # distinctedSources = artistssourceC.where()
+            @creditView = new View.CreditView()
+            App.bioRegion.show @creditView
             @showView = new View.ShowViews(
               collection: artistssourceC
               model: stateModel
             )
+
             App.biosRegion.show @showView
             # console.log "artistssourceC", artistssourceC
           # $.when(artistssourceC).done (res) =>

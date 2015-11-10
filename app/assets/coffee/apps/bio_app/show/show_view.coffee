@@ -32,7 +32,7 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
           # App.execute("highlightNode", e.target.id)
           # highlightArtistsby
       onBeforeRender: ->
-        if @model.attributes.name in App.MapApp.Show.Controller.showView.list
+        if @model.attributes.name in App.list
             @$el.addClass 'bioItem location'
             # console.log "@el", @$el
           else
@@ -51,7 +51,7 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
         App.MainApp.Show.Controller.resetHighlightArtistsby()
 
       mouseclickElems: (e) ->
-        if @model.attributes.name in App.MapApp.Show.Controller.showView.list
+        if @model.attributes.name in App.list
           App.MainApp.Show.Controller.updateView(@model.attributes.name)
           App.MapApp.Show.Controller.resetMapHighlights()
           App.MapApp.Show.Controller.previewByLocation(@$el[0].textContent)
@@ -59,10 +59,7 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
             statelist: "All artists > #{@$el[0].textContent}"
             statelocation: "All locations > #{@$el[0].textContent}"
           App.NavApp.Show.Controller.updateNavigationLoc(navigation)  
-          setTimeout (=>
-            App.execute("highlightPlace", @$el[0].textContent)
-            return
-          ), 3000
+          App.execute("highlightPlace", @$el[0].textContent)
 
       onShow: ->
         timedText = ->
@@ -93,7 +90,7 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
         }, 750)
         @children.each (childView) =>
           childModel = childView.model
-          if childModel.attributes.name in App.MapApp.Show.Controller.showView.list
+          if childModel.attributes.name in App.list
             childView.$el.addClass 'bioItem location'
             # console.log "@el", @$el
           else
@@ -102,7 +99,7 @@ define ["js/app","tpl!js/apps/bio_app/show/templates/show_view.tpl", "tpl!js/app
       onAfterRender: ->
         @children.each (childView) =>
           childModel = childView.model
-          if childModel.attributes.name in App.MapApp.Show.Controller.showView.list
+          if childModel.attributes.name in App.list
             childView.$el.addClass 'bioItem location'
             # console.log "@el", @$el
           else

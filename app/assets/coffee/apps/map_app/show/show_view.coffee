@@ -212,7 +212,7 @@ define ["js/app","tpl!js/apps/map_app/show/templates/show_item_view.tpl", "tpl!j
                 App.MapApp.Show.Controller.highlightPlace(layer.options.id)
                 navigation = new App.Entity.Navigation 
                   statelist: "All artists > #{layer.options.id}"
-                  statelocation: "#{statelocation}"
+                  statelocation: "All locations > #{layer.options.id}"
                 App.NavApp.Show.Controller.updateNavigationLoc(navigation)
             #     @markers.clearLayers()
             #     textResponse = $.ajax

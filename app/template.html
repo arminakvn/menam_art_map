@@ -24,32 +24,27 @@
     <!--<!(endif)-->
   </head>
   <body>
-  <div class="container">
-  <div class="row">
-      <div id="header-region"></div>
-  </div>  
-  <div class="row">
-      <div id="navigation-region"></div>
-  </div>    
-  <div class="row">
-    <div id="tooltip" class="hidden" style="z-index:20000;">
-      <p><span id="-label"></span></p>
+    <div class="container" id="bodyContainer">
+      <div class="row" id="headerContainer">
+        <div id="header-region"></div>
+      </div>  
+      <div class="row" id="navigationContainer">
+        <div id="navigation-region"></div>
+      </div>    
+      <div class="row">
+        <!-- <div id="tooltip" class="hidden" style="z-index:20000;">
+          <p><span id="-label"></span></p>
+        </div> -->
+        <div id="bios-region" class="col-md-2"></div>
+        <div id="bio-region" class="col-md-2"></div>
+        <div id="main-region" class="col-md-8"></div>
+        <!-- <h3></h3> -->
+      
+      </div>
+      <!-- <div id="footer-region"></div> -->
     </div>
-      <div id="bios-region" class="col-md-2">
-      </div>
-      <div id="bio-region" class="col-md-2"></div>
-      <div id="main-region" class="col-md-8">
-        <h3></h3>
-        
-      </div>
-  </div>
-    <div class="row">
-      </div>
-      <div id="footer-region"></div>
-      <div id="modal"></div>
-    </div>
-  </div>
-  </div>
+  <!-- </div>
+  </div> -->
     <!-- require in dev -->
     <!--(if target app)><!-->
       <script data-main="assets/require_main" src="assets/bower_components/requirejs/require.js"></script>
