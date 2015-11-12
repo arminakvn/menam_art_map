@@ -42,10 +42,7 @@
           return $(e.target).removeClass('bioTriggerd');
         },
         clickNames: function(e) {
-          var navigation, statelist;
-          App.navigate("#/location/", {
-            trgigger: true
-          });
+          var navigation, statelist, timeout;
           console.log("state in main", App.state.current);
           if (App.state.current === 0) {
             navigation = new App.Entity.Navigation({
@@ -53,7 +50,6 @@
               statelocation: "All locations > " + e.target.id,
               statebio: "" + e.target.id
             });
-            App.execute("showBio", e.target.id);
             App.NavApp.Show.Controller.updateNavigation(e.target.id);
             statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist;
             navigation = new App.Entity.Navigation({
@@ -64,7 +60,18 @@
             $('.highlighted').removeClass('highlighted');
             $('.bioTriggerd').removeClass('bioTriggerd');
             $(e.target).addClass('highlighted bioTriggerd');
-            return App.execute("highlightNode", e.target.id);
+            timeout = 0;
+            timeout = setTimeout((function(_this) {
+              return function() {
+                App.execute("showBio", [e.target.id]);
+                return App.execute("highlightNode", [e.target.id]);
+              };
+            })(this), timeout !== 0 ? timeout = 0 : void 0, 6, (function(_this) {
+              return function() {};
+            })(this));
+            return App.navigate("#/location/", {
+              trgigger: true
+            });
           } else {
             App.execute("showBio", e.target.id);
             $('.highlighted').removeClass('highlighted');

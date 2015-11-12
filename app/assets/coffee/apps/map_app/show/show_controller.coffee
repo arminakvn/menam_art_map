@@ -340,6 +340,7 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 
 				# App.MapApp.Show.Controller.showView
 				@_sourceNode = sourceNode
+				console.log "@Controller.showView.nodeGroup", @Controller.showView.nodeGroup
 				@Controller.showView.nodeGroup.eachLayer (layer) =>
 					@Controller.showView.popupGroup.clearLayers()
 					layer.setStyle

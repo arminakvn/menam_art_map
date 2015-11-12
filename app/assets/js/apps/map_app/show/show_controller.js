@@ -221,6 +221,7 @@
               return respnd.forEach(function(name_res) {});
             });
             _this._sourceNode = sourceNode;
+            console.log("@Controller.showView.nodeGroup", _this.Controller.showView.nodeGroup);
             _this.Controller.showView.nodeGroup.eachLayer(function(layer) {
               var timeout;
               _this.Controller.showView.popupGroup.clearLayers();

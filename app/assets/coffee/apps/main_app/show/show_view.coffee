@@ -53,14 +53,14 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				$(e.target).removeClass('bioTriggerd')
 				# App.execute("hideBio")
 			clickNames: (e) ->
-				App.navigate "#/location/", trgigger: true
+				# App.navigate "#/location/", trgigger: true
 				console.log "state in main",App.state.current
 				if App.state.current == 0	
 					navigation = new App.Entity.Navigation 
 						statelist: "#{e.target.id}"
 						statelocation: "All locations > #{e.target.id}"
 						statebio: "#{e.target.id}"
-					App.execute("showBio", e.target.id)
+					# App.execute("showBio", e.target.id)
 					App.NavApp.Show.Controller.updateNavigation(e.target.id)
 					statelist = App.NavApp.Show.Controller.showView.model.attributes.statelist
 					navigation = new App.Entity.Navigation 
@@ -70,7 +70,27 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 					$('.highlighted').removeClass('highlighted') 
 					$('.bioTriggerd').removeClass('bioTriggerd') 
 					$(e.target).addClass('highlighted bioTriggerd')
-					App.execute("highlightNode", e.target.id)
+					timeout = 0
+					timeout = setTimeout(=>
+							App.execute("showBio", [e.target.id])
+							App.execute("highlightNode", [e.target.id])
+						if timeout isnt 0 
+							timeout = 0
+							# console.log "d", d
+							# $(@biosRegion).animate({
+							# 	 "left": "+=250px" 
+							# 	 "opacity"
+							# }, "slow" , =>
+							# )
+							# $(@biosRegion.next()).animate({
+							# 	 "left": "+=150px" 
+							# 	 "opacity"
+							# }, "slow" , =>
+							# )
+					, 6, =>
+						
+					)
+					App.navigate "#/location/", trgigger: true
 				else
 					App.execute("showBio", e.target.id)
 					# App.NavApp.Show.Controller.updateNavigation(e.target.id)
