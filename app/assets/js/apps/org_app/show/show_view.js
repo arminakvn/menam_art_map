@@ -5,24 +5,17 @@
         template: showTpl,
         id: "organization-region",
         tagName: "div",
-        onDomRefresh: function() {
-          var e, each, i, _i, _len, _links, _nodes, _ref;
-          try {
-            this._links.enter([]).exit().remove();
-          } catch (_error) {
-            e = _error;
-          }
-          this.nodes = [];
-          this.nodes.push(this.collection.models[0].attributes.level0);
-          this.nodes1 = this.collection.models[1].attributes.level1;
-          console.log("@nodes", this.nodes);
-          _ref = this.nodes1;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            each = _ref[_i];
-            this.nodes.push(each);
-          }
-          console.log("@nodes", this.nodes);
-          _links = this.nodes[1];
+        onDomRefresh: function() {},
+        initialize: function() {},
+        onShow: function() {
+          var color, force, i, j, link, linkedByIndex, node, nodeEnter, nodes, optArray, padding, searchNode, svg, t_links, t_nodes, tick, tlinks, tnodes, toggle, vis, _links, _nodes;
+          console.log("collection", this.collection);
+          nodes = [];
+          this.collection.models.forEach(function(model) {
+            return nodes.push(model.attributes);
+          });
+          console.log("nodes", nodes);
+          _links = nodes;
           _links.sort(function(a, b) {
             if (a.source > b.source) {
               return 1;
@@ -72,36 +65,28 @@
               });
             };
           })(this));
-          this._nodes = _nodes;
-          this._links = _links;
-          console.log($('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight());
+          t_nodes = _nodes;
+          t_links = _links;
           this.width = this.el.clientWidth;
-          return this.height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight();
-        },
-        initialize: function() {},
-        onShow: function() {
-          var color, force, j, link, linkedByIndex, node, nodeEnter, optArray, padding, searchNode, svg, tick, toggle, vis;
-          console.log("widht, height", this.width, this.height);
+          this.height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight();
           padding = .5;
           color = this.color = d3.scale.category10();
-          svg = vis = this.vis = d3.select('#organization-region').append('svg:svg').attr('width', this.width).attr('height', this.height);
-          force = this.force = d3.layout.force().gravity(.6).linkDistance(175).charge(-450).linkStrength(0.5).friction(0.8).size([this.width, this.height]).on("tick", tick);
-          this.nodes = this.force.nodes(d3.values(this._nodes));
-          this.links = this.force.links();
-          link = svg.selectAll('.link').data(this._links);
+          svg = vis = d3.select('#organization-region').append('svg:svg').attr('width', this.width).attr('height', this.height);
+          force = d3.layout.force().gravity(.6).linkDistance(175).charge(-450).linkStrength(0.5).friction(0.8).size([this.width, this.height]).on("tick", tick);
+          console.log("link and source", t_links, t_nodes);
+          tnodes = force.nodes(d3.values(t_nodes));
+          tlinks = force.links();
+          console.log("@_links", t_links);
+          link = svg.selectAll('.link').data(t_links);
           link.enter().insert("line", ".node").attr("class", "link").style("stroke", "lightgray").style("stroke-width", function(d, i) {
             return Math.sqrt(d.target.value);
           }).style("opacity", 0.4);
           link.exit().remove();
-          node = this.vis.selectAll('g.node');
-          console.log("node in orf br", node);
-          node.data(d3.values([])).exit().remove();
           console.log("node in orf ri", node);
-          node = this.vis.selectAll('g.node').data(d3.values(this._nodes), function(d) {
+          node = vis.selectAll('g.node').data(d3.values(t_nodes), function(d) {
             return d.name;
           });
-          console.log("node in orf", node);
-          nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "1.35em").call(this.force.drag);
+          nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "1.35em").call(force.drag);
           nodeEnter.append('circle').property("id", (function(_this) {
             return function(d, i) {
               return "node-" + i;
@@ -138,22 +123,22 @@
               return 'translate(' + x + ',' + y + ')';
             });
           };
-          this.force.on('tick', tick).start();
+          force.on('tick', tick).start();
           optArray = [];
           j = 0;
-          while (j < d3.values(this._nodes) - 1) {
-            optArray.push(d3.values(this._nodes)[j].name);
+          while (j < d3.values(t_nodes) - 1) {
+            optArray.push(d3.values(t_nodes)[j].name);
             j++;
           }
           optArray = optArray.sort();
           toggle = 0;
           linkedByIndex = {};
           j = 0;
-          while (j < d3.values(this._nodes).length) {
+          while (j < d3.values(t_nodes).length) {
             linkedByIndex[j + ',' + j] = 1;
             j++;
           }
-          this._links.forEach(function(d) {
+          t_links.forEach(function(d) {
             linkedByIndex[d.source.index + ',' + d.target.index] = 1;
           });
           node.append('text').style("font-family", "Gill Sans").attr('fill', function(d) {
@@ -204,12 +189,9 @@
               toggle = 0;
             }
           });
-          App.OrgApp.Show.Controller._links = this._links;
-          App.OrgApp.Show.Controller._nodes = this._nodes;
-          App.OrgApp.Show.Controller.vis = vis;
           return searchNode = function() {
             var selected;
-            node = this.vis.selectAll('g.node');
+            node = vis.selectAll('g.node');
             if (selectedVal === 'none') {
               node.style('stroke', 'white').style('stroke-width', '1');
             } else {

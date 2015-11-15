@@ -5,21 +5,22 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
       id:"organization-region"
       tagName:"div"
       onDomRefresh:->
-        try
-          @_links.enter([]).exit().remove()
-        catch e
-          # ...
-        
-        @nodes = []
-        @nodes.push @collection.models[0].attributes.level0
-        @nodes1 = @collection.models[1].attributes.level1
-        # @nodes = _.map model, (key, value) =>
-          # key.attributes
-        console.log "@nodes", @nodes
-        for each in @nodes1
-          @nodes.push each
-        console.log "@nodes", @nodes
-        _links = @nodes[1]
+
+      initialize: ->
+        # orgbysourceartist
+      onShow: ->
+         # make the links and nodes
+        console.log "collection", @collection
+        nodes = []
+        @collection.models.forEach (model) ->
+          nodes.push model.attributes
+        # nodes1 = @collection.models.attributes
+
+        # console.log "nodes1", nodes1
+        console.log "nodes", nodes
+        # for each in nodes1
+          # nodes.push each
+        _links = nodes
         _links.sort (a, b) ->
             if a.source > b.source
               1
@@ -50,20 +51,15 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
               link.target.value += 1
             return
           return
-        @_nodes = _nodes
-        @_links = _links
-        console.log $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
+        t_nodes = _nodes
+        t_links = _links
         @width = @el.clientWidth
         @height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
-      initialize: ->
-        # orgbysourceartist
-      onShow: ->
-        console.log "widht, height", @width, @height
         padding = .5
         color = @color = d3.scale.category10()
-        # width = $("#organization-region")[0].clientWidth
-        svg = vis = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @height)
-        force = @force = d3.layout.force(
+        # make the layout structure
+        svg = vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @height)
+        force = d3.layout.force(
         ).gravity(.6
         ).linkDistance(175
         ).charge(-450
@@ -73,24 +69,24 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
           @width
           @height
         ]).on("tick", tick)
-        @nodes = @force.nodes(d3.values(@_nodes))
-        @links = @force.links()
-        link = svg.selectAll('.link').data(@_links)
+        console.log "link and source", t_links, t_nodes
+        # use the layout to generate the nodes
+        tnodes = force.nodes(d3.values(t_nodes))
+        tlinks = force.links()
+        # enter with the data
+        console.log "@_links", t_links
+        link = svg.selectAll('.link').data(t_links)
         link.enter().insert("line", ".node").attr("class", "link").style("stroke","lightgray").style("stroke-width", (d, i) -> 
             return Math.sqrt(d.target.value)
           ).style("opacity", 0.4)
-        link.exit().remove()
-        node = @vis.selectAll('g.node')
-        console.log "node in orf br", node
+        link.exit().remove()        
         
-        node.data(d3.values([])).exit().remove()
         console.log "node in orf ri", node
-        node = @vis.selectAll('g.node'
-        ).data(d3.values(@_nodes), (d) ->
+        node = vis.selectAll('g.node'
+        ).data(d3.values(t_nodes), (d) ->
           d.name
         )
-        console.log "node in orf", node
-        nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "1.35em").call(@force.drag)
+        nodeEnter = node.enter().append('g').attr('class', 'node').attr("x", 14).attr("dy", "1.35em").call(force.drag)
         nodeEnter.append('circle').property("id", (d, i) => "node-#{i}").attr('r', (d) ->
           if d.group == 2
             return Math.sqrt(d.value) * 2
@@ -129,20 +125,20 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
               'translate(' + x + ',' + y + ')'
           )
           return
-        @force.on('tick', tick).start()
+        force.on('tick', tick).start()
         optArray = []
         j = 0
-        while j < d3.values(@_nodes) - 1
-          optArray.push d3.values(@_nodes)[j].name
+        while j < d3.values(t_nodes) - 1
+          optArray.push d3.values(t_nodes)[j].name
           j++
         optArray = optArray.sort()
         toggle = 0
         linkedByIndex = {}
         j = 0
-        while j < d3.values(@_nodes).length
+        while j < d3.values(t_nodes).length
           linkedByIndex[j + ',' + j] = 1
           j++
-        @_links.forEach (d) ->
+        t_links.forEach (d) ->
           linkedByIndex[d.source.index + ',' + d.target.index] = 1
           return
         node.append('text').style("font-family", "Gill Sans").attr('fill', (d) ->
@@ -175,11 +171,11 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
             toggle = 0
           return
         )
-        App.OrgApp.Show.Controller._links = @_links
-        App.OrgApp.Show.Controller._nodes = @_nodes
-        App.OrgApp.Show.Controller.vis = vis
+        # App.OrgApp.Show.Controller._links = t_links
+        # App.OrgApp.Show.Controller._nodes = t_nodes
+        # App.OrgApp.Show.Controller.vis = vis
         searchNode = () ->
-          node = @vis.selectAll('g.node')
+          node = vis.selectAll('g.node')
           if selectedVal == 'none'
             node.style('stroke', 'white').style 'stroke-width', '1'
           else

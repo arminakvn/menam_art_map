@@ -17,23 +17,43 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 	      
 	      url: -> 
 	      	console.log "@param", @param
-	      	return "/orgbysourceartist/"+@param.param
+	      	return "/artistsbysource/"+@param.param
 	      
-	      parse: (response) ->
-	        # console.log "response", response
+	      getLevelData: (res) ->
+	      	updateCollection = $.ajax '/artstsby/'+res.target.replace /^\s+|\s+$/g, "",
+	                type: 'GET'
+	                dataType: 'json'
+	                error: (jqXHR, textStatus, errorThrown) ->
+	                # $('body').append "AJAX Error: #{textStatus}"
+	                success: (data, textStatus, jqXHR) =>
+	                    # console.log "data!!", data
+	                    # ret = _.map data, (key, value) =>
+	                    #     "target": key.target
+	                    return data
+       #      $.when(updateCollection).done (respnd) =>
+       #          return respnd
+	      # parse: (response) ->
+	        @repona = []
+	        $.when(response).done (res)=>
+	            response.forEach (res) =>
+	                $.when(res).done (resB)=>
+	                    eachRes = @getLevelData(resB)
+	                    $.when(eachRes).done (Res)=>
+	                        repona.push(Res)
+	            
 	        # data = _.map response, (key, value) =>
 	        #   # _.map key, (key, value) =>
 	        #     # key
 	        #   "name": key
 	        # data
-	        response
+	            console.log "repona", @repona
+	            return @repona
 	    )
 		Show.Controller =
 			showOrganization: (ssource) ->
 				artistss = new App.Entities.ArtistCollection(param:ssource)
 				artistss.fetch 'success': (response) =>
-		            console.log "response", response
-		            @showView = new View.ShowView(collection: artistss)
+		            @showView = new View.ShowView(collection: response)
 		            App.mainRegion.show @showView
 				
 			

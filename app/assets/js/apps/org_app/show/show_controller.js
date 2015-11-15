@@ -15,10 +15,36 @@
         },
         url: function() {
           console.log("@param", this.param);
-          return "/orgbysourceartist/" + this.param.param;
+          return "/artistsbysource/" + this.param.param;
         },
-        parse: function(response) {
-          return response;
+        getLevelData: function(res) {
+          var updateCollection;
+          updateCollection = $.ajax('/artstsby/' + res.target.replace(/^\s+|\s+$/g, "", {
+            type: 'GET',
+            dataType: 'json',
+            error: function(jqXHR, textStatus, errorThrown) {},
+            success: (function(_this) {
+              return function(data, textStatus, jqXHR) {
+                return data;
+              };
+            })(this)
+          }));
+          this.repona = [];
+          return $.when(response).done((function(_this) {
+            return function(res) {
+              response.forEach(function(res) {
+                return $.when(res).done(function(resB) {
+                  var eachRes;
+                  eachRes = _this.getLevelData(resB);
+                  return $.when(eachRes).done(function(Res) {
+                    return repona.push(Res);
+                  });
+                });
+              });
+              console.log("repona", _this.repona);
+              return _this.repona;
+            };
+          })(this));
         }
       });
       return Show.Controller = {
@@ -30,9 +56,8 @@
           return artistss.fetch({
             'success': (function(_this) {
               return function(response) {
-                console.log("response", response);
                 _this.showView = new View.ShowView({
-                  collection: artistss
+                  collection: response
                 });
                 return App.mainRegion.show(_this.showView);
               };

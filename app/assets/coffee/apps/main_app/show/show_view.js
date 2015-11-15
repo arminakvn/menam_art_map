@@ -143,7 +143,7 @@ define(["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
         console.log(window);
         height = window.screen.availHeight - window.screen.availTop;
         this.biosRegion = $("#bios-region");
-        return this.$el.css("height", "" + height).css("list-style-type", "none").css('overflow', 'scroll');
+        return this.$el.css("height", "" + height).css("list-style-type", "none");
       },
       onBeforeRemoveChild: function() {},
       buildChildView: function(child, ChildViewClass, childViewOptions) {

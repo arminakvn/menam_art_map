@@ -168,7 +168,7 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 				height = window.screen.availHeight - window.screen.availTop
 				@biosRegion = $("#bios-region")
 				# @bioRegion = $("#bio-region")
-				@$el.css("height", "#{height}").css("list-style-type", "none").css('overflow', 'scroll')
+				@$el.css("height", "#{height}").css("list-style-type", "none")
 			# 	$(@biosRegion).animate({
 			# 		 "left": "-=250px" 
 			# 		 "opacity"

@@ -278,7 +278,7 @@ db.once('open', function callback () {
     artist = new Artist({
       target: req.params.t
     });
-    artist.findByTarget(function(err, artist) {
+    artist.findSourceByTargetAll(function(err, artist) {
       res.json(artist);
     });
   });
@@ -340,15 +340,13 @@ db.once('open', function callback () {
   });
 
   app.get('/orgbysourceartist/:source', function(req, res) {
-    var level1 = [];
-    var artist;
-    var artist1
+    var levels = [];
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
         
 //
     if (req.params.source == "All locations") {
-      artist = new Artist({
+      var artist = new Artist({
           group: 2,
         });
       artist.findLimited(function(err, artist) {
@@ -367,21 +365,22 @@ db.once('open', function callback () {
           source: req.params.source
         });
         var each, len, i;
+        var reapona = [];
         artist.findOrgBySource(function(err, artist) {
           var each, i, len, level;
           i = 0;
           len = artist.length;
-            reapona = [];
+            
             while (i < len) {
               each = artist[i];
-                var artist1;
-                artist1 = new Artist({
+                var artist1 = new Artist({
                   group: 2,
                   target: each.target
                 });
 
                 artist1.findSourceByTargetAll(function(err, artist2) {
                   var each1, j, len1;
+                  var level1 = [];
                   for (j = 0, len1 = artist2.length; j < len1; j++) {
                     each1 = artist2[j];
                     level1.push(each1);
@@ -391,13 +390,14 @@ db.once('open', function callback () {
               i++;
               
             }
+            levels.push(reapona);
           });
 
         return res.json([
             {
               'level0': artist
             }, {
-              'level1': reapona
+              'level1': levels
             }
           ]); 
         }

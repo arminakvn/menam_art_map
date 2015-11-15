@@ -300,6 +300,9 @@ cantainer.paratext-info {
 }
 #bios-region {
   padding: 0 0 0 0;
+  position: relative;
+  overflow: visible;
+  overflow-x: hidden;
 }
 #bio-region {
   padding: 10 10 10 10;
@@ -309,7 +312,7 @@ cantainer.paratext-info {
   color: white;
   font-size: 12px;
   border: solid 1.5px #7CB3C0;
-  overflow: auto;
+  overflow: overlay;
   background-image: url('tab-2.png');
   background-size: 50px 25px;
   background-repeat: no-repeat;
@@ -411,4 +414,9 @@ cantainer.paratext-info {
 .locations-nodes.place.leaflet-clickable {
   fill: #7CB3C0;
   stroke: #7CB3C0;
+}
+#bios-list {
+  position: relative;
+  overflow: visible;
+  overflow-x: hidden;
 }

@@ -143,7 +143,7 @@
           console.log(window);
           height = window.screen.availHeight - window.screen.availTop;
           this.biosRegion = $("#bios-region");
-          return this.$el.css("height", "" + height).css("list-style-type", "none").css('overflow', 'scroll');
+          return this.$el.css("height", "" + height).css("list-style-type", "none");
         },
         onBeforeRemoveChild: function() {},
         buildChildView: function(child, ChildViewClass, childViewOptions) {
