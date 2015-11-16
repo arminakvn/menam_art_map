@@ -35,11 +35,11 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 	      # parse: (response) ->
 	        @repona = []
 	        $.when(response).done (res)=>
-	            response.forEach (res) =>
-	                $.when(res).done (resB)=>
-	                    eachRes = @getLevelData(resB)
-	                    $.when(eachRes).done (Res)=>
-	                        repona.push(Res)
+	            # response.forEach (res) =>
+	            #     $.when(res).done (resB)=>
+	            #         eachRes = @getLevelData(resB)
+	            #         $.when(eachRes).done (Res)=>
+	            #             repona.push(Res)
 	            
 	        # data = _.map response, (key, value) =>
 	        #   # _.map key, (key, value) =>
@@ -50,10 +50,32 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 	            return @repona
 	    )
 		Show.Controller =
+			showTwoLevelOrganization: (resB) =>
+				
+	                # $.when(resB).done (resB)=>	               
+	                #     # showOrganization(resB)
+	                #     console.log "showViwqssss", @Controller.showView, resB.attributes.target.replace /^\s+|\s+$/g, ""
+	                #     @Controller.showView.svg.selectAll('.link').data(t_links)
+	                    
+
+
+
+	                    # get the level two data for them then
+	                   
+
+
+	                    # eachRes = @getLevelData(resB)
+	                    # $.when(eachRes).done (Res)=>
+	                        
+	                    #     @Controller.Show.draw()
+	                    #     repona.push(Res)
 			showOrganization: (ssource) ->
 				artistss = new App.Entities.ArtistCollection(param:ssource)
 				artistss.fetch 'success': (response) =>
 		            @showView = new View.ShowView(collection: response)
+		            
+		            # response.forEach (res) =>
+		            # 	@showTwoLevelOrganization(res)
 		            App.mainRegion.show @showView
 				
 			

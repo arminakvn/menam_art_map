@@ -32,15 +32,6 @@ define(["js/app", "js/apps/org_app/show/show_view"], function(App, View) {
         this.repona = [];
         return $.when(response).done((function(_this) {
           return function(res) {
-            response.forEach(function(res) {
-              return $.when(res).done(function(resB) {
-                var eachRes;
-                eachRes = _this.getLevelData(resB);
-                return $.when(eachRes).done(function(Res) {
-                  return repona.push(Res);
-                });
-              });
-            });
             console.log("repona", _this.repona);
             return _this.repona;
           };
@@ -48,6 +39,9 @@ define(["js/app", "js/apps/org_app/show/show_view"], function(App, View) {
       }
     });
     return Show.Controller = {
+      showTwoLevelOrganization: (function(_this) {
+        return function(resB) {};
+      })(this),
       showOrganization: function(ssource) {
         var artistss;
         artistss = new App.Entities.ArtistCollection({
