@@ -9,8 +9,9 @@
       View.CreditView = Marionette.ItemView.extend({
         template: creditTpl,
         tagName: "div",
+        id: "credit-view",
         $el: $('#bio-region'),
-        className: 'bio-region'
+        className: 'credit-view'
       });
       View.ShowView = Marionette.ItemView.extend({
         template: showTpl,

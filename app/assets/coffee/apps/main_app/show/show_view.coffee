@@ -8,12 +8,13 @@ define ["js/app", "tpl!js/apps/main_app/show/templates/show_view.tpl", "tpl!js/a
 		)
 		View.CreditView = Marionette.ItemView.extend(
 					template: creditTpl
-					tagName: "div"            
+					tagName: "div"
+					id: "credit-view"
 					# $el: $('#bios')
 					# ui: 
 					# 	'name': 'li'
 					$el: $('#bio-region')
-					className: 'bio-region'
+					className: 'credit-view'
 					# events:
 		)
 		View.ShowView = Marionette.ItemView.extend(

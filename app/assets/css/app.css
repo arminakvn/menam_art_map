@@ -420,3 +420,19 @@ cantainer.paratext-info {
   overflow: visible;
   overflow-x: hidden;
 }
+.credit-view {
+  color: black;
+ font-family: "CartoGothicStd";
+  font-size: 10px;
+  line-height: 1.75;
+  border: 0px solid black;
+  margin-top: 20px;
+  padding-right: 0;
+  padding-left: 0;
+  font-weight: lighter;
+  font-style: italic;
+}
+circle {
+  fill-opacity: 0.0;
+  border: 1px solid  #7CB3C0;
+}
