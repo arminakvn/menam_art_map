@@ -212,10 +212,10 @@
           console.log("collection", this.collection);
           this.width = this.el.clientWidth;
           this.height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight();
-          padding = .5;
+          padding = .2;
           color = this.color = d3.scale.category10();
           this.svg = this.vis = d3.select('#organization-region').append('svg:svg').attr('width', this.width).attr('height', this.height);
-          this.force = d3.layout.force().gravity(.5).linkDistance(475).charge(-550).linkStrength(0.4).friction(0.8).size([this.width, this.height]).on("tick", tick);
+          this.force = d3.layout.force().gravity(.5).linkDistance(475).charge(-950).linkStrength(0.4).friction(0.8).size([this.width, this.height]).on("tick", tick);
           console.log("link and source", t_links, t_nodes);
           tnodes = this.force.nodes(d3.values(t_nodes));
           tlinks = this.force.links();

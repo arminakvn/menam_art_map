@@ -199,14 +199,14 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         console.log "collection", @collection
         @width = @el.clientWidth
         @height = $('#bio-region').innerHeight() - $('#header').innerHeight() - $('#statelist').innerHeight()
-        padding = .5
+        padding = .2
         color = @color = d3.scale.category10()
         # make the layout structure
         @svg = @vis = d3.select('#organization-region').append('svg:svg').attr('width', @width).attr('height', @height)
         @force = d3.layout.force(
         ).gravity(.5
         ).linkDistance(475
-        ).charge(-550
+        ).charge(-950
         ).linkStrength(0.4
         ).friction(0.8
         ).size([

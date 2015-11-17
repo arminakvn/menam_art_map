@@ -81,12 +81,16 @@ define ["js/app", "tpl!js/apps/header_app/show/templates/_header.tpl", "tpl!js/a
 
       organizationMousover: (e) =>
         $(e.target).css('cursor','pointer')
+        # $(e.target).css('text-decoration', 'underline')
       organizationMousoout: (e) =>
         $(e.target).css('cursor','default')
+        # $(e.target).css('text-decoration', 'none')
       locationMousover: (e) =>
         $(e.target).css('cursor','pointer')
+        # $(e.target).addClass('hoverOrg')
       locationMousoout: (e) =>
         $(e.target).css('cursor','default')
+        # $(e.target).removeClass('hoverOrg')
       onShow: ->
 
         # $('input[name="my-checkbox"]').bootstrapSwitch('onSwitchChange', (e) =>

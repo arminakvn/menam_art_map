@@ -272,6 +272,7 @@ cantainer.paratext-info {
 }
 .bioTriggerd {
   /*color: white;*/
+  background-color: #7CB3C0;
   font-style: bold;
   /*font-style: italic;*/
 }
@@ -324,7 +325,9 @@ cantainer.paratext-info {
   padding: 0 0 10 0;
 }
 #statelist>span {
+  background-color: #7CB3C0; 
   height: 40px;
+  margin-left: 100px;
 
 }
 #statelocation>span {
@@ -392,7 +395,8 @@ cantainer.paratext-info {
   padding-left: 0;
 }*/
 .navmodeOn {
-  background-color:  #7CB3C0;
+  /*background-color:  #7CB3C0;*/
+    text-decoration: underline;
  font-family: "CartoGothicStd";
   font-size: 20px;
   line-height: 1.5;
@@ -402,6 +406,7 @@ cantainer.paratext-info {
   padding-left: 0;
 }
 .navmodeOff {
+      text-decoration: none;
   background-color:  white;
  font-family: "CartoGothicStd";
   font-size: 20px;
@@ -419,6 +424,7 @@ cantainer.paratext-info {
   position: relative;
   overflow: visible;
   overflow-x: hidden;
+  padding-left: 100px;
 }
 .credit-view {
   color: black;
@@ -435,4 +441,18 @@ cantainer.paratext-info {
 circle {
   fill-opacity: 0.0;
   border: 1px solid  #7CB3C0;
+}
+#logo_text {
+    background-color:  #7CB3C0;
+ font-family: "CartoGothicStd";
+  font-size: 20px;
+  line-height: 0.6;
+  border: 0px solid black;
+  margin-top: 20px;
+  padding-right: 0;
+  padding-left: 0;
+}
+.hoverOrg  {
+  text-decoration: underline;
+
 }

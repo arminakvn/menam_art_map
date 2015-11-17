@@ -115,8 +115,6 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
                 # return ret
         # this entire blok needs to be refoctored into a controller api method
         # console.log "what is this names:", names, App.NavApp.Show.Controller.showView.model.get('statelocation')
-        console.log "#{App.NavApp.Show.Controller.showView.model.get('statebio')}"
-        console.log "#{App.NavApp.Show.Controller.showView.model.get('statelist')}"
         
         $.when(updateCollection).done (respnd) =>
           output = []

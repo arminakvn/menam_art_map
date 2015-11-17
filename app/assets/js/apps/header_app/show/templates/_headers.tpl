@@ -1,15 +1,22 @@
 <div class="col-md-2" style="padding: 0 0 0 0 !important;">
-
-</div>
-<div class="col-md-2" style="padding: 0 0 0 0 !important;">
-		<div class="row" id="header">
-		<nav class="navbar navbar-default navbar-fixed top" role="navigation" style="background-color: #FFFFFF; border-color: #FFFFFF;">
-			<div class="container">
-				<div class="navbar-header">
+<div class="navbar-header">
 					<a href="/" class="navbar-brand" style="font-size: small; line-height: 55%;">
 						 <img style="max-width:100px; margin-top: -7px;" src="Icon-02-01.png">
 					</a>
 				</div>
+<span id="logo_text">MENAM<br>ART <br>MAP</span>
+</div>
+<div class="col-md-2" style="padding: 0 0 0 0 !important;">
+		
+
+
+</div>
+
+<div class="col-md-8"style="padding: 0 0 0 0 !important;">
+<div class="row" id="header">
+		<nav class="navbar navbar-default navbar-fixed top" role="navigation" style="background-color: #FFFFFF; border-color: #FFFFFF;">
+			<div class="container">
+				<br><br>
 				<span id="organizations" class="navmodeOn" data-toggle="portfilter">Locations</span> <span id="mode"></span> <span id="locations" class="navmodeOff" data-toggle="portfilter">Organizations</span> 
 				<div class="collapse navbar-collapse" id="headercollapse"style="padding: 0 0 0 0;">
 					<!-- <ul id="header-container" class="nav navbar-nav navbar-right">
@@ -34,11 +41,5 @@
 			</div>
 		</nav>
 	</div>
-
-
-</div>
-
-<div class="col-md-8"style="padding: 0 0 0 0 !important;">
-
 </div>
 

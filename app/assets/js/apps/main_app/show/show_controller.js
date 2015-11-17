@@ -86,8 +86,6 @@
               };
             })(this)
           });
-          console.log("" + (App.NavApp.Show.Controller.showView.model.get('statebio')));
-          console.log("" + (App.NavApp.Show.Controller.showView.model.get('statelist')));
           return $.when(updateCollection).done((function(_this) {
             return function(respnd) {
               var output;
