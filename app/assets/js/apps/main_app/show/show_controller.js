@@ -8,9 +8,15 @@
       model: App.Entity.ArtistSource,
       initialize: function() {
         this.on('request', function() {
+          var target;
+          console.log("on request before spinnerLoading");
+          target = document.getElementById('bios-region');
+          App.vent.trigger("spinnerLoading", target);
           console.log("loading");
         });
         this.on('sync', function() {
+          App.vent.trigger("spinnerLoaded");
+          App.trigger("spinnerLoaded");
           console.log("loaded");
         });
       },

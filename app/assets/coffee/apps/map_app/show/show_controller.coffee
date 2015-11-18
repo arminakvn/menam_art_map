@@ -51,9 +51,12 @@ define ["js/app", "js/apps/map_app/show/show_view"], (App, View) ->
 				@param = url
 				@url = "/artistsbysource/"+@param.param
 			@on 'request', ->
+				target = document.getElementById('main-region')
+				App.vent.trigger "spinnerLoading", target
 				console.log "loading"
 				return
 			@on 'sync', =>
+				App.vent.trigger "spinnerLoaded"
 				try
 					API.highlightNode(@param.param)
 				catch e

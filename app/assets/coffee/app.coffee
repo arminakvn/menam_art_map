@@ -1,4 +1,4 @@
-define ["marionette"], (Marionette) ->
+define ["marionette", "spin"], (Marionette, Spinner) ->
   App = new Marionette.Application()
   App.vent = new Backbone.Wreqr.EventAggregator()
   # require ["js/entities/modal"], =>
@@ -36,6 +36,27 @@ define ["marionette"], (Marionette) ->
     #           success: (data, textStatus, jqXHR) ->
     #             App.request "set:artistsource", data
     App.state = {"current": 0}
+    App.opts = 
+      lines: 9
+      length: 0
+      width: 23
+      radius: 60
+      scale: 0.5
+      corners: 1
+      color: '#E1E0E0'
+      opacity: 0.25
+      rotate: 30
+      direction: 1
+      speed: 0.7
+      trail: 66
+      fps: 40
+      zIndex: 2e9
+      className: 'spinner'
+      top: '50%'
+      left: '50%'
+      shadow: false
+      hwaccel: true
+      position: 'absolute'
     require ["js/entities/person_link"], => 
             $.ajax '/links',
               type: 'GET'
@@ -69,6 +90,15 @@ define ["marionette"], (Marionette) ->
   
 
 
+  App.vent.on "spinnerLoading", (target)->
+    console.log "spin", @
+    console.log "spinnerLoading"
+    App.spinner = new Spinner(App.opts).spin(target)
+
+  App.vent.on "spinnerLoaded", ->
+    App.spinner.stop()
+    # target = document.getElementById('foo')
+    # spinner = new Spinner(opts).spin(target)
   App.vent.on "personFired", ->
     App.navigate "/person", trgigger: true
   

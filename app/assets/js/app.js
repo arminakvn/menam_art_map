@@ -1,5 +1,5 @@
 (function() {
-  define(["marionette"], function(Marionette) {
+  define(["marionette", "spin"], function(Marionette, Spinner) {
     var App;
     App = new Marionette.Application();
     App.vent = new Backbone.Wreqr.EventAggregator();
@@ -26,6 +26,28 @@
     App.on("initialize:before", function() {
       App.state = {
         "current": 0
+      };
+      App.opts = {
+        lines: 9,
+        length: 0,
+        width: 23,
+        radius: 60,
+        scale: 0.5,
+        corners: 1,
+        color: '#E1E0E0',
+        opacity: 0.25,
+        rotate: 30,
+        direction: 1,
+        speed: 0.7,
+        trail: 66,
+        fps: 40,
+        zIndex: 2e9,
+        className: 'spinner',
+        top: '50%',
+        left: '50%',
+        shadow: false,
+        hwaccel: true,
+        position: 'absolute'
       };
       return require(["js/entities/person_link"], (function(_this) {
         return function() {
@@ -62,6 +84,14 @@
           }
         }
       });
+    });
+    App.vent.on("spinnerLoading", function(target) {
+      console.log("spin", this);
+      console.log("spinnerLoading");
+      return App.spinner = new Spinner(App.opts).spin(target);
+    });
+    App.vent.on("spinnerLoaded", function() {
+      return App.spinner.stop();
     });
     App.vent.on("personFired", function() {
       return App.navigate("/person", {

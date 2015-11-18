@@ -6,10 +6,13 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 	      	console.log "url"
 	      	@param = url
 	      	@on 'request', ->
+	          target = document.getElementById('main-region')
+	          App.vent.trigger "spinnerLoading", target
 	          # MfiaClient.app.trigger 'loading'
 	          console.log "loading"
 	          return
 	        @on 'sync', ->
+	          App.vent.trigger "spinnerLoaded"
 	          # MfiaClient.app.trigger 'loaded'
 	          console.log "loaded"
 	          return
@@ -17,10 +20,10 @@ define ["js/app", "js/apps/org_app/show/show_view"], (App, View) ->
 	      
 	      url: -> 
 	      	console.log "@param", @param
-	      	return "/artistsbysource/"+@param.param
+	      	return "/artistsbysourceorg/"+@param.param
 	      
 	      getLevelData: (res) ->
-	      	updateCollection = $.ajax '/artstsby/'+res.target.replace /^\s+|\s+$/g, "",
+	      	updateCollection = $.ajax '/artistsbysourceorg/'+res.target.replace /^\s+|\s+$/g, "",
 	                type: 'GET'
 	                dataType: 'json'
 	                error: (jqXHR, textStatus, errorThrown) ->

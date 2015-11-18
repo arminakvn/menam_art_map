@@ -5,9 +5,13 @@
       model: App.Entity.BioElement,
       initialize: function() {
         this.on('request', function() {
+          var target;
+          target = document.getElementById('bio-region');
+          App.vent.trigger("spinnerLoading", target);
           console.log("loading");
         });
         this.on('sync', function() {
+          App.vent.trigger("spinnerLoaded");
           console.log("loaded");
         });
       },

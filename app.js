@@ -147,6 +147,14 @@ db.once('open', function callback () {
     query.limit();
     return query.exec(cb);
   };
+  ArtistSchema.methods.findBySourceOrg = function(cb) {
+    var query;
+    query = this.model('Artist').find({});
+    query.where('source', this.source);
+    query.where('group', this.group);
+    query.limit();
+    return query.exec(cb);
+  };
 
   ArtistSchema.methods.findByGroup = function(cb) {
     var query;
@@ -276,13 +284,35 @@ db.once('open', function callback () {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     artist = new Artist({
-      target: req.params.t
+      target: 2
     });
     artist.findSourceByTargetAll(function(err, artist) {
       res.json(artist);
     });
   });
 
+  app.get('/artistsbysourceorg/:source', function(req, res) {
+    var artist;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    if (req.params.t == "all"){
+      artist = Artist({
+        group: req.params.g
+      });
+    artist.findSource(function(err, artist) {
+      return res.json(artist);
+    });
+
+    } else {
+      artist = new Artist({
+        source: req.params.source,
+        group: 2
+      });
+      artist.findBySourceOrg(function(err, artist) {
+        return res.json(artist);
+      });
+    }
+ });
   app.get('/artistsbygroup/:g', function(req, res) {
     var artist;
     res.header('Access-Control-Allow-Origin', '*');

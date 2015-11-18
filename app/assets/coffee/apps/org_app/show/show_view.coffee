@@ -57,7 +57,7 @@ define ["js/app", "tpl!js/apps/org_app/show/templates/show_view.tpl"], (App, sho
         level2Data: ->
           @collection.models.forEach (model) =>
             console.log "mosdel", model.attributes.target.name.replace /^\s+|\s+$/g, ""
-            updateCollection = $.ajax '/artstsby/'+model.attributes.target.name.replace /^\s+|\s+$/g, "",
+            updateCollection = $.ajax '/artistsbysourceorg/'+model.attributes.target.name.replace /^\s+|\s+$/g, "",
               type: 'GET'
               dataType: 'json'
               error: (jqXHR, textStatus, errorThrown) ->

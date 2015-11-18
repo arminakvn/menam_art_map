@@ -17,11 +17,15 @@
           this.url = "/artistsbysource/" + this.param.param;
         }
         this.on('request', function() {
+          var target;
+          target = document.getElementById('main-region');
+          App.vent.trigger("spinnerLoading", target);
           console.log("loading");
         });
         this.on('sync', (function(_this) {
           return function() {
             var e;
+            App.vent.trigger("spinnerLoaded");
             try {
               API.highlightNode(_this.param.param);
             } catch (_error) {

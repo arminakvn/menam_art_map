@@ -23,7 +23,8 @@
     "mapbox.js": "~2.1.5",
     "d3-geo-projection": "~0.2.15",
     "d3-plugins": "*",
-    "topojson": "~1.6.19"
+    "topojson": "~1.6.19",
+    "spin.js": "~2.3.2"
   },
   "devDependencies": {},
   "directory": "bower_components",

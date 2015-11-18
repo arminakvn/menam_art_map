@@ -9,10 +9,15 @@ define ["js/app", "js/apps/main_app/show/show_view"], (App, View) ->
       # @queryString = options.queryString or null
       @on 'request', ->
         # MfiaClient.app.trigger 'loading'
+        console.log "on request before spinnerLoading"
+        target = document.getElementById('bios-region')
+        App.vent.trigger "spinnerLoading", target
         console.log "loading"
         return
       @on 'sync', ->
         # MfiaClient.app.trigger 'loaded'
+        App.vent.trigger "spinnerLoaded"
+        App.trigger "spinnerLoaded"
         console.log "loaded"
         return
       return

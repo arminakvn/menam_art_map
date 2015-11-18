@@ -12,6 +12,7 @@ requirejs.config
     json2: "./bower_components/json2/json2"
     d3: "./bower_components/d3/d3"
     polyhedron: "./bower_components/d3-plugins/geo/polyhedron/polyhedron"
+    spin: "./bower_components/spin.js/spin"
     topojson: "./bower_components/topojson/topojson"
 
   shim:
@@ -34,6 +35,7 @@ requirejs.config
       exports: "polyhedron"
 
 
+
   name: "app",
   out: "app.min.js"
 # route helpers
@@ -44,9 +46,10 @@ requirejs [
   "jquery"
   "d3"
   "polyhedron"
+  "spin"
   "topojson"
-], ($, d3, polyhedron) ->
-  (($, d3, polyhedron, window, undefined_) ->
+], ($, d3, polyhedron, Spinner) ->
+  (($, d3, polyhedron, Spinner, window, undefined_) ->
     $doc = $(document)
   ) $, window
   return

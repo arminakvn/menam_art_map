@@ -12,6 +12,7 @@
       json2: "./bower_components/json2/json2",
       d3: "./bower_components/d3/d3",
       polyhedron: "./bower_components/d3-plugins/geo/polyhedron/polyhedron",
+      spin: "./bower_components/spin.js/spin",
       topojson: "./bower_components/topojson/topojson"
     },
     shim: {
@@ -42,8 +43,8 @@
     return App.start();
   });
 
-  requirejs(["jquery", "d3", "polyhedron", "topojson"], function($, d3, polyhedron) {
-    (function($, d3, polyhedron, window, undefined_) {
+  requirejs(["jquery", "d3", "polyhedron", "spin", "topojson"], function($, d3, polyhedron, Spinner) {
+    (function($, d3, polyhedron, Spinner, window, undefined_) {
       var $doc;
       return $doc = $(document);
     })($, window);

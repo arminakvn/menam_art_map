@@ -74,7 +74,7 @@
                 return function(model) {
                   var updateCollection;
                   console.log("mosdel", model.attributes.target.name.replace(/^\s+|\s+$/g, ""));
-                  updateCollection = $.ajax('/artstsby/' + model.attributes.target.name.replace(/^\s+|\s+$/g, "", {
+                  updateCollection = $.ajax('/artistsbysourceorg/' + model.attributes.target.name.replace(/^\s+|\s+$/g, "", {
                     type: 'GET',
                     dataType: 'json',
                     error: function(jqXHR, textStatus, errorThrown) {

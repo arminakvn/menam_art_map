@@ -7,19 +7,23 @@
           console.log("url");
           this.param = url;
           this.on('request', function() {
+            var target;
+            target = document.getElementById('main-region');
+            App.vent.trigger("spinnerLoading", target);
             console.log("loading");
           });
           this.on('sync', function() {
+            App.vent.trigger("spinnerLoaded");
             console.log("loaded");
           });
         },
         url: function() {
           console.log("@param", this.param);
-          return "/artistsbysource/" + this.param.param;
+          return "/artistsbysourceorg/" + this.param.param;
         },
         getLevelData: function(res) {
           var updateCollection;
-          updateCollection = $.ajax('/artstsby/' + res.target.replace(/^\s+|\s+$/g, "", {
+          updateCollection = $.ajax('/artistsbysourceorg/' + res.target.replace(/^\s+|\s+$/g, "", {
             type: 'GET',
             dataType: 'json',
             error: function(jqXHR, textStatus, errorThrown) {},

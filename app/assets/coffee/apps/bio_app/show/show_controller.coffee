@@ -5,10 +5,13 @@ define ["js/app", "js/apps/bio_app/show/show_view", "tpl!js/apps/bio_app/show/te
 	    initialize:->	
 	      @on 'request', ->
 	        # MfiaClient.app.trigger 'loading'
+	        target = document.getElementById('bio-region')
+	        App.vent.trigger "spinnerLoading", target
 	        console.log "loading"
 	        return
 	      @on 'sync', ->
 	        # MfiaClient.app.trigger 'loaded'
+	        App.vent.trigger "spinnerLoaded"
 	        console.log "loaded"
 	        return
 	      return
